@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:e_commerce/shared/dummy_data/data/cart.dart';
 import 'package:e_commerce/shared/dummy_data/data/category.dart';
 import 'package:e_commerce/shared/dummy_data/data/product.dart';
-import 'package:e_commerce/shared/dummy_data/data/user.dart';
 import 'package:e_commerce/shared/local/prefs.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
@@ -29,7 +28,6 @@ class DatabaseManager {
         _createProductsTable(database);
         _createCategoriesTable(database);
         _createCart();
-        createUser();
         _createWishlist();
         await _fillCategories(database);
         await _fillProducts(database);
@@ -63,8 +61,7 @@ class DatabaseManager {
     );
   }
 
-  Future<Map<String, dynamic>> createUser([Map<String, dynamic>? user]) async {
-    user ??= userData;
+  Future<Map<String, dynamic>?> createUser(Map<String, dynamic> user) async {
     await Prefs.saveOrRemoveData<String>(
       key: 'user_key',
       value: jsonEncode(user),

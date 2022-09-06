@@ -11,12 +11,8 @@ void main() async {
   await Prefs.init();
   await Api.initialize();
 
-  runApp(
-    BlocProvider(
-      create: (_) => AppThemes(),
-      child: const MyApp(),
-    ),
-  );
+  final result = Api.getInstance().queryUser();
+  print(result);
 }
 
 class MyApp extends StatelessWidget {
