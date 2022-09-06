@@ -56,7 +56,8 @@ class Api {
 
   Future<Map<String, dynamic>> removeProductFromCart(int productId) {
     return _futureRequest(
-        () => _databaseManager.removeProductFromCart(productId));
+      () => _databaseManager.removeProductFromCart(productId),
+    );
   }
 
   Map<String, dynamic> applyCoupon(String coupon, double discount) {
