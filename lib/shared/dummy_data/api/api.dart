@@ -34,7 +34,7 @@ class Api {
     return _futureRequest(() => _databaseManager.queryProduct(productId));
   }
 
-  Map<String, dynamic> queryUser() {
+  Future<Map<String, dynamic>> queryUser() {
     return _request(() => _databaseManager.queryUser());
   }
 
@@ -46,7 +46,7 @@ class Api {
     return _futureRequest(() => _databaseManager.removeUser());
   }
 
-  Map<String, dynamic> queryCart() {
+  Future<Map<String, dynamic>> queryCart() {
     return _request(() => _databaseManager.queryCart());
   }
 
@@ -60,11 +60,11 @@ class Api {
     );
   }
 
-  Map<String, dynamic> applyCoupon(String coupon, double discount) {
+  Future<Map<String, dynamic>> applyCoupon(String coupon, double discount) {
     return _request(() => _databaseManager.applyCoupon(coupon, discount));
   }
 
-  Map<String, dynamic> queryWishlist() {
+  Future<Map<String, dynamic>> queryWishlist() {
     return _request(() => _databaseManager.queryWishlist());
   }
 
@@ -74,15 +74,16 @@ class Api {
     );
   }
 
-  Map<String, dynamic> removeProductFromWishlist(int productId) {
+  Future<Map<String, dynamic>> removeProductFromWishlist(int productId) {
     return _request(
       () => _databaseManager.removeProductFromWishlist(productId),
     );
   }
 }
 
-Map<String, dynamic> _request<T>(T? Function()? getData) {
+Future<Map<String, dynamic>> _request<T>(T? Function()? getData) async {
   try {
+    await Future.delayed(const Duration(seconds: 1));
     final data = getData!();
     if (data == null) {
       return {
