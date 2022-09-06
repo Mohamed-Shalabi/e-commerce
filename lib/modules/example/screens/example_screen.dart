@@ -5,20 +5,6 @@ class ExampleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              // final themesViewModel = context.read<AppThemes>();
-              // themesViewModel.isLight = !themesViewModel.isLight;
-
-
-            },
-            icon: const Icon(Icons.brightness_4_outlined),
-          )
-        ],
-      ),
-    );
+    return const Scaffold();
   }
 }
