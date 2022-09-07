@@ -4,7 +4,7 @@ import 'package:e_commerce/shared/dummy_data/api/api.dart';
 import 'package:e_commerce/shared/local/prefs.dart';
 
 abstract class AuthService {
-  final _api = Api.getInstance();
+  static final _api = Api.getInstance();
 }
 
 abstract class AuthLocalService {
