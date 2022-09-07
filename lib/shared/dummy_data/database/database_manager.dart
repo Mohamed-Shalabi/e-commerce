@@ -178,7 +178,7 @@ class DatabaseManager {
   }
 
   Map<String, dynamic> login(String email, String password) {
-    final jsonString = Prefs.getData<String>(key: 'user_key')!;
+    final jsonString = Prefs.getData<String>(key: 'user_key') ?? '{}';
     final result = json.decode(jsonString);
     if (result['email'] == email && result['password'] == password) {
       return result;

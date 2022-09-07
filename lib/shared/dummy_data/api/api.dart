@@ -81,10 +81,10 @@ class Api {
   }
 }
 
-Future<Map<String, dynamic>> _request<T>(T? Function()? getData) async {
+Future<Map<String, dynamic>> _request<T>(T? Function() getData) async {
   try {
     await Future.delayed(const Duration(seconds: 1));
-    final data = getData!();
+    final data = getData();
     if (data == null) {
       return {
         'status_code': 500,
@@ -105,11 +105,11 @@ Future<Map<String, dynamic>> _request<T>(T? Function()? getData) async {
 }
 
 Future<Map<String, dynamic>> _futureRequest<T>(
-  Future<T>? Function()? getData,
+  Future<T>? Function() getData,
 ) async {
   try {
     await Future.delayed(const Duration(seconds: 1));
-    final data = await getData!();
+    final data = await getData();
     if (data == null) {
       return {
         'status_code': 500,
