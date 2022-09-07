@@ -99,7 +99,7 @@ Future<Map<String, dynamic>> _request<T>(T? Function()? getData) async {
   } catch (e) {
     return {
       'status_code': 500,
-      'message': 'an error occurred',
+      'message': e.toString(),
     };
   }
 }
