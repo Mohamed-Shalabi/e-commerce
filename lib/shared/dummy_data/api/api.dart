@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:e_commerce/shared/dummy_data/database/database_manager.dart';
+import 'package:e_commerce/shared/functions/functions.dart';
+import 'package:e_commerce/shared/utils/app_strings.dart';
 
 class Api {
   Api._();
@@ -102,6 +106,10 @@ class Api {
 Future<Map<String, dynamic>> _request<T>(T? Function() getData) async {
   try {
     await Future.delayed(const Duration(seconds: 1));
+    if (!await isConnected) {
+      throw const SocketException(AppStrings.connectionError);
+    }
+
     final data = getData();
     if (data == null) {
       return {
@@ -127,6 +135,10 @@ Future<Map<String, dynamic>> _futureRequest<T>(
 ) async {
   try {
     await Future.delayed(const Duration(seconds: 1));
+    if (!await isConnected) {
+      throw const SocketException(AppStrings.connectionError);
+    }
+
     final data = await getData();
     if (data == null) {
       return {
