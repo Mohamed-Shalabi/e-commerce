@@ -75,6 +75,16 @@ class DatabaseManager {
     required String city,
     required String address,
   }) async {
+    final user = {
+      'name': name,
+      'email': email,
+      'password': password,
+      'phone': phone,
+      'country': country,
+      'city': city,
+      'address': address,
+    };
+
     final isDone = await Prefs.saveOrRemoveData<String>(
       key: 'user_key',
       value: jsonEncode(user),
