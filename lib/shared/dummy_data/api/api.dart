@@ -38,8 +38,26 @@ class Api {
     return _request(() => _databaseManager.login(email, password));
   }
 
-  Future<Map<String, dynamic>> signUp(Map<String, dynamic> user) {
-    return _futureRequest(() => _databaseManager.createUser(user));
+  Future<Map<String, dynamic>> signUp({
+    required String name,
+    required String email,
+    required String password,
+    required String phone,
+    required String country,
+    required String city,
+    required String address,
+  }) {
+    return _futureRequest(
+      () => _databaseManager.createUser(
+        name: name,
+        email: email,
+        password: password,
+        phone: phone,
+        country: country,
+        city: city,
+        address: address,
+      ),
+    );
   }
 
   Future<Map<String, dynamic>> logout() {

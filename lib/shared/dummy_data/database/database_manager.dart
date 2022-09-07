@@ -66,7 +66,15 @@ class DatabaseManager {
     );
   }
 
-  Future<Map<String, dynamic>?> createUser(Map<String, dynamic> user) async {
+  Future<Map<String, dynamic>?> createUser({
+    required String name,
+    required String email,
+    required String password,
+    required String phone,
+    required String country,
+    required String city,
+    required String address,
+  }) async {
     final isDone = await Prefs.saveOrRemoveData<String>(
       key: 'user_key',
       value: jsonEncode(user),
