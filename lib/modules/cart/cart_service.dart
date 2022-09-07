@@ -1,1 +1,1 @@
-class CartService {}
+abstract class CartService {}

@@ -1,1 +1,1 @@
-class ProfileService {}
+abstract class ProfileService {}

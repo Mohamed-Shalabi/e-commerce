@@ -1,1 +1,1 @@
-class CategoriesService {}
+abstract class CategoriesService {}

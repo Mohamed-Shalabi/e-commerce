@@ -1,1 +1,1 @@
-class ProductsService {}
+abstract class ProductsService {}
