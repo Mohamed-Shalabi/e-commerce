@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:e_commerce/shared/dummy_data/api/api.dart';
 import 'package:e_commerce/shared/dummy_data/data/cart.dart';
@@ -6,6 +7,7 @@ import 'package:e_commerce/shared/dummy_data/data/category.dart';
 import 'package:e_commerce/shared/dummy_data/data/product.dart';
 import 'package:e_commerce/shared/local/prefs.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseManager {
@@ -21,7 +23,9 @@ class DatabaseManager {
   late final Database? _database;
 
   Future<void> init() async {
-    final path = await getDatabasesPath();
+    final path = Platform.isIOS
+        ? (await getLibraryDirectory()).path
+        : await getDatabasesPath();
     _database = await openDatabase(
       p.join(path, _databaseName),
       version: 1,
