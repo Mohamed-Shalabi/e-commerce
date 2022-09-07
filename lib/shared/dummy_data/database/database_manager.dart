@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:e_commerce/shared/dummy_data/api/api.dart';
 import 'package:e_commerce/shared/dummy_data/data/cart.dart';
 import 'package:e_commerce/shared/dummy_data/data/category.dart';
 import 'package:e_commerce/shared/dummy_data/data/product.dart';
@@ -62,16 +63,25 @@ class DatabaseManager {
   }
 
   Future<Map<String, dynamic>?> createUser(Map<String, dynamic> user) async {
-    await Prefs.saveOrRemoveData<String>(
+    final isDone = await Prefs.saveOrRemoveData<String>(
       key: 'user_key',
       value: jsonEncode(user),
     );
 
-    return user;
+    if (isDone) {
+      return user;
+    }
+
+    throw RequestException('Could not save user');
   }
 
-  Future<bool> removeUser() async {
-    return await Prefs.saveOrRemoveData<String>(key: 'user_key');
+  Future<String> removeUser() async {
+    final isDone = await Prefs.saveOrRemoveData<String>(key: 'user_key');
+    if (isDone) {
+      return 'done';
+    }
+
+    throw RequestException('Could not log out');
   }
 
   Future<bool> _createCart([Map<String, dynamic>? cart]) {
@@ -110,12 +120,19 @@ class DatabaseManager {
     }
   }
 
-  Future<List<Map<String, Object?>>?>? queryCategories() {
-    return _database?.query(_categoriesTableName);
+  Future<List<Map<String, Object?>>?> queryCategories() {
+    if (_database == null) {
+      throw RequestException('Error in database');
+    }
+    return _database!.query(_categoriesTableName);
   }
 
-  Future<Map<String, Object?>?>? queryCategory(int categoryId) {
-    return _database?.query(
+  Future<Map<String, Object?>?> queryCategory(int categoryId) {
+    if (_database == null) {
+      throw RequestException('Error in database');
+    }
+
+    return _database!.query(
       _categoriesTableName,
       where: 'id = ?',
       whereArgs: [categoryId],
@@ -124,29 +141,46 @@ class DatabaseManager {
     });
   }
 
-  Future<List<Map<String, Object?>>?>? queryCategoryProducts(
+  Future<List<Map<String, Object?>>?> queryCategoryProducts(
     int categoryId,
   ) async {
-    return await _database?.query(
+    if (_database == null) {
+      throw RequestException('Error in database');
+    }
+
+    return await _database!.query(
       _productsTableName,
       where: 'category_id = ?',
       whereArgs: [categoryId],
     );
   }
 
-  Future<Map<String, Object?>?>? queryProduct(int productId) async {
-    return await _database?.query(
+  Future<Map<String, Object?>?> queryProduct(int productId) async {
+    if (_database == null) {
+      throw RequestException('Error in database');
+    }
+
+    final result = await _database!.query(
       _productsTableName,
       where: 'id = ?',
       whereArgs: [productId],
-    ).then((value) {
-      return value.first;
-    });
+    );
+
+    if (result.isEmpty) {
+      throw RequestException('Product not found');
+    }
+
+    return result.first;
   }
 
-  Map<String, dynamic> queryUser() {
+  Map<String, dynamic> login(String email, String password) {
     final jsonString = Prefs.getData<String>(key: 'user_key')!;
-    return json.decode(jsonString);
+    final result = json.decode(jsonString);
+    if (result['email'] == email && result['password'] == password) {
+      return result;
+    }
+
+    throw RequestException('Wrong email or password');
   }
 
   Map<String, dynamic> queryCart() {
@@ -173,7 +207,7 @@ class DatabaseManager {
       cart['total_after_discount'] -= product['price'];
       _createCart(cart);
     } else {
-      throw Exception();
+      throw RequestException('Could not remove from cart');
     }
     return cart;
   }
@@ -194,9 +228,13 @@ class DatabaseManager {
 
   List<Map<String, dynamic>> removeProductFromWishlist(int productId) {
     final wishlist = queryWishlist();
-    wishlist.removeWhere((element) => element['id'] == productId);
-    _createWishlist(wishlist);
-    return wishlist;
+    if (wishlist.any((element) => element['id'] == productId)) {
+      wishlist.removeWhere((element) => element['id'] == productId);
+      _createWishlist(wishlist);
+      return wishlist;
+    }
+
+    throw RequestException('Could not find the product to remove');
   }
 
   Future<List<Map<String, dynamic>>> addProductToWishlist(
@@ -206,8 +244,10 @@ class DatabaseManager {
     final wishlist = queryWishlist();
     if (!wishlist.any((element) => element['id'] == productId)) {
       wishlist.add(product!);
+      _createWishlist(wishlist);
+      return wishlist;
     }
-    _createWishlist(wishlist);
-    return wishlist;
+
+    throw RequestException('Could not find the product to add');
   }
 }

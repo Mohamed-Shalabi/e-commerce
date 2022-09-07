@@ -34,11 +34,11 @@ class Api {
     return _futureRequest(() => _databaseManager.queryProduct(productId));
   }
 
-  Future<Map<String, dynamic>> queryUser() {
-    return _request(() => _databaseManager.queryUser());
+  Future<Map<String, dynamic>> login(String email, String password) {
+    return _request(() => _databaseManager.login(email, password));
   }
 
-  Future<Map<String, dynamic>> createUser(Map<String, dynamic> user) {
+  Future<Map<String, dynamic>> signUp(Map<String, dynamic> user) {
     return _futureRequest(() => _databaseManager.createUser(user));
   }
 
@@ -108,8 +108,8 @@ Future<Map<String, dynamic>> _futureRequest<T>(
   Future<T>? Function()? getData,
 ) async {
   try {
+    await Future.delayed(const Duration(seconds: 1));
     final data = await getData!();
-
     if (data == null) {
       return {
         'status_code': 500,
@@ -124,7 +124,18 @@ Future<Map<String, dynamic>> _futureRequest<T>(
   } catch (e) {
     return {
       'status_code': 500,
-      'message': 'an error occurred',
+      'message': e.toString(),
     };
+  }
+}
+
+class RequestException implements Exception {
+  final String message;
+
+  RequestException(this.message);
+
+  @override
+  String toString() {
+    return message;
   }
 }
