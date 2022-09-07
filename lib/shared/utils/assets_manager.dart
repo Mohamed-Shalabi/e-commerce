@@ -1,8 +1,3 @@
-/// [ImageAssets._imagesPath]/1x   => mdpi
-/// [ImageAssets._imagesPath]/1.5x => hdpi
-/// [ImageAssets._imagesPath]/2x   => xhdpi
-/// [ImageAssets._imagesPath]/3x   => xxhdpi
-/// [ImageAssets._imagesPath]/4x   => xxxhdpi
 abstract class ImageAssets {
   static const String _imagesPath = 'assets/media/images/';
 

@@ -7,7 +7,7 @@ class MyText extends StatelessWidget {
   const MyText(
     this.text, {
     Key? key,
-    this.textStyle = const TextStyle(),
+    this.textStyle,
     this.isTranslated = true,
     this.textAlign = TextAlign.start,
     this.overflow,
@@ -25,10 +25,7 @@ class MyText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       isTranslated ? text.tr() : text,
-      style: textStyle?.copyWith(
-        fontSize: (textStyle?.fontSize ?? 15) +
-            context.watch<AppThemes>().fontSizeAddition,
-      ),
+      style: textStyle,
       textAlign: textAlign,
       overflow: overflow,
       maxLines: maxLines,

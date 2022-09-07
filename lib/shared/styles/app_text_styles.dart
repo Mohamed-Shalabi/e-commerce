@@ -6,7 +6,6 @@ abstract class TextThemes {
     final colorScheme =
         isLight ? ColorSchemes.lightColorScheme : ColorSchemes.darkColorScheme;
 
-    // TODO: Customize text theme
     return TextTheme(
       bodyMedium: TextStyle(
         fontSize: 16.0,

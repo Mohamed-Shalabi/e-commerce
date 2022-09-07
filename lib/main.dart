@@ -13,7 +13,7 @@ void main() async {
 
   runApp(
     BlocProvider(
-      create: (_) => AppThemes(),
+      create: (_) => AppThemesCubit(),
       child: const MyApp(),
     ),
   );
@@ -24,16 +24,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppThemes, AppThemeState>(
-      builder: (context, state) {
-        return MaterialApp(
-          title: 'Flutter Demo',
-          themeMode: state.isLight ? ThemeMode.light : ThemeMode.dark,
-          theme: AppThemes.lightTheme,
-          darkTheme: AppThemes.darkTheme,
-          onGenerateRoute: Routes.onGenerateRoute,
-        );
-      },
+    final isLight = context.watch<AppThemesCubit>().isLight;
+    return MaterialApp(
+      title: 'Flutter Demo',
+      themeMode: isLight ? ThemeMode.light : ThemeMode.dark,
+      theme: AppThemesCubit.lightTheme,
+      darkTheme: AppThemesCubit.darkTheme,
+      onGenerateRoute: Routes.onGenerateRoute,
     );
   }
 }
