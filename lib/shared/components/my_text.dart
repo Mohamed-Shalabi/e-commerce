@@ -15,7 +15,7 @@ class MyText extends StatelessWidget {
   }) : super(key: key);
 
   final String text;
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
   final bool isTranslated;
   final TextAlign textAlign;
   final TextOverflow? overflow;
@@ -25,8 +25,8 @@ class MyText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       isTranslated ? text.tr() : text,
-      style: textStyle.copyWith(
-        fontSize: (textStyle.fontSize ?? 15) +
+      style: textStyle?.copyWith(
+        fontSize: (textStyle?.fontSize ?? 15) +
             context.watch<AppThemes>().fontSizeAddition,
       ),
       textAlign: textAlign,
