@@ -1,3 +1,4 @@
+import 'package:e_commerce/modules/auth/screens/login_screen.dart';
 import 'package:e_commerce/modules/auth/screens/sign_up_screen.dart';
 import 'package:e_commerce/modules/main_layout/screens/main_layout.dart';
 import 'package:e_commerce/modules/splash/screens/splash_screen.dart';
@@ -8,6 +9,7 @@ abstract class Routes {
   static const splashRouteName = '/';
   static const mainLayoutRouteName = '/main_layout';
   static const signUpRouteName = '/sign_up';
+  static const loginRouteName = '/log_in';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -17,6 +19,8 @@ abstract class Routes {
         return MaterialPageRoute(builder: (_) => const MainLayout());
       case signUpRouteName:
         return MaterialPageRoute(builder: (_) => const SignUpScreen());
+      case loginRouteName:
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
       default:
         throw Exception(AppStrings.routeError);
     }

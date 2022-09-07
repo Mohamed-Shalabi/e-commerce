@@ -27,7 +27,7 @@ class SplashScreen extends StatelessWidget {
               break;
             case SplashStates.userNotLoggedIn:
               Navigator.of(context).pushNamedAndRemoveUntil(
-                Routes.signUpRouteName,
+                Routes.loginRouteName,
                 (_) => true,
               );
               break;
