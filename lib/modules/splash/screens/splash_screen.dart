@@ -2,6 +2,7 @@ import 'package:e_commerce/modules/splash/blocs/splash_cubit.dart';
 import 'package:e_commerce/modules/splash/splash_repository.dart';
 import 'package:e_commerce/routes.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
+import 'package:e_commerce/shared/components/navigate.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
 import 'package:e_commerce/shared/utils/media_query_utils.dart';
 import 'package:flutter/material.dart';
@@ -20,16 +21,12 @@ class SplashScreen extends StatelessWidget {
             case SplashStates.loading:
               break;
             case SplashStates.userLoggedIn:
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              context.navigateAndRemovePreviousRoutes(
                 Routes.mainLayoutRouteName,
-                (_) => true,
               );
               break;
             case SplashStates.userNotLoggedIn:
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                Routes.loginRouteName,
-                (_) => true,
-              );
+              context.navigateAndRemovePreviousRoutes(Routes.loginRouteName);
               break;
           }
         },
