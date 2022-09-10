@@ -1,10 +1,11 @@
 part of 'splash_cubit.dart';
 
-enum SplashStates { loading, userLoggedIn, userNotLoggedIn }
+abstract class SplashState {}
 
-@immutable
-class SplashState {
-  final SplashStates state;
+class SplashStateInitial extends SplashState {}
 
-  const SplashState(this.state);
-}
+class SplashStateLoading extends SplashState {}
+
+class SplashStateNotLoggedIn extends SplashState {}
+
+class SplashStateLoggedIn extends SplashState {}

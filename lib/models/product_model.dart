@@ -54,7 +54,9 @@ class ProductModel {
 
   bool get isInCart => CartModel.getInstance().containsProduct(this);
 
-  int get numberInCart => CartModel.getInstance().numberOfProduct(this);
+  int get quantityInCart => CartModel.getInstance().numberOfProduct(this);
+
+  double get totalPriceInCart => quantityInCart * price;
 
   static List<ProductModel> parseList(List<Map<String, dynamic>> list) {
     return list.map((map) => ProductModel.fromMap(map)).toList();

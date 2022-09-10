@@ -5,7 +5,8 @@ import 'package:e_commerce/shared/errors/global_exceptions.dart';
 
 abstract class AuthRepository {
   static UserModel getUser() {
-    return UserModel.fromMap(AuthLocalService.getUser());
+    UserModel.init(AuthLocalService.getUser());
+    return UserModel.getInstance();
   }
 
   static Future<UserModel> signUp({
@@ -42,7 +43,8 @@ abstract class AuthRepository {
     try {
       final result = await AuthService.login(email, password);
       if (result['status_code'] == 200) {
-        return UserModel.fromMap(result['data']);
+        UserModel.init(result['data']);
+        return UserModel.getInstance();
       }
 
       throw RequestFailedException(result['message']);

@@ -60,8 +60,8 @@ class LoginForm extends StatelessWidget {
                   keyboardType: TextInputType.text,
                   validator: (String? text) {
                     text = text ?? '';
-                    if (text.isEmpty) {
-                      return AppStrings.writeAPassword;
+                    if (text.length < 8) {
+                      return AppStrings.passwordValidationText;
                     }
 
                     return null;

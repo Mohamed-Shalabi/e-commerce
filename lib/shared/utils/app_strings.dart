@@ -1,3 +1,5 @@
+import 'package:flutter/src/widgets/framework.dart';
+
 abstract class AppStrings {
   static const appName = 'Example Architecture';
   static const routeError = 'Route not found';
@@ -7,7 +9,6 @@ abstract class AppStrings {
   static const welcomeLogin = 'Welcome to our market app, '
       'we hope you will enjoy shopping!';
   static const writeAnEmail = 'Write an email';
-  static const writeAPassword = 'Write a password';
   static const alreadyHaveAnAccount = 'Already have an account?';
   static const signUpToUseTheApp = 'Sign up now to use the app'
       ' and start shopping!';
@@ -19,4 +20,25 @@ abstract class AppStrings {
   static const price = 'Price';
   static const productComponents = 'Product components';
   static const similarProducts = 'Similar products';
+  static const emptyCart = 'The cart is empty!';
+  static const products = 'Products';
+  static const quantity = 'Quantity';
+  static const total = 'Total';
+  static const nameValidationText = 'Write first and last name at least';
+  static const emailValidationText = 'Write a valid email';
+  static const passwordValidationText = 'Write at least 8 characters';
+  static const phoneValidationText = 'Write a valid phone number';
+  static const countryValidationText = 'Country cannot be empty';
+  static const cityValidationText = 'City cannot be empty';
+  static const addressValidationText = 'Address cannot be empty';
+  static const discount = 'Discount';
+  static const totalAfterDiscount = 'Total after discount';
+  static const applyCoupon = 'Apply Coupon';
+  static const coupon = 'Coupon';
+  static const couponValidationText = 'Coupon cannot be empty';
+  static const cancel = 'Cancel';
+  static const removeCoupon = 'Remove Coupon';
+  static const shippingCost = 'Shipping Cost';
+  static const checkout = 'Checkout';
+  static const orderDone = 'Your order is placed successfully';
 }

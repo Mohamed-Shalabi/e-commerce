@@ -1,3 +1,4 @@
+import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
 import 'package:e_commerce/modules/splash/blocs/splash_cubit.dart';
 import 'package:e_commerce/modules/splash/splash_repository.dart';
 import 'package:e_commerce/modules/splash/widgets/welcome_widget.dart';
@@ -16,15 +17,17 @@ class SplashScreen extends StatelessWidget {
       create: (_) => SplashCubit(SplashRepository()),
       child: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) {
-          switch (state.state) {
-            case SplashStates.loading:
+          switch (state.runtimeType) {
+            case SplashStateLoading:
               break;
-            case SplashStates.userLoggedIn:
+            case SplashStateLoggedIn:
+              context.read<CartCubit>().updateFormData();
+
               context.navigateAndRemovePreviousRoutes(
                 Routes.mainLayoutRouteName,
               );
               break;
-            case SplashStates.userNotLoggedIn:
+            case SplashStateNotLoggedIn:
               context.navigateAndRemovePreviousRoutes(Routes.loginRouteName);
               break;
           }

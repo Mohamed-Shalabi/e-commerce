@@ -261,9 +261,20 @@ class DatabaseManager {
     final cart = await queryCart();
     cart['coupon']['coupon'] = coupon;
     cart['coupon']['discount'] = discount;
-    cart['total_after_discount'] = cart['total'] - discount;
     _createCart(cart);
     return cart;
+  }
+
+  Future<Map<String, dynamic>> removeCoupon() async {
+    final cart = await queryCart();
+    cart['coupon']['coupon'] = '';
+    cart['coupon']['discount'] = 0;
+    _createCart(cart);
+    return cart;
+  }
+
+  Future<bool> clearCart() {
+    return _createCart(cartData);
   }
 
   List<Map<String, dynamic>> queryWishlist() {

@@ -1,7 +1,10 @@
 import 'package:e_commerce/modules/auth/blocs/sign_up/sign_up_cubit.dart';
 import 'package:e_commerce/modules/auth/widgets/sign_up_button.dart';
+import 'package:e_commerce/modules/cart/blocs/base_shipping_data_cubit.dart';
 import 'package:e_commerce/responsive/responsive_Builder.dart';
 import 'package:e_commerce/shared/components/my_card.dart';
+import 'package:e_commerce/shared/functions/functions.dart';
+import 'package:e_commerce/shared/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,12 +16,13 @@ class SignUpForm extends StatelessWidget {
     return MyCard(
       padding: const EdgeInsets.all(16),
       child: Form(
+        key: context.read<SignUpCubit>().signUpFormKey,
         child: ResponsiveWidget(
           mobileWidget: Column(
             children: const [
               BasicInputFormFields(),
               SizedBox(height: 8),
-              AdditionalInputFormFields(),
+              AdditionalInputFormFields<SignUpCubit>(),
               SizedBox(height: 8),
               SignUpButton(),
             ],
@@ -35,7 +39,7 @@ class SignUpForm extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              const Expanded(child: AdditionalInputFormFields()),
+              const Expanded(child: AdditionalInputFormFields<SignUpCubit>()),
             ],
           ),
         ),
@@ -62,6 +66,14 @@ class BasicInputFormFields extends StatelessWidget {
             hintText: 'name',
           ),
           keyboardType: TextInputType.name,
+          validator: (value) {
+            value ??= '';
+            if (value.length < 3 || !value.trim().contains(' ')) {
+              return AppStrings.nameValidationText;
+            }
+
+            return null;
+          },
         ),
         const SizedBox(height: 8),
         TextFormField(
@@ -74,6 +86,14 @@ class BasicInputFormFields extends StatelessWidget {
             hintText: 'email',
           ),
           keyboardType: TextInputType.emailAddress,
+          validator: (value) {
+            value ??= '';
+            if (!value.isValidEmail) {
+              return AppStrings.emailValidationText;
+            }
+
+            return null;
+          },
         ),
         const SizedBox(height: 8),
         TextFormField(
@@ -86,18 +106,27 @@ class BasicInputFormFields extends StatelessWidget {
             hintText: 'password',
           ),
           obscureText: true,
+          validator: (value) {
+            value ??= '';
+            if (value.length < 8) {
+              return AppStrings.passwordValidationText;
+            }
+
+            return null;
+          },
         )
       ],
     );
   }
 }
 
-class AdditionalInputFormFields extends StatelessWidget {
+class AdditionalInputFormFields<T extends BaseShippingDataCubit>
+    extends StatelessWidget {
   const AdditionalInputFormFields({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<SignUpCubit>();
+    final viewModel = context.read<T>();
     return Column(
       children: [
         TextFormField(
@@ -110,6 +139,15 @@ class AdditionalInputFormFields extends StatelessWidget {
             hintText: 'phone',
           ),
           keyboardType: TextInputType.phone,
+          validator: (value) {
+            value ??= '';
+            // TODO: Check if the phone number is valid bu stackoverflow
+            if (value.length < 11 || value.trim().contains(' ')) {
+              return AppStrings.phoneValidationText;
+            }
+
+            return null;
+          },
         ),
         const SizedBox(height: 8),
         TextFormField(
@@ -121,6 +159,14 @@ class AdditionalInputFormFields extends StatelessWidget {
             fillColor: Colors.transparent,
             hintText: 'country',
           ),
+          validator: (value) {
+            value ??= '';
+            if (value.isEmpty) {
+              return AppStrings.countryValidationText;
+            }
+
+            return null;
+          },
         ),
         const SizedBox(height: 8),
         TextFormField(
@@ -132,6 +178,14 @@ class AdditionalInputFormFields extends StatelessWidget {
             fillColor: Colors.transparent,
             hintText: 'city',
           ),
+          validator: (value) {
+            value ??= '';
+            if (value.isEmpty) {
+              return AppStrings.cityValidationText;
+            }
+
+            return null;
+          },
         ),
         const SizedBox(height: 8),
         TextFormField(
@@ -144,6 +198,14 @@ class AdditionalInputFormFields extends StatelessWidget {
             hintText: 'address',
           ),
           keyboardType: TextInputType.streetAddress,
+          validator: (value) {
+            value ??= '';
+            if (value.isEmpty) {
+              return AppStrings.addressValidationText;
+            }
+
+            return null;
+          },
         ),
       ],
     );

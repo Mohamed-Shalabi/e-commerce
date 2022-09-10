@@ -81,9 +81,16 @@ class Api {
     );
   }
 
+  // TODO: Remove discount
   Future<Map<String, dynamic>> applyCoupon(String coupon, double discount) {
     return _futureRequest(
       () => _databaseManager.applyCoupon(coupon, discount),
+    );
+  }
+
+  Future<Map<String, dynamic>> removeCoupon() {
+    return _futureRequest(
+      () => _databaseManager.removeCoupon(),
     );
   }
 
@@ -100,6 +107,12 @@ class Api {
   Future<Map<String, dynamic>> removeProductFromWishlist(int productId) {
     return _request(
       () => _databaseManager.removeProductFromWishlist(productId),
+    );
+  }
+
+  Future<Map<String, dynamic>> clearCart() {
+    return _futureRequest(
+      () => _databaseManager.clearCart(),
     );
   }
 }

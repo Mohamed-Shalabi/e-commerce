@@ -38,7 +38,7 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             if (product.quantity > 0 &&
-                product.numberInCart < product.quantity)
+                product.quantityInCart < product.quantity)
               FloatingActionButton(
                 heroTag: 'add_product',
                 onPressed: () {
@@ -87,7 +87,7 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
                           padding: const EdgeInsets.all(2),
                           child: Center(
                             child: MyText(
-                              '${product.numberInCart}',
+                              '${product.quantityInCart}',
                               style: context.textTheme.labelSmall?.copyWith(
                                 color: context.colorScheme.onError,
                               ),
@@ -99,7 +99,7 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
                     )
                   ],
                 ),
-                if (product.numberInCart > 0) ...[
+                if (product.quantityInCart > 0) ...[
                   const SizedBox(width: 8),
                   FloatingActionButton(
                     heroTag: 'remove',
