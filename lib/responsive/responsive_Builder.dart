@@ -1,28 +1,27 @@
 import 'package:e_commerce/responsive/constants.dart';
+import 'package:e_commerce/shared/utils/media_query_utils.dart';
 import 'package:flutter/material.dart';
 
-class ResponsiveBuilder extends StatelessWidget {
-  const ResponsiveBuilder(
-      {Key? key, required this.mobileScreen, this.tabletScreen})
-      : super(key: key);
+class ResponsiveWidget extends StatelessWidget {
+  const ResponsiveWidget({
+    Key? key,
+    required this.mobileWidget,
+    this.tabletWidget,
+  }) : super(key: key);
 
-  final Widget mobileScreen;
-  final Widget? tabletScreen;
+  final Widget mobileWidget;
+  final Widget? tabletWidget;
 
   @override
   Widget build(BuildContext context) {
-    if (tabletScreen == null) {
-      return mobileScreen;
+    if (tabletWidget == null) {
+      return mobileWidget;
     }
 
-    return LayoutBuilder(
-      builder: (_, BoxConstraints constraints) {
-        if (constraints.maxWidth < ScreensSizes.mobileMaxWidth) {
-          return mobileScreen;
-        } else {
-          return tabletScreen!;
-        }
-      },
-    );
+    if (context.screenWidth < ScreensSizes.mobileMaxWidth) {
+      return mobileWidget;
+    } else {
+      return tabletWidget!;
+    }
   }
 }

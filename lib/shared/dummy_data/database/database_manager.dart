@@ -108,12 +108,11 @@ class DatabaseManager {
 
   Future<bool> _createCart([Map<String, dynamic>? cart]) {
     cart ??= cartData;
-    if (cart['total_after_discount'] < 0) {
-      cart['total_after_discount'] = 0;
-    }
+
     if (cart['total'] < 0) {
       cart = cartData;
     }
+
     return Prefs.saveOrRemoveData<String>(
       key: 'cart_key',
       value: jsonEncode(cart),
@@ -205,28 +204,49 @@ class DatabaseManager {
     throw RequestException('Wrong email or password');
   }
 
-  Map<String, dynamic> queryCart() {
+  Future<Map<String, dynamic>> queryCart() async {
     final jsonString = Prefs.getData<String>(key: 'cart_key')!;
-    return json.decode(jsonString);
+    final cart = json.decode(jsonString);
+    final products = <Map<String, dynamic>>[];
+    for (final productId in cart['products'].map((e) => e['id'])) {
+      final product =
+          (await queryProduct(productId))?.cast<String, dynamic>() ?? {};
+      if (product.isNotEmpty) {
+        products.add(product);
+      }
+    }
+    cart['products'] = products;
+    return cart;
   }
 
   Future<Map<String, dynamic>> addProductToCart(int productId) async {
     final product = await queryProduct(productId);
-    final cart = queryCart();
-    cart['products'].add(product!['id']);
+    final cart = await queryCart();
+
+    final cartProductQuantity = cart['products']
+        .cast<Map<String, dynamic>>()
+        .where((element) => element['id'] == productId)
+        .length;
+    if (cartProductQuantity >= (product!['quantity'] as int)) {
+      throw RequestException('Cannot add more');
+    }
+
+    cart['products'].add(product);
     cart['total'] += product['price'];
-    cart['total_after_discount'] += product['price'];
     _createCart(cart);
     return cart;
   }
 
   Future<Map<String, dynamic>> removeProductFromCart(int productId) async {
     final product = await queryProduct(productId);
-    final cart = queryCart();
-    final isRemoved = cart['products'].remove(product!['id']);
-    if (isRemoved) {
-      cart['total'] -= product['price'];
-      cart['total_after_discount'] -= product['price'];
+    final cart = await queryCart();
+    final cartProducts = (cart['products'] as List<Map<String, dynamic>>);
+    final index = cartProducts.indexWhere(
+      (element) => element['id'] == product!['id'],
+    );
+    if (index != -1) {
+      cartProducts.removeAt(index);
+      cart['total'] -= product!['price'];
       _createCart(cart);
     } else {
       throw RequestException('Could not remove from cart');
@@ -234,8 +254,11 @@ class DatabaseManager {
     return cart;
   }
 
-  Map<String, dynamic> applyCoupon(String coupon, double discount) {
-    final cart = queryCart();
+  Future<Map<String, dynamic>> applyCoupon(
+    String coupon,
+    double discount,
+  ) async {
+    final cart = await queryCart();
     cart['coupon']['coupon'] = coupon;
     cart['coupon']['discount'] = discount;
     cart['total_after_discount'] = cart['total'] - discount;

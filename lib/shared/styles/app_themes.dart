@@ -18,19 +18,16 @@ class AppThemesCubit extends Cubit<AppThemesState> {
   void toggleIsLight() => isLight = !isLight;
 
   static ThemeData get lightTheme => ThemeData(
-        // To get a text style use Theme.of(context).colorScheme
         colorScheme: ColorSchemes.lightColorScheme,
-        // to control default TextStyle graphics
         textTheme: TextThemes.getTextTheme(isLight: true),
       );
 
   static ThemeData get darkTheme => ThemeData(
-        // To get a text style use Theme.of(context).colorScheme
         colorScheme: ColorSchemes.darkColorScheme,
-        // to control default TextStyle graphics
         textTheme: TextThemes.getTextTheme(isLight: false),
       );
 }
+
 @immutable
 abstract class AppThemesState extends Equatable {
   @override

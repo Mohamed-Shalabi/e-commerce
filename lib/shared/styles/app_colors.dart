@@ -7,14 +7,16 @@ abstract class AppColors {
   static const onSecondary = Colors.black;
   static const error = Colors.red;
   static const onError = Colors.white;
-  static const lightBackground = Colors.white;
+  static final lightBackground = Colors.grey.shade300;
   static const onLightBackground = Colors.black;
-  static final lightSurface = Colors.grey.shade200;
+  static const lightSurface = Colors.white;
   static const onLightSurface = Colors.black;
   static const darkBackground = Colors.black;
   static const onDarkBackground = Colors.grey;
   static final darkSurface = Colors.grey.shade900;
   static final onDarkSurface = Colors.grey.shade200;
+  static const favourites = Colors.red;
+  static const muchQuantityColor = Colors.green;
 }
 
 abstract class ColorSchemes {

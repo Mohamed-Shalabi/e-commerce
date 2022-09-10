@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:e_commerce/shared/dummy_data/database/database_manager.dart';
+import 'package:e_commerce/shared/errors/base_exception.dart';
 import 'package:e_commerce/shared/functions/functions.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';
 
@@ -14,7 +13,7 @@ class Api {
 
   factory Api.getInstance() => _instance;
 
-  static Future<void> initialize() async {
+  static Future<void> init() async {
     await _databaseManager.init();
   }
 
@@ -69,7 +68,7 @@ class Api {
   }
 
   Future<Map<String, dynamic>> queryCart() {
-    return _request(() => _databaseManager.queryCart());
+    return _futureRequest(() => _databaseManager.queryCart());
   }
 
   Future<Map<String, dynamic>> addProductToCart(int productId) {
@@ -83,7 +82,9 @@ class Api {
   }
 
   Future<Map<String, dynamic>> applyCoupon(String coupon, double discount) {
-    return _request(() => _databaseManager.applyCoupon(coupon, discount));
+    return _futureRequest(
+      () => _databaseManager.applyCoupon(coupon, discount),
+    );
   }
 
   Future<Map<String, dynamic>> queryWishlist() {
@@ -107,7 +108,7 @@ Future<Map<String, dynamic>> _request<T>(T? Function() getData) async {
   try {
     await Future.delayed(const Duration(seconds: 1));
     if (!await isConnected) {
-      throw const SocketException(AppStrings.connectionError);
+      throw InternetException(AppStrings.connectionError);
     }
 
     final data = getData();
@@ -131,12 +132,12 @@ Future<Map<String, dynamic>> _request<T>(T? Function() getData) async {
 }
 
 Future<Map<String, dynamic>> _futureRequest<T>(
-  Future<T>? Function() getData,
+  Future<T?> Function() getData,
 ) async {
   try {
     await Future.delayed(const Duration(seconds: 1));
     if (!await isConnected) {
-      throw const SocketException(AppStrings.connectionError);
+      throw InternetException(AppStrings.connectionError);
     }
 
     final data = await getData();
@@ -159,13 +160,10 @@ Future<Map<String, dynamic>> _futureRequest<T>(
   }
 }
 
-class RequestException implements Exception {
-  final String message;
+class RequestException extends BaseException {
+  RequestException(super.message);
+}
 
-  RequestException(this.message);
-
-  @override
-  String toString() {
-    return message;
-  }
+class InternetException extends BaseException {
+  InternetException(super.message);
 }
