@@ -22,7 +22,9 @@ class WelcomeWidget extends StatelessWidget {
             child: MyText(
               'Welcome to Market App!',
               textAlign: TextAlign.center,
-              style: context.textTheme.titleLarge,
+              style: context.textTheme.titleLarge?.copyWith(
+                color: context.colorScheme.onSecondary,
+              ),
             ),
           ),
         ),

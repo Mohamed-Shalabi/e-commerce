@@ -29,7 +29,6 @@ class ProductModel {
         quantity == -1) {
       throw ModelCreationException('Error creating product model');
     }
-
   }
 
   String get quantityAsString {

@@ -1,10 +1,8 @@
 import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
 import 'package:e_commerce/modules/products/widgets/toggle_is_product_in_wishlist_button.dart';
-import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
-import 'package:e_commerce/responsive/responsive_Builder.dart';
+import 'package:e_commerce/responsive/responsive_widget.dart';
 import 'package:e_commerce/shared/components/my_card.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
-import 'package:e_commerce/shared/styles/app_colors.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
 import 'package:e_commerce/shared/utils/media_query_utils.dart';
 import 'package:flutter/material.dart';
@@ -99,8 +97,9 @@ class ProductHorizontalListCardContents extends StatelessWidget {
               child: Image.asset(
                 product.images[0],
                 width: double.infinity,
-                height:
-                    isFromSingleProductScreen ? 120 : context.screenHeight * 0.5,
+                height: isFromSingleProductScreen
+                    ? 120
+                    : context.screenHeight * 0.5,
                 fit: BoxFit.cover,
               ),
             ),

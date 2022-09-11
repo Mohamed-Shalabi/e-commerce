@@ -34,4 +34,3 @@ class ClearCartFailed extends CartState {
 
   ClearCartFailed({required this.message});
 }
-

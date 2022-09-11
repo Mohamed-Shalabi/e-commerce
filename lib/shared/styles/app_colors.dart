@@ -36,7 +36,7 @@ abstract class ColorSchemes {
 
   static final ColorScheme darkColorScheme = ColorScheme(
     brightness: Brightness.dark,
-    primary: AppColors.primary,
+    primary: AppColors.primary.shade200,
     onPrimary: AppColors.onPrimary,
     secondary: AppColors.secondary,
     onSecondary: AppColors.onSecondary,

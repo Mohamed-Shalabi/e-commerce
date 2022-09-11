@@ -1,4 +1,4 @@
-import 'package:e_commerce/models/category_model.dart';
+import'package:e_commerce/models/category_model.dart';
 import 'package:e_commerce/modules/auth/blocs/login/login_cubit.dart';
 import 'package:e_commerce/modules/auth/blocs/sign_up/sign_up_cubit.dart';
 import 'package:e_commerce/modules/auth/screens/login_screen/login_screen.dart';
@@ -12,6 +12,7 @@ import 'package:e_commerce/modules/products/blocs/single_product/product_view_mo
 import 'package:e_commerce/modules/products/screens/products_screen.dart';
 import 'package:e_commerce/modules/products/screens/single_product_screen.dart';
 import 'package:e_commerce/modules/splash/screens/splash_screen.dart';
+import 'package:e_commerce/modules/wishlist/screens/wishlist_screen.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 abstract class Routes {
   static const splashRouteName = '/';
   static const mainLayoutRouteName = '/main_layout';
+  static const wishlistRouteName = '/main_layout/wishlist';
   static const productsRouteName = '/main_layout/products';
   static const singleProductRouteName = '/main_layout/products/product';
   static const signUpRouteName = '/sign_up';
@@ -55,6 +57,8 @@ abstract class Routes {
             child: const MainLayout(),
           ),
         );
+      case wishlistRouteName:
+        return MaterialPageRoute(builder: (_) => const WishlistScreen());
       case productsRouteName:
         final category = settings.arguments as CategoryModel;
         return MaterialPageRoute(

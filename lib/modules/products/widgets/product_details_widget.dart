@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
 import 'package:e_commerce/modules/products/widgets/product_list_card.dart';
+import 'package:e_commerce/modules/products/widgets/toggle_is_product_in_wishlist_button.dart';
 import 'package:e_commerce/routes.dart';
 import 'package:e_commerce/shared/components/my_card.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
@@ -9,7 +10,6 @@ import 'package:e_commerce/shared/functions/functions.dart';
 import 'package:e_commerce/shared/styles/app_colors.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';
-import 'package:e_commerce/modules/products/widgets/toggle_is_product_in_wishlist_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -96,7 +96,8 @@ class ProductDetailsWidget extends StatelessWidget {
                     MyCard(
                       margin: const EdgeInsets.all(4),
                       padding: const EdgeInsets.all(4),
-                      color: Colors.primaries[Random().nextInt(18)][100],
+                      color: Colors.primaries[Random().nextInt(18)][
+                          context.watch<AppThemesCubit>().isLight ? 100 : 900],
                       child: MyText(
                         component,
                         style: context.textTheme.bodyLarge,

@@ -176,6 +176,19 @@ class DatabaseManager {
     );
   }
 
+  Future<List<Map<String, Object?>>?> searchForProducts(
+    String searchTerm,
+  ) async {
+    final result = await _database?.query(
+      _productsTableName,
+      distinct: true,
+      where: 'title LIKE ?',
+      whereArgs: ['%$searchTerm%']
+    );
+
+    return result;
+  }
+
   Future<Map<String, Object?>?> queryProduct(int productId) async {
     if (_database == null) {
       throw RequestException('Error in database');

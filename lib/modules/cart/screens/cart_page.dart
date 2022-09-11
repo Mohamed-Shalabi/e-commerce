@@ -4,6 +4,8 @@ import 'package:e_commerce/modules/cart/widgets/add_coupon_dialog.dart';
 import 'package:e_commerce/modules/cart/widgets/cart_product_list_tile.dart';
 import 'package:e_commerce/modules/cart/widgets/checkout_modal_sheet.dart';
 import 'package:e_commerce/modules/cart/widgets/total_price_text.dart';
+import 'package:e_commerce/responsive/responsive_utils.dart';
+import 'package:e_commerce/shared/components/my_card.dart';
 import 'package:e_commerce/shared/components/my_error_widget.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
@@ -55,86 +57,93 @@ class CartPage extends StatelessWidget {
                 ),
               ],
             )
-          : ListView(
-              padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-              children: [
-                MyText(
-                  AppStrings.products,
-                  style: context.textTheme.titleLarge,
-                ),
-                const SizedBox(height: 16),
-                for (final product in cart) ...[
-                  RepositoryProvider(
-                    create: (_) => CartProductViewModel(product: product),
-                    child: const CartProductListTile(),
-                  ),
-                  const Divider(thickness: 3),
-                ],
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: MyText(
-                    '${AppStrings.total}: '
-                    '\$${cart.priceBeforeDiscount.toStringAsFixed(2)}',
-                    style: context.textTheme.subtitle1,
-                  ),
-                ),
-                const Divider(thickness: 3),
-                BlocBuilder<CartCubit, CartState>(
-                  builder: (context, state) {
-                    if (state is ApplyOrRemoveCouponLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
+          : Center(
+              child: MyCard(
+                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.all(16),
+                width: context.isMobileScreen ? double.infinity : 500,
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                  children: [
+                    MyText(
+                      AppStrings.products,
+                      style: context.textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 16),
+                    for (final product in cart) ...[
+                      RepositoryProvider(
+                        create: (_) => CartProductViewModel(product: product),
+                        child: const CartProductListTile(),
+                      ),
+                      const Divider(thickness: 3),
+                    ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: MyText(
+                        '${AppStrings.total}: '
+                        '\$${cart.priceBeforeDiscount.toStringAsFixed(2)}',
+                        style: context.textTheme.subtitle1,
+                      ),
+                    ),
+                    const Divider(thickness: 3),
+                    BlocBuilder<CartCubit, CartState>(
+                      builder: (context, state) {
+                        if (state is ApplyOrRemoveCouponLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
 
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        MyText(
-                          '${AppStrings.discount}: '
-                          '\$${cart.coupon.discount.toStringAsFixed(2)}',
-                          style: context.textTheme.subtitle1,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            if (cart.coupon.coupon.isEmpty) {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return BlocProvider.value(
-                                    value: context.read<CartCubit>(),
-                                    child: const AddCouponDialog(),
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            MyText(
+                              '${AppStrings.discount}: '
+                              '\$${cart.coupon.discount.toStringAsFixed(2)}',
+                              style: context.textTheme.subtitle1,
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                if (cart.coupon.coupon.isEmpty) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return BlocProvider.value(
+                                        value: context.read<CartCubit>(),
+                                        child: const AddCouponDialog(),
+                                      );
+                                    },
                                   );
-                                },
-                              );
-                            } else {
-                              viewModel.removeCoupon();
-                            }
-                          },
-                          child: MyText(
-                            cart.coupon.coupon.isNotEmpty
-                                ? AppStrings.removeCoupon
-                                : AppStrings.applyCoupon,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                                } else {
+                                  viewModel.removeCoupon();
+                                }
+                              },
+                              child: MyText(
+                                cart.coupon.coupon.isNotEmpty
+                                    ? AppStrings.removeCoupon
+                                    : AppStrings.applyCoupon,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                    const Divider(thickness: 3),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: MyText(
+                        // TODO: make the shipping cost dynamic
+                        '${AppStrings.shippingCost}: 55',
+                        style: context.textTheme.subtitle1,
+                      ),
+                    ),
+                    const Divider(thickness: 3),
+                    const TotalPriceText(),
+                    const Divider(thickness: 3),
+                    const SizedBox(height: 48),
+                  ],
                 ),
-                const Divider(thickness: 3),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: MyText(
-                    // TODO: make the shipping cost dynamic
-                    '${AppStrings.shippingCost}: 55',
-                    style: context.textTheme.subtitle1,
-                  ),
-                ),
-                const Divider(thickness: 3),
-                const TotalPriceText(),
-                const Divider(thickness: 3),
-                const SizedBox(height: 48),
-              ],
+              ),
             ),
     );
   }

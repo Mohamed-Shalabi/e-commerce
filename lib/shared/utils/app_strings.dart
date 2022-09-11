@@ -1,5 +1,3 @@
-import 'package:flutter/src/widgets/framework.dart';
-
 abstract class AppStrings {
   static const appName = 'Example Architecture';
   static const routeError = 'Route not found';
@@ -41,4 +39,9 @@ abstract class AppStrings {
   static const shippingCost = 'Shipping Cost';
   static const checkout = 'Checkout';
   static const orderDone = 'Your order is placed successfully';
+  static const noResults = 'No Results';
+  static const logout = 'Logout';
+  static const toggleDarkMode = 'Toggle dark mode';
+  static const wishlist = 'Wishlist';
+  static const emptyWishlist = 'Your wishlist is empty';
 }

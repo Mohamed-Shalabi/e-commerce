@@ -1,8 +1,9 @@
 import 'package:e_commerce/modules/products/blocs/products/products_cubit.dart';
 import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
 import 'package:e_commerce/modules/products/widgets/product_list_card.dart';
+import 'package:e_commerce/modules/products/widgets/products_responsive_widget.dart';
 import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
-import 'package:e_commerce/responsive/responsive_Builder.dart';
+import 'package:e_commerce/responsive/responsive_widget.dart';
 import 'package:e_commerce/routes.dart';
 import 'package:e_commerce/shared/components/my_error_widget.dart';
 import 'package:e_commerce/shared/components/show_snack_bar.dart';
@@ -58,73 +59,11 @@ class ProductsScreen extends StatelessWidget {
         }
 
         if (state is ProductsFetched) {
-          final products = state.products;
           return Scaffold(
             appBar: appBar,
             body: BlocBuilder<WishlistCubit, WishlistState>(
               builder: (context, state) {
-                return ResponsiveWidget(
-                  mobileWidget: ListView.builder(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-                      return RepositoryProvider(
-                        create: (_) => ProductViewModel(
-                          product: product,
-                          categoryProducts: products,
-                        ),
-                        child: Builder(builder: (context) {
-                          return InkWell(
-                            onTap: () {
-                              final viewModel =
-                                  context.read<ProductViewModel>();
-                              context.navigate(
-                                Routes.singleProductRouteName,
-                                arguments: viewModel,
-                              );
-                            },
-                            child: const ProductVerticalListCard(),
-                          );
-                        }),
-                      );
-                    },
-                  ),
-                  tabletWidget: ListView.builder(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                      16,
-                      16,
-                      0,
-                      16,
-                    ),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-                      return RepositoryProvider(
-                        create: (_) => ProductViewModel(
-                          product: product,
-                          categoryProducts: products,
-                        ),
-                        child: Builder(
-                          builder: (context) {
-                            return InkWell(
-                              onTap: () {
-                                final viewModel =
-                                    context.read<ProductViewModel>();
-                                context.navigate(
-                                  Routes.singleProductRouteName,
-                                  arguments: viewModel,
-                                );
-                              },
-                              child: const ProductHorizontalListCard(),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                );
+                return const ProductsResponsiveWidget<ProductsCubit>();
               },
             ),
           );

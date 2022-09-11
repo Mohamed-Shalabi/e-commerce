@@ -1,14 +1,9 @@
-import 'dart:math';
-
 import 'package:e_commerce/modules/categories/blocs/categories_cubit.dart';
-import 'package:e_commerce/responsive/responsive_Builder.dart';
-import 'package:e_commerce/routes.dart';
-import 'package:e_commerce/shared/components/my_card.dart';
+import 'package:e_commerce/modules/categories/widgets/category_card.dart';
+import 'package:e_commerce/responsive/responsive_widget.dart';
 import 'package:e_commerce/shared/components/my_error_widget.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
 import 'package:e_commerce/shared/components/show_snack_bar.dart';
-import 'package:e_commerce/shared/functions/navigate.dart';
-import 'package:e_commerce/shared/styles/app_themes.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';
 import 'package:e_commerce/shared/utils/media_query_utils.dart';
 import 'package:flutter/material.dart';
@@ -60,55 +55,26 @@ class CategoriesPage extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 24),
                 itemBuilder: (context, index) {
                   final category = categories[index];
-                  return InkWell(
-                    onTap: () {
-                      context.navigate(
-                        Routes.productsRouteName,
-                        arguments: category,
-                      );
-                    },
-                    child: MyCard(
-                      color: Colors.primaries[Random().nextInt(18)].shade200,
-                      height: 48,
-                      margin: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-                      child: Center(
-                        child: MyText(
-                          category.name,
-                          style: context.textTheme.titleLarge,
-                        ),
-                      ),
-                    ),
+                  return RepositoryProvider.value(
+                    value: category,
+                    child: const CategoryCard(),
                   );
                 },
               ),
-              tabletWidget: ListView.builder(
+              tabletWidget: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: context.screenHeight > 500 ? 3 : 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                ),
+                padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 0, 16),
                 itemCount: categories.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   final category = categories[index];
-                  return InkWell(
-                    onTap: () {
-                      context.navigate(
-                        Routes.productsRouteName,
-                        arguments: category,
-                      );
-                    },
-                    child: MyCard(
-                      color: Colors.primaries[Random().nextInt(18)].shade200,
-                      width: context.screenWidth * 0.3,
-                      margin: const EdgeInsetsDirectional.fromSTEB(
-                        24,
-                        24,
-                        0,
-                        16,
-                      ),
-                      child: Center(
-                        child: MyText(
-                          category.name,
-                          style: context.textTheme.titleLarge,
-                        ),
-                      ),
-                    ),
+                  return RepositoryProvider.value(
+                    value: category,
+                    child: const CategoryCard(),
                   );
                 },
               ),

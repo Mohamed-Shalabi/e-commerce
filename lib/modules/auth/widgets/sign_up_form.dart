@@ -1,7 +1,7 @@
 import 'package:e_commerce/modules/auth/blocs/sign_up/sign_up_cubit.dart';
 import 'package:e_commerce/modules/auth/widgets/sign_up_button.dart';
 import 'package:e_commerce/modules/cart/blocs/base_shipping_data_cubit.dart';
-import 'package:e_commerce/responsive/responsive_Builder.dart';
+import 'package:e_commerce/responsive/responsive_widget.dart';
 import 'package:e_commerce/shared/components/my_card.dart';
 import 'package:e_commerce/shared/functions/functions.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';

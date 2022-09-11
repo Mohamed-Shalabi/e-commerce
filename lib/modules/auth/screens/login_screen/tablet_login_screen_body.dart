@@ -1,6 +1,5 @@
 import 'package:e_commerce/modules/auth/widgets/login_form.dart';
 import 'package:e_commerce/modules/auth/widgets/login_screen_welcome_text.dart';
-import 'package:e_commerce/modules/auth/widgets/navigate_to_sign_up_widget.dart';
 import 'package:flutter/material.dart';
 
 class TabletLoginScreenBody extends StatelessWidget {

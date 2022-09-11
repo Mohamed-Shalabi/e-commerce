@@ -7,11 +7,7 @@ class ProductsInitial extends ProductsState {}
 
 class ProductsLoading extends ProductsState {}
 
-class ProductsFetched extends ProductsState {
-  final List<ProductModel> products;
-
-  ProductsFetched({required this.products});
-}
+class ProductsFetched extends ProductsState {}
 
 class ProductsFetchError extends ProductsState {
   final String message;

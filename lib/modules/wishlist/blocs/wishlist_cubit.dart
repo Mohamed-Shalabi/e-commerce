@@ -1,19 +1,19 @@
 import 'package:e_commerce/models/product_model.dart';
+import 'package:e_commerce/modules/products/blocs/products/base_products_cubit.dart';
 import 'package:e_commerce/modules/wishlist/wishlist_repository.dart';
 import 'package:e_commerce/shared/errors/base_exception.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'wishlist_state.dart';
 
-class WishlistCubit extends Cubit<WishlistState> {
+class WishlistCubit extends BaseProductsCubit<WishlistState> {
   WishlistCubit() : super(WishlistInitial());
 
-  List<ProductModel> wishlist = [];
+  List<ProductModel> get wishlist => products;
 
   void getWishlist() async {
     try {
-      wishlist = await WishlistRepository.getWishlist();
+      products = await WishlistRepository.getWishlist();
       emit(WishlistFetched());
     } on BaseException catch (e) {
       emit(WishlistFetchFailed(message: e.message));
@@ -24,11 +24,11 @@ class WishlistCubit extends Cubit<WishlistState> {
     emit(WishlistToggleProductLoading(productId: productId));
     try {
       if (wishlist.any((element) => element.id == productId)) {
-        wishlist = await WishlistRepository.removeProductFromWishlist(
+        products = await WishlistRepository.removeProductFromWishlist(
           productId,
         );
       } else {
-        wishlist = await WishlistRepository.addProductToWishlist(productId);
+        products = await WishlistRepository.addProductToWishlist(productId);
       }
 
       emit(WishlistToggleProductDone());

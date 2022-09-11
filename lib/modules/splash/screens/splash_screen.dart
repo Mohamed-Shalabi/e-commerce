@@ -2,7 +2,7 @@ import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
 import 'package:e_commerce/modules/splash/blocs/splash_cubit.dart';
 import 'package:e_commerce/modules/splash/splash_repository.dart';
 import 'package:e_commerce/modules/splash/widgets/welcome_widget.dart';
-import 'package:e_commerce/responsive/responsive_Builder.dart';
+import 'package:e_commerce/responsive/responsive_widget.dart';
 import 'package:e_commerce/routes.dart';
 import 'package:e_commerce/shared/functions/navigate.dart';
 import 'package:flutter/material.dart';

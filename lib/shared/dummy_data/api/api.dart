@@ -33,6 +33,14 @@ class Api {
     );
   }
 
+  Future<Map<String, dynamic>> searchProducts(
+    String searchTerm,
+  ) async {
+    return _futureRequest(
+      () => _databaseManager.searchForProducts(searchTerm),
+    );
+  }
+
   Future<Map<String, dynamic>> queryProduct(int productId) async {
     return _futureRequest(() => _databaseManager.queryProduct(productId));
   }

@@ -1,4 +1,3 @@
-import 'package:e_commerce/models/cart_model.dart';
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
 import 'package:e_commerce/modules/cart/cart_repository.dart';
 import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final isLight = context.watch<AppThemesCubit>().isLight;
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Market App',
       themeMode: isLight ? ThemeMode.light : ThemeMode.dark,
       theme: AppThemesCubit.lightTheme,
       darkTheme: AppThemesCubit.darkTheme,

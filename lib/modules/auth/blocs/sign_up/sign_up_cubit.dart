@@ -3,7 +3,6 @@ import 'package:e_commerce/modules/auth/auth_repository.dart';
 import 'package:e_commerce/modules/cart/blocs/base_shipping_data_cubit.dart';
 import 'package:e_commerce/shared/errors/base_exception.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 part 'sign_up_state.dart';
 
