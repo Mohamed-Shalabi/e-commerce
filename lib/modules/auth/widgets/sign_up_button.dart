@@ -17,7 +17,10 @@ class SignUpButton extends StatelessWidget {
         child: MaterialButton(
           onPressed: context.read<SignUpCubit>().signUp,
           color: context.colorScheme.secondary,
-          child: const MyText(AppStrings.signUp),
+          child: MyText(
+            AppStrings.signUp,
+            style: TextStyle(color: context.colorScheme.onSecondary),
+          ),
         ),
       ),
     );

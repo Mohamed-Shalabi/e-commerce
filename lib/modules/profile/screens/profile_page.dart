@@ -2,6 +2,7 @@ import 'package:e_commerce/modules/profile/blocs/profile_cubit.dart';
 import 'package:e_commerce/routes.dart';
 import 'package:e_commerce/shared/components/my_card.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
+import 'package:e_commerce/shared/components/show_snack_bar.dart';
 import 'package:e_commerce/shared/functions/functions.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';
@@ -15,9 +16,20 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ProfileCubit(),
-      child: BlocBuilder<ProfileCubit, ProfileState>(
+      child: BlocConsumer<ProfileCubit, ProfileState>(
+        listener: (context, state) {
+          if (state is ProfileLogoutDone) {
+            context.navigateAndRemovePreviousRoutes(Routes.loginRouteName);
+          }
+
+          if (state is ProfileLogoutFailed) {
+            context.showSnackBar(state.message);
+          }
+        },
         builder: (context, state) {
-          final user = context.read<ProfileCubit>().user;
+          final viewModel = context.read<ProfileCubit>();
+          final user = viewModel.user;
+
           return Scaffold(
             appBar: AppBar(
               title: MyText(user.name),
@@ -30,24 +42,26 @@ class ProfilePage extends StatelessWidget {
                   child: SizedBox(
                     width: double.infinity,
                     height: double.infinity,
-                    child: TextButton(
-                      onPressed: () {},
-                      child: const MyText(AppStrings.logout),
-                    ),
+                    child: state is ProfileLogoutLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : TextButton(
+                            onPressed: viewModel.logout,
+                            child: const MyText(AppStrings.logout),
+                          ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                MyCard(
-                  height: 48,
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: double.infinity,
-                    child: TextButton(
-                      onPressed: () {},
-                      child: const MyText(AppStrings.profile),
-                    ),
-                  ),
-                ),
+                // const SizedBox(height: 16),
+                // MyCard(
+                //   height: 48,
+                //   child: SizedBox(
+                //     width: double.infinity,
+                //     height: double.infinity,
+                //     child: TextButton(
+                //       onPressed: () {},
+                //       child: const MyText(AppStrings.profile),
+                //     ),
+                //   ),
+                // ),
                 const SizedBox(height: 16),
                 MyCard(
                   height: 48,

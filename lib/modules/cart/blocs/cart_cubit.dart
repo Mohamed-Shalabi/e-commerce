@@ -1,4 +1,3 @@
-import 'package:e_commerce/models/cart_model.dart';
 import 'package:e_commerce/models/product_model.dart';
 import 'package:e_commerce/models/user_model.dart';
 import 'package:e_commerce/modules/cart/blocs/base_shipping_data_cubit.dart';
@@ -9,12 +8,16 @@ import 'package:flutter/material.dart';
 part 'cart_state.dart';
 
 class CartCubit extends BaseShippingDataCubit<CartState> {
-  CartCubit()
-      : cart = CartModel.getInstance(),
-        super(CartInitial());
+  CartCubit() : super(CartInitial()) {
+    initCart();
+  }
 
-  final CartModel cart;
   final couponController = TextEditingController();
+
+  void initCart() async {
+    await CartRepository.initCart();
+    emit(CartFetched());
+  }
 
   void addProductToCart(ProductModel product) async {
     emit(CartAddOrRemoveProductLoading());
@@ -29,7 +32,7 @@ class CartCubit extends BaseShippingDataCubit<CartState> {
   void removeProductFromCart(ProductModel product) async {
     emit(CartAddOrRemoveProductLoading());
     try {
-      await CartRepository.removeProductToCart(product);
+      await CartRepository.removeProductFromCart(product);
       emit(CartAddOrRemoveProductSucceeded());
     } on BaseException catch (e) {
       emit(CartAddOrRemoveProductFailed(message: e.message));

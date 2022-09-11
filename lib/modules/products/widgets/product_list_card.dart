@@ -1,6 +1,5 @@
 import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
 import 'package:e_commerce/modules/products/widgets/toggle_is_product_in_wishlist_button.dart';
-import 'package:e_commerce/responsive/responsive_widget.dart';
 import 'package:e_commerce/shared/components/my_card.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
@@ -46,8 +45,8 @@ class ProductVerticalListCard extends StatelessWidget {
   }
 }
 
-class ProductHorizontalListCard extends StatelessWidget {
-  const ProductHorizontalListCard({
+class ProductGridCard extends StatelessWidget {
+  const ProductGridCard({
     Key? key,
     this.isFromSingleProductScreen = false,
   }) : super(key: key);
@@ -56,27 +55,21 @@ class ProductHorizontalListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveWidget(
-      mobileWidget: MyCard(
-        width: context.screenWidth * 0.5,
-        margin: const EdgeInsetsDirectional.only(end: 16),
-        child: ProductHorizontalListCardContents(
-          isFromSingleProductScreen: isFromSingleProductScreen,
-        ),
-      ),
-      tabletWidget: MyCard(
-        width: context.screenWidth * 0.2,
-        margin: const EdgeInsetsDirectional.only(end: 16),
-        child: ProductHorizontalListCardContents(
-          isFromSingleProductScreen: isFromSingleProductScreen,
-        ),
+    return MyCard(
+      height: isFromSingleProductScreen ? 240 : context.screenWidth * 0.3,
+      width: isFromSingleProductScreen ? 120 : null,
+      margin: isFromSingleProductScreen
+          ? const EdgeInsetsDirectional.only(end: 16)
+          : EdgeInsets.zero,
+      child: ProductGridCardContents(
+        isFromSingleProductScreen: isFromSingleProductScreen,
       ),
     );
   }
 }
 
-class ProductHorizontalListCardContents extends StatelessWidget {
-  const ProductHorizontalListCardContents({
+class ProductGridCardContents extends StatelessWidget {
+  const ProductGridCardContents({
     Key? key,
     required this.isFromSingleProductScreen,
   }) : super(key: key);
@@ -94,20 +87,27 @@ class ProductHorizontalListCardContents extends StatelessWidget {
           children: [
             Hero(
               tag: 'product_image:${product.id}',
-              child: Image.asset(
-                product.images[0],
-                width: double.infinity,
-                height: isFromSingleProductScreen
-                    ? 120
-                    : context.screenHeight * 0.5,
-                fit: BoxFit.cover,
+              child: SizedBox(
+                width: isFromSingleProductScreen ? 120 : null,
+                height: isFromSingleProductScreen ? 120 : null,
+                child: Image.asset(
+                  product.images[0],
+                  width: isFromSingleProductScreen ? 120 : double.infinity,
+                  height: isFromSingleProductScreen
+                      ? 120
+                      : context.screenWidth * 0.3,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ProductListCardDataWidget(
-                  isFromSingleProductScreen: isFromSingleProductScreen,
+                child: SizedBox(
+                  width: isFromSingleProductScreen ? 120 : null,
+                  child: ProductListCardDataWidget(
+                    isFromSingleProductScreen: isFromSingleProductScreen,
+                  ),
                 ),
               ),
             ),

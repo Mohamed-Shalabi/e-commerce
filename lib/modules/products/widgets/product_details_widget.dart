@@ -145,7 +145,7 @@ class ProductDetailsWidget extends StatelessWidget {
                                 arguments: context.read<ProductViewModel>(),
                               );
                             },
-                            child: const ProductHorizontalListCard(
+                            child: const ProductGridCard(
                               isFromSingleProductScreen: true,
                             ),
                           );

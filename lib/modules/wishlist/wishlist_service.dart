@@ -1,21 +1,25 @@
 import 'package:e_commerce/shared/dummy_data/api/api.dart';
+import 'package:e_commerce/shared/local/prefs.dart';
 
 abstract class WishlistService {
   static final _api = Api.getInstance();
 
   static Future<Map<String, dynamic>> fetchWishList() {
-    return _api.queryWishlist();
+    final userToken = Prefs.getData<int>(key: Prefs.userTokenKey)!;
+    return _api.queryWishlist(userToken);
   }
 
   static Future<Map<String, dynamic>> addProductToWishlist(
     int productId,
   ) {
-    return _api.addProductToWishlist(productId);
+    final userToken = Prefs.getData<int>(key: Prefs.userTokenKey)!;
+    return _api.addProductToWishlist(productId, userToken);
   }
 
   static Future<Map<String, dynamic>> removeProductFromWishlist(
     int productId,
   ) {
-    return _api.removeProductFromWishlist(productId);
+    final userToken = Prefs.getData<int>(key: Prefs.userTokenKey)!;
+    return _api.removeProductFromWishlist(productId, userToken);
   }
 }

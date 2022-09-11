@@ -1,31 +1,38 @@
 import 'package:e_commerce/shared/dummy_data/api/api.dart';
+import 'package:e_commerce/shared/local/prefs.dart';
 
 abstract class CartService {
   static final _api = Api.getInstance();
 
   static Future<Map<String, dynamic>> fetchCart() {
-    return _api.queryCart();
+    final userToken = Prefs.getData<int>(key: Prefs.userTokenKey)!;
+    return _api.queryCart(userToken);
   }
 
   static Future<Map<String, dynamic>> addProductToCart(int productId) {
-    return _api.addProductToCart(productId);
+    final userToken = Prefs.getData<int>(key: Prefs.userTokenKey)!;
+    return _api.addProductToCart(productId, userToken);
   }
 
   static Future<Map<String, dynamic>> removeProductFromCart(
     int productId,
   ) {
-    return _api.removeProductFromCart(productId);
+    final userToken = Prefs.getData<int>(key: Prefs.userTokenKey)!;
+    return _api.removeProductFromCart(productId, userToken);
   }
 
   static Future<Map<String, dynamic>> applyCoupon(String coupon) {
-    return _api.applyCoupon(coupon, 100);
+    final userToken = Prefs.getData<int>(key: Prefs.userTokenKey)!;
+    return _api.applyCoupon(coupon, 100, userToken);
   }
 
   static Future<Map<String, dynamic>> removeCoupon() {
-    return _api.removeCoupon();
+    final userToken = Prefs.getData<int>(key: Prefs.userTokenKey)!;
+    return _api.removeCoupon(userToken);
   }
 
   static Future<Map<String, dynamic>> clearCart() {
-    return _api.clearCart();
+    final userToken = Prefs.getData<int>(key: Prefs.userTokenKey)!;
+    return _api.clearCart(userToken);
   }
 }

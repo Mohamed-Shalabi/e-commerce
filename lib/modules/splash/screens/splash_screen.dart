@@ -2,9 +2,9 @@ import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
 import 'package:e_commerce/modules/splash/blocs/splash_cubit.dart';
 import 'package:e_commerce/modules/splash/splash_repository.dart';
 import 'package:e_commerce/modules/splash/widgets/welcome_widget.dart';
-import 'package:e_commerce/responsive/responsive_widget.dart';
 import 'package:e_commerce/routes.dart';
 import 'package:e_commerce/shared/functions/navigate.dart';
+import 'package:e_commerce/shared/utils/media_query_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,24 +34,23 @@ class SplashScreen extends StatelessWidget {
         },
         child: Scaffold(
           body: Center(
-            child: ResponsiveWidget(
-              mobileWidget: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  WelcomeWidget(),
-                  SizedBox(height: 32),
-                  CircularProgressIndicator(),
-                ],
-              ),
-              tabletWidget: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  WelcomeWidget(),
-                  SizedBox(width: 32),
-                  CircularProgressIndicator(),
-                ],
-              ),
-            ),
+            child: context.isPortrait
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      WelcomeWidget(),
+                      SizedBox(height: 32),
+                      CircularProgressIndicator(),
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      WelcomeWidget(),
+                      SizedBox(width: 32),
+                      CircularProgressIndicator(),
+                    ],
+                  ),
           ),
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
 import 'package:e_commerce/modules/cart/screens/cart_page.dart';
 import 'package:e_commerce/modules/categories/screens/categories_page.dart';
 import 'package:e_commerce/modules/profile/screens/profile_page.dart';
@@ -11,6 +12,7 @@ part 'main_layout_state.dart';
 class MainLayoutCubit extends Cubit<MainLayoutState> {
   MainLayoutCubit(BuildContext context) : super(MainLayoutInitial()) {
     context.read<WishlistCubit>().getWishlist();
+    context.read<CartCubit>();
   }
 
   final _screens = const <Widget>[

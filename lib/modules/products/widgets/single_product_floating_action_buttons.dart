@@ -1,3 +1,4 @@
+import 'package:e_commerce/models/cart_model.dart';
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
 import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
 import 'package:e_commerce/routes.dart';
@@ -22,6 +23,7 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
         }
       },
       builder: (_, CartState state) {
+        context.watch<CartCubit>();
         if (state is CartAddOrRemoveProductLoading) {
           return MyCard(
             width: 56,
@@ -32,6 +34,8 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
             child: const CircularProgressIndicator(),
           );
         }
+
+        final cart = CartModel.getInstance();
 
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -70,7 +74,7 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
                           padding: const EdgeInsets.all(2),
                           child: Center(
                             child: MyText(
-                              '${context.watch<CartCubit>().cart.length}',
+                              '${cart.length}',
                               style: context.textTheme.labelSmall?.copyWith(
                                 color: context.colorScheme.onError,
                               ),

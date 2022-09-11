@@ -1,5 +1,5 @@
+import 'package:e_commerce/models/cart_model.dart';
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
-import 'package:e_commerce/modules/cart/blocs/cart_product_view_model.dart';
 import 'package:e_commerce/modules/cart/widgets/add_coupon_dialog.dart';
 import 'package:e_commerce/modules/cart/widgets/cart_product_list_tile.dart';
 import 'package:e_commerce/modules/cart/widgets/checkout_modal_sheet.dart';
@@ -19,7 +19,7 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<CartCubit>();
-    final cart = viewModel.cart;
+    final cart = CartModel.getInstance();
 
     return Scaffold(
       appBar: AppBar(
@@ -59,7 +59,6 @@ class CartPage extends StatelessWidget {
             )
           : Center(
               child: MyCard(
-                padding: const EdgeInsets.all(16),
                 margin: const EdgeInsets.all(16),
                 width: context.isMobileScreen ? double.infinity : 500,
                 child: ListView(
@@ -72,7 +71,7 @@ class CartPage extends StatelessWidget {
                     const SizedBox(height: 16),
                     for (final product in cart) ...[
                       RepositoryProvider(
-                        create: (_) => CartProductViewModel(product: product),
+                        create: (_) => product,
                         child: const CartProductListTile(),
                       ),
                       const Divider(thickness: 3),
@@ -133,7 +132,8 @@ class CartPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: MyText(
                         // TODO: make the shipping cost dynamic
-                        '${AppStrings.shippingCost}: 55',
+                        '${AppStrings.shippingCost}: '
+                        '\$${55.toStringAsFixed(2)}',
                         style: context.textTheme.subtitle1,
                       ),
                     ),

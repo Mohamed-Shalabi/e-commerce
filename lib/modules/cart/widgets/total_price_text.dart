@@ -1,3 +1,4 @@
+import 'package:e_commerce/models/cart_model.dart';
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
@@ -10,7 +11,8 @@ class TotalPriceText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = context.watch<CartCubit>().cart;
+    context.watch<CartCubit>();
+    final cart = CartModel.getInstance();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: MyText(

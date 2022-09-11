@@ -1,4 +1,4 @@
-import 'package:e_commerce/modules/cart/blocs/cart_product_view_model.dart';
+import 'package:e_commerce/models/product_model.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';
@@ -10,7 +10,7 @@ class CartProductListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = context.read<CartProductViewModel>().product;
+    final product = context.read<ProductModel>();
     return SizedBox(
       width: double.infinity,
       height: 120,
@@ -18,8 +18,8 @@ class CartProductListTile extends StatelessWidget {
         children: [
           Image.asset(
             product.images.first,
-            height: 120,
-            width: 120,
+            height: 80,
+            width: 80,
             fit: BoxFit.cover,
           ),
           const VerticalDivider(thickness: 3),
@@ -35,7 +35,7 @@ class CartProductListTile extends StatelessWidget {
                 ),
                 FittedBox(
                   child: MyText(
-                    product.price.toStringAsFixed(2),
+                    '\$${product.price.toStringAsFixed(2)}',
                     style: context.textTheme.subtitle1,
                   ),
                 ),
@@ -75,7 +75,7 @@ class CartProductListTile extends StatelessWidget {
                 ),
                 FittedBox(
                   child: MyText(
-                    product.totalPriceInCart.toStringAsFixed(2),
+                    '\$${product.totalPriceInCart.toStringAsFixed(2)}',
                     style: context.textTheme.subtitle1,
                   ),
                 ),

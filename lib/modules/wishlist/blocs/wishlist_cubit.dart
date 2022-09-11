@@ -33,7 +33,7 @@ class WishlistCubit extends BaseProductsCubit<WishlistState> {
 
       emit(WishlistToggleProductDone());
     } on BaseException catch (e) {
-      emit(WishlistFetchFailed(message: e.message));
+      emit(WishlistToggleProductFailed(message: e.message));
     }
   }
 }

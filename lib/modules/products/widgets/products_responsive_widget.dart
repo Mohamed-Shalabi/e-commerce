@@ -42,14 +42,13 @@ class ProductsResponsiveWidget<T extends BaseProductsCubit>
           );
         },
       ),
-      tabletWidget: ListView.builder(
-        padding: const EdgeInsetsDirectional.fromSTEB(
-          16,
-          16,
-          0,
-          16,
+      tabletWidget: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
         ),
-        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
         itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];
@@ -68,7 +67,7 @@ class ProductsResponsiveWidget<T extends BaseProductsCubit>
                       arguments: viewModel,
                     );
                   },
-                  child: const ProductHorizontalListCard(),
+                  child: const ProductGridCard(),
                 );
               },
             ),

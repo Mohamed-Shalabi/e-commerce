@@ -1,7 +1,6 @@
 import 'package:e_commerce/models/user_model.dart';
 import 'package:e_commerce/modules/auth/auth_repository.dart';
 import 'package:e_commerce/shared/errors/base_exception.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

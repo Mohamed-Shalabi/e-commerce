@@ -46,7 +46,11 @@ class Api {
   }
 
   Future<Map<String, dynamic>> login(String email, String password) {
-    return _request(() => _databaseManager.login(email, password));
+    return _futureRequest(() => _databaseManager.login(email, password));
+  }
+
+  Future<Map<String, dynamic>> queryUserProfile(int userToken) {
+    return _futureRequest(() => _databaseManager.queryUserProfile(userToken));
   }
 
   Future<Map<String, dynamic>> signUp({
@@ -72,83 +76,74 @@ class Api {
   }
 
   Future<Map<String, dynamic>> logout() {
-    return _futureRequest(() => _databaseManager.removeUser());
+    return _futureRequest(() => _databaseManager.logout());
   }
 
-  Future<Map<String, dynamic>> queryCart() {
-    return _futureRequest(() => _databaseManager.queryCart());
+  Future<Map<String, dynamic>> queryCart(int userToken) {
+    return _futureRequest(() => _databaseManager.queryCart(userToken));
   }
 
-  Future<Map<String, dynamic>> addProductToCart(int productId) {
-    return _futureRequest(() => _databaseManager.addProductToCart(productId));
-  }
-
-  Future<Map<String, dynamic>> removeProductFromCart(int productId) {
+  Future<Map<String, dynamic>> addProductToCart(
+    int productId,
+    int userToken,
+  ) {
     return _futureRequest(
-      () => _databaseManager.removeProductFromCart(productId),
+      () => _databaseManager.addProductToCart(productId, userToken),
+    );
+  }
+
+  Future<Map<String, dynamic>> removeProductFromCart(
+    int productId,
+    int userToken,
+  ) {
+    return _futureRequest(
+      () => _databaseManager.removeProductFromCart(productId, userToken),
     );
   }
 
   // TODO: Remove discount
-  Future<Map<String, dynamic>> applyCoupon(String coupon, double discount) {
+  Future<Map<String, dynamic>> applyCoupon(
+    String coupon,
+    double discount,
+    int userToken,
+  ) {
     return _futureRequest(
-      () => _databaseManager.applyCoupon(coupon, discount),
+      () => _databaseManager.applyCoupon(coupon, discount, userToken),
     );
   }
 
-  Future<Map<String, dynamic>> removeCoupon() {
+  Future<Map<String, dynamic>> removeCoupon(int userToken) {
     return _futureRequest(
-      () => _databaseManager.removeCoupon(),
+      () => _databaseManager.removeCoupon(userToken),
     );
   }
 
-  Future<Map<String, dynamic>> queryWishlist() {
-    return _request(() => _databaseManager.queryWishlist());
+  Future<Map<String, dynamic>> queryWishlist(int userToken) {
+    return _futureRequest(() => _databaseManager.queryWishlist(userToken));
   }
 
-  Future<Map<String, dynamic>> addProductToWishlist(int productId) {
+  Future<Map<String, dynamic>> addProductToWishlist(
+    int productId,
+    int userToken,
+  ) {
     return _futureRequest(
-      () => _databaseManager.addProductToWishlist(productId),
+      () => _databaseManager.addProductToWishlist(productId, userToken),
     );
   }
 
-  Future<Map<String, dynamic>> removeProductFromWishlist(int productId) {
-    return _request(
-      () => _databaseManager.removeProductFromWishlist(productId),
-    );
-  }
-
-  Future<Map<String, dynamic>> clearCart() {
+  Future<Map<String, dynamic>> removeProductFromWishlist(
+    int productId,
+    int userToken,
+  ) {
     return _futureRequest(
-      () => _databaseManager.clearCart(),
+      () => _databaseManager.removeProductFromWishlist(productId, userToken),
     );
   }
-}
 
-Future<Map<String, dynamic>> _request<T>(T? Function() getData) async {
-  try {
-    await Future.delayed(const Duration(seconds: 1));
-    if (!await isConnected) {
-      throw InternetException(AppStrings.connectionError);
-    }
-
-    final data = getData();
-    if (data == null) {
-      return {
-        'status_code': 500,
-        'message': 'an error occurred',
-      };
-    } else {
-      return {
-        'status_code': 200,
-        'data': data,
-      };
-    }
-  } catch (e) {
-    return {
-      'status_code': 500,
-      'message': e.toString(),
-    };
+  Future<Map<String, dynamic>> clearCart(int userToken) {
+    return _futureRequest(
+      () => _databaseManager.clearCart(userToken),
+    );
   }
 }
 
@@ -173,7 +168,9 @@ Future<Map<String, dynamic>> _futureRequest<T>(
         'data': data,
       };
     }
-  } catch (e) {
+  } catch (e, s) {
+    print(e);
+    print(s);
     return {
       'status_code': 500,
       'message': e.toString(),

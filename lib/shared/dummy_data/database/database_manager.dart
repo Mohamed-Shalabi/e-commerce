@@ -17,6 +17,9 @@ class DatabaseManager {
   static const String _databaseName = 'app_database.db';
   static const String _categoriesTableName = 'Categories';
   static const String _productsTableName = 'Products';
+  static const String _usersTableName = 'Users';
+  static const String _cartsTableName = 'Carts';
+  static const String _wishlistsTableName = 'Wishlists';
 
   factory DatabaseManager.getInstance() => _instance;
 
@@ -30,10 +33,11 @@ class DatabaseManager {
       p.join(path, _databaseName),
       version: 1,
       onCreate: (database, version) async {
-        _createProductsTable(database);
-        _createCategoriesTable(database);
-        _createCart();
-        _createWishlist();
+        await _createProductsTable(database);
+        await _createCategoriesTable(database);
+        await _createCartsTable(database);
+        await _createWishlistsTable(database);
+        await _createUsersTable(database);
         await _fillCategories(database);
         await _fillProducts(database);
       },
@@ -44,7 +48,7 @@ class DatabaseManager {
     final database = db ?? _database!;
     return database.execute(
       'CREATE TABLE $_productsTableName ('
-      'id INTEGER PRIMARY KEY, '
+      'id INTEGER PRIMARY KEY AUTOINCREMENT, '
       'title TEXT NOT NULL, '
       'description TEXT NOT NULL, '
       'images TEXT NOT NULL, '
@@ -60,10 +64,76 @@ class DatabaseManager {
     final database = db ?? _database!;
     return database.execute(
       'CREATE TABLE $_categoriesTableName ('
-      'id INTEGER PRIMARY KEY, '
+      'id INTEGER PRIMARY KEY AUTOINCREMENT, '
       'name TEXT NOT NULL'
       ')',
     );
+  }
+
+  Future<void> _createUsersTable([Database? db]) async {
+    final database = db ?? _database!;
+    return database.execute(
+      'CREATE TABLE $_usersTableName ('
+      'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+      'name TEXT NOT NULL, '
+      'email TEXT UNIQUE NOT NULL, '
+      'password TEXT NOT NULL, '
+      'phone TEXT NOT NULL, '
+      'country TEXT NOT NULL, '
+      'city TEXT NOT NULL, '
+      'address TEXT NOT NULL'
+      ')',
+    );
+  }
+
+  Future<void> _createCartsTable([Database? db]) async {
+    final database = db ?? _database!;
+    return database.execute(
+      'CREATE TABLE $_cartsTableName ('
+      'id INTEGER PRIMARY KEY, '
+      'total DOUBLE NOT NULL, '
+      'discount DOUBLE NOT NULL, '
+      'coupon TEXT NOT NULL, '
+      'products_ids TEXT NOT NULL'
+      ')',
+    );
+  }
+
+  Future<bool> addCart(int userId) async {
+    final result = await _database!.insert(
+      _cartsTableName,
+      {
+        'id': userId,
+        'total': 0.0,
+        'discount': 0.0,
+        'coupon': '',
+        'products_ids': '[]',
+      },
+    );
+
+    return result > 0;
+  }
+
+  Future<void> _createWishlistsTable([Database? db]) async {
+    final database = db ?? _database!;
+    return database.execute(
+      'CREATE TABLE $_wishlistsTableName ('
+      'id INTEGER PRIMARY KEY, '
+      'products_ids TEXT NOT NULL'
+      ')',
+    );
+  }
+
+  Future<bool> addWishlist(int userId) async {
+    final result = await _database!.insert(
+      _wishlistsTableName,
+      {
+        'id': userId,
+        'products_ids': '[]',
+      },
+    );
+
+    return result > 0;
   }
 
   Future<Map<String, dynamic>?> createUser({
@@ -85,46 +155,63 @@ class DatabaseManager {
       'address': address,
     };
 
-    final isDone = await Prefs.saveOrRemoveData<String>(
-      key: 'user_key',
-      value: jsonEncode(user),
-    );
+    final userId = await _database!.insert(_usersTableName, user);
+    final isCartSaved = await addCart(userId);
+    final isWishlistSaved = await addWishlist(userId);
 
-    if (isDone) {
-      return user;
+    if (isCartSaved && isWishlistSaved && userId > 0) {
+      return await login(email, password);
+    }
+
+    if (userId == 0) {
+      throw RequestException('Email already exists');
     }
 
     throw RequestException('Could not save user');
   }
 
-  Future<String> removeUser() async {
-    final isDone = await Prefs.saveOrRemoveData<String>(key: 'user_key');
-    if (isDone) {
-      return 'done';
-    }
+  Future<Map<String, dynamic>> queryUserProfile(int userToken) async {
+    final result = await _database!.query(
+      _usersTableName,
+      where: 'id = ?',
+      whereArgs: [userToken],
+    );
 
-    throw RequestException('Could not log out');
+    return result.first;
   }
 
-  Future<bool> _createCart([Map<String, dynamic>? cart]) {
-    cart ??= cartData;
-
+  Future<bool> _updateCart(
+    int userToken, [
+    Map<String, dynamic> cart = cartData,
+  ]) async {
     if (cart['total'] < 0) {
-      cart = cartData;
+      throw RequestException('Cart total cannot be negative');
     }
 
-    return Prefs.saveOrRemoveData<String>(
-      key: 'cart_key',
-      value: jsonEncode(cart),
+    final result = await _database!.update(
+      _cartsTableName,
+      cart,
+      where: 'id = ? ',
+      whereArgs: [userToken],
     );
+
+    return result > 0;
   }
 
-  Future<bool> _createWishlist([List<Map<String, dynamic>>? wishlist]) {
+  Future<bool> _createWishlist(
+    int userToken, [
+    List<Map<String, dynamic>>? wishlist,
+  ]) async {
     wishlist ??= wishlistData;
-    return Prefs.saveOrRemoveData<String>(
-      key: 'wishlist_key',
-      value: jsonEncode(wishlist),
+    final productsIds = wishlist.map((e) => e['id']).toList();
+    final result = await _database!.update(
+      _wishlistsTableName,
+      {'products_ids': json.encode(productsIds)},
+      where: 'id = ?',
+      whereArgs: [userToken],
     );
+
+    return result > 0;
   }
 
   Future<void> _fillProducts([Database? database]) async {
@@ -179,21 +266,13 @@ class DatabaseManager {
   Future<List<Map<String, Object?>>?> searchForProducts(
     String searchTerm,
   ) async {
-    final result = await _database?.query(
-      _productsTableName,
-      distinct: true,
-      where: 'title LIKE ?',
-      whereArgs: ['%$searchTerm%']
-    );
+    final result = await _database?.query(_productsTableName,
+        distinct: true, where: 'title LIKE ?', whereArgs: ['%$searchTerm%']);
 
     return result;
   }
 
   Future<Map<String, Object?>?> queryProduct(int productId) async {
-    if (_database == null) {
-      throw RequestException('Error in database');
-    }
-
     final result = await _database!.query(
       _productsTableName,
       where: 'id = ?',
@@ -207,60 +286,114 @@ class DatabaseManager {
     return result.first;
   }
 
-  Map<String, dynamic> login(String email, String password) {
-    final jsonString = Prefs.getData<String>(key: 'user_key') ?? '{}';
-    final result = json.decode(jsonString);
-    if (result['email'] == email && result['password'] == password) {
-      return result;
-    }
+  Future<Map<String, dynamic>> login(String email, String password) async {
+    try {
+      final result = await _database!.query(
+        _usersTableName,
+        where: 'email = ? AND password = ?',
+        whereArgs: [email, password],
+      );
 
-    throw RequestException('Wrong email or password');
+      if (result.isEmpty) {
+        throw RequestException('Wrong email or password');
+      }
+
+      final id = result[0]['id'] as int;
+      print(id);
+      Prefs.saveOrRemoveData<int>(key: Prefs.userTokenKey, value: id);
+
+      return result[0];
+    } catch (_) {
+      throw RequestException('Wrong email or password');
+    }
   }
 
-  Future<Map<String, dynamic>> queryCart() async {
-    final jsonString = Prefs.getData<String>(key: 'cart_key')!;
-    final cart = json.decode(jsonString);
+  Future<bool> logout() async {
+    return await Prefs.saveOrRemoveData<int>(key: Prefs.userTokenKey);
+  }
+
+  Future<Map<String, dynamic>> queryCart(int userToken) async {
+    final result = await _database!.query(
+      _cartsTableName,
+      where: 'id = ?',
+      whereArgs: [userToken],
+    );
+
+    if (result.isEmpty) {
+      throw RequestException('Could not find cart');
+    }
+
+    final cart = result[0];
+    final cartProductsIds = json.decode(cart['products_ids'] as String);
     final products = <Map<String, dynamic>>[];
-    for (final productId in cart['products'].map((e) => e['id'])) {
+    for (final productId in cartProductsIds!) {
       final product =
           (await queryProduct(productId))?.cast<String, dynamic>() ?? {};
       if (product.isNotEmpty) {
         products.add(product);
       }
     }
-    cart['products'] = products;
-    return cart;
+    final growableCart = {...cart};
+    growableCart['products'] = products;
+    growableCart['coupon'] = {
+      'coupon': growableCart['coupon'],
+      'discount': growableCart['discount'],
+    };
+    growableCart.remove('discount');
+    growableCart.remove('products_ids');
+    return growableCart;
   }
 
-  Future<Map<String, dynamic>> addProductToCart(int productId) async {
+  Future<Map<String, dynamic>> addProductToCart(
+    int productId,
+    int userToken,
+  ) async {
     final product = await queryProduct(productId);
-    final cart = await queryCart();
+    final cart = await queryCart(userToken);
 
-    final cartProductQuantity = cart['products']
-        .cast<Map<String, dynamic>>()
-        .where((element) => element['id'] == productId)
-        .length;
+    final cartProductQuantity =
+        cart['products'].where((element) => element['id'] == productId).length;
     if (cartProductQuantity >= (product!['quantity'] as int)) {
       throw RequestException('Cannot add more');
     }
 
-    cart['products'].add(product);
+    cart['products_ids'] = cart['products'].map((e) => e['id']).toList();
+    cart.remove('products');
+
+    final productsIdsString = json.encode(
+      cart['products_ids']..add(productId),
+    );
+    cart['products_ids'] = productsIdsString;
     cart['total'] += product['price'];
-    _createCart(cart);
+
+    cart['discount'] = cart['coupon']['discount'];
+    cart['coupon'] = cart['coupon']['coupon'];
+
+    _updateCart(userToken, cart);
     return cart;
   }
 
-  Future<Map<String, dynamic>> removeProductFromCart(int productId) async {
+  Future<Map<String, dynamic>> removeProductFromCart(
+    int productId,
+    int userToken,
+  ) async {
     final product = await queryProduct(productId);
-    final cart = await queryCart();
-    final cartProducts = (cart['products'] as List<Map<String, dynamic>>);
-    final index = cartProducts.indexWhere(
+    final cart = await queryCart(userToken);
+    final index = cart['products'].indexWhere(
       (element) => element['id'] == product!['id'],
     );
     if (index != -1) {
-      cartProducts.removeAt(index);
+      final productsIdsString = json.encode(
+        cart['products'].map((e) => e['id']).toList()..removeAt(index),
+      );
       cart['total'] -= product!['price'];
-      _createCart(cart);
+      cart['products_ids'] = productsIdsString;
+      cart.remove('products');
+
+      cart['discount'] = cart['coupon']['discount'];
+      cart['coupon'] = cart['coupon']['coupon'];
+
+      _updateCart(userToken, cart);
     } else {
       throw RequestException('Could not remove from cart');
     }
@@ -270,37 +403,87 @@ class DatabaseManager {
   Future<Map<String, dynamic>> applyCoupon(
     String coupon,
     double discount,
+    int userToken,
   ) async {
-    final cart = await queryCart();
+    final cart = (await queryCart(userToken));
+    final resultCart = {...cart};
     cart['coupon']['coupon'] = coupon;
     cart['coupon']['discount'] = discount;
-    _createCart(cart);
-    return cart;
+
+    final productsIdsString = json.encode(
+      cart['products'].map((e) => e['id']).toList(),
+    );
+    cart.remove('products');
+    cart['products_ids'] = productsIdsString;
+
+    cart['discount'] = cart['coupon']['discount'];
+    cart['coupon'] = cart['coupon']['coupon'];
+
+    _updateCart(userToken, cart);
+    return resultCart;
   }
 
-  Future<Map<String, dynamic>> removeCoupon() async {
-    final cart = await queryCart();
+  Future<Map<String, dynamic>> removeCoupon(int userToken) async {
+    final cart = await queryCart(userToken);
+    final resultCart = {...cart};
+
     cart['coupon']['coupon'] = '';
     cart['coupon']['discount'] = 0;
-    _createCart(cart);
-    return cart;
+
+    final productsIdsString = json.encode(
+      cart['products'].map((e) => e['id']).toList(),
+    );
+    cart.remove('products');
+    cart['products_ids'] = productsIdsString;
+
+    cart['discount'] = cart['coupon']['discount'];
+    cart['coupon'] = cart['coupon']['coupon'];
+
+    _updateCart(userToken, cart);
+    return resultCart;
   }
 
-  Future<bool> clearCart() {
-    return _createCart(cartData);
+  Future<bool> clearCart(int userToken) {
+    return _updateCart(
+      userToken,
+      {
+        'total': 0.0,
+        'discount': 0.0,
+        'coupon': '',
+        'products_ids': '[]',
+      },
+    );
   }
 
-  List<Map<String, dynamic>> queryWishlist() {
-    final jsonString = Prefs.getData<String>(key: 'wishlist_key') ?? '[]';
-    return json.decode(jsonString).cast<Map<String, dynamic>>();
+  Future<List<Map<String, dynamic>>> queryWishlist(int userToken) async {
+    final result = await _database!.query(
+      _wishlistsTableName,
+      where: 'id = ?',
+      whereArgs: [userToken],
+    );
+
+    final products = <Map<String, dynamic>>[];
+    for (final productId
+        in json.decode(result[0]['products_ids'] as String).cast<int>()) {
+      products.add((await queryProduct(productId))!);
+    }
+
+    return products;
   }
 
-  List<Map<String, dynamic>> removeProductFromWishlist(int productId) {
-    final wishlist = queryWishlist();
+  Future<List<Map<String, dynamic>>> removeProductFromWishlist(
+    int productId,
+    int userToken,
+  ) async {
+    final wishlist = await queryWishlist(userToken);
     if (wishlist.any((element) => element['id'] == productId)) {
       wishlist.removeWhere((element) => element['id'] == productId);
-      _createWishlist(wishlist);
-      return wishlist;
+      final isDone = await _createWishlist(userToken, wishlist);
+      if (isDone) {
+        return wishlist;
+      }
+
+      throw RequestException('Could not remove product');
     }
 
     throw RequestException('Could not find the product to remove');
@@ -308,13 +491,18 @@ class DatabaseManager {
 
   Future<List<Map<String, dynamic>>> addProductToWishlist(
     int productId,
+    int userToken,
   ) async {
     final product = await queryProduct(productId);
-    final wishlist = queryWishlist();
+    final wishlist = await queryWishlist(userToken);
     if (!wishlist.any((element) => element['id'] == productId)) {
       wishlist.add(product!);
-      _createWishlist(wishlist);
-      return wishlist;
+      final isDone = await _createWishlist(userToken, wishlist);
+      if (isDone) {
+        return wishlist;
+      }
+
+      throw RequestException('Could not add product');
     }
 
     throw RequestException('Could not find the product to add');

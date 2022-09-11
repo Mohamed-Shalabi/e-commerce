@@ -41,7 +41,7 @@ class Prefs {
     throw Exception('Unsupported type');
   }
 
-  static const userKey = 'user_key';
+  static const userTokenKey = 'user_key';
   static const isLightThemeKey = 'is_light_theme_key';
   static const fontSizeAdditionKey = 'font_size_addition_key';
 }

@@ -2,6 +2,7 @@ import 'package:e_commerce/modules/auth/blocs/login/login_cubit.dart';
 import 'package:e_commerce/modules/auth/screens/login_screen/mobile_login_screen_body.dart';
 import 'package:e_commerce/modules/auth/screens/login_screen/tablet_login_screen_body.dart';
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
+import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
 import 'package:e_commerce/responsive/responsive_widget.dart';
 import 'package:e_commerce/routes.dart';
 import 'package:e_commerce/shared/components/show_snack_bar.dart';
@@ -26,6 +27,8 @@ class LoginScreen extends StatelessWidget {
           }
           if (state is LoginSucceeded) {
             context.read<CartCubit>().updateFormData();
+            context.read<CartCubit>().initCart();
+            context.read<WishlistCubit>().wishlist.clear();
             context.navigateAndRemovePreviousRoutes(
               Routes.mainLayoutRouteName,
             );

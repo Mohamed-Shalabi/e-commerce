@@ -24,7 +24,7 @@ abstract class CartRepository {
     throw RequestException(result['message']);
   }
 
-  static Future<void> removeProductToCart(ProductModel product) async {
+  static Future<void> removeProductFromCart(ProductModel product) async {
     final cart = CartModel.getInstance();
     final result = await CartService.removeProductFromCart(product.id);
     if (result['status_code'] == 200) {

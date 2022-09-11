@@ -29,10 +29,9 @@ abstract class AuthService {
   static Future<Map<String, dynamic>> login(String email, String password) {
     return _api.login(email, password);
   }
-}
 
-abstract class AuthLocalService {
-  static Map<String, dynamic> getUser() {
-    return json.decode(Prefs.getData<String>(key: Prefs.userKey) ?? '{}');
+  static Future<Map<String, dynamic>> getUserProfile() async {
+    final userToken = Prefs.getData<int>(key: Prefs.userTokenKey) ?? -1;
+    return await _api.queryUserProfile(userToken);
   }
 }

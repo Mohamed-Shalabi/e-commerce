@@ -1,5 +1,4 @@
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
-import 'package:e_commerce/modules/cart/cart_repository.dart';
 import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
 import 'package:e_commerce/routes.dart';
 import 'package:e_commerce/shared/dummy_data/api/api.dart';
@@ -13,7 +12,6 @@ void main() async {
 
   await Prefs.init();
   await Api.init();
-  await CartRepository.initCart();
 
   runApp(
     MultiBlocProvider(

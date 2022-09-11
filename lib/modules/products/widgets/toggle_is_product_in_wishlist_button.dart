@@ -1,5 +1,6 @@
 import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
 import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
+import 'package:e_commerce/shared/components/show_snack_bar.dart';
 import 'package:e_commerce/shared/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +10,12 @@ class ToggleIsProductInWishlistButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WishlistCubit, WishlistState>(
+    return BlocConsumer<WishlistCubit, WishlistState>(
+      listener: (context, state) {
+        if (state is WishlistToggleProductFailed) {
+          context.showSnackBar(state.message);
+        }
+      },
       builder: (context, state) {
         final product = context.read<ProductViewModel>().product;
 

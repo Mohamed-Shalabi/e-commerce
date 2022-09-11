@@ -12,4 +12,6 @@ extension MediaQueryUtils on BuildContext {
   double get smallerDimension => min(screenWidth, screenHeight);
 
   double get devicePixelRatio => mediaQuery.devicePixelRatio;
+
+  bool get isPortrait => mediaQuery.orientation == Orientation.portrait;
 }

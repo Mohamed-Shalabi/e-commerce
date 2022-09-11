@@ -8,20 +8,16 @@ class TabletSignUpScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Row(
-        children: const [
-          Expanded(
-            flex: 1,
-            child: SignUpWelcomeText(),
-          ),
-          Expanded(
-            flex: 3,
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: SignUpForm(),
-            ),
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            SignUpWelcomeText(),
+            SizedBox(height: 16),
+            SignUpForm(),
+          ],
+        ),
       ),
     );
   }

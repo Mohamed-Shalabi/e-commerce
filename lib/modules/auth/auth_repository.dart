@@ -4,11 +4,6 @@ import 'package:e_commerce/shared/errors/base_exception.dart';
 import 'package:e_commerce/shared/errors/global_exceptions.dart';
 
 abstract class AuthRepository {
-  static UserModel getUser() {
-    UserModel.init(AuthLocalService.getUser());
-    return UserModel.getInstance();
-  }
-
   static Future<UserModel> signUp({
     required String name,
     required String email,
@@ -30,7 +25,8 @@ abstract class AuthRepository {
       );
 
       if (result['status_code'] == 200) {
-        return getUser();
+        UserModel.init(result['data']);
+        return UserModel.getInstance();
       }
 
       throw RequestFailedException(result['message']);

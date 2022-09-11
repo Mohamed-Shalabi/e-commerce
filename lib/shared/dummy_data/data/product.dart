@@ -48,7 +48,6 @@ final allProductsData = <Map<String, dynamic>>[
 final wishlistData = <Map<String, dynamic>>[];
 
 final product1 = <String, dynamic>{
-  'id': 1,
   'title': 'Pencil',
   'description': 'This is a great pencil made in Egypt.',
   'images': json.encode(
@@ -63,7 +62,6 @@ final product1 = <String, dynamic>{
 };
 
 final product2 = <String, dynamic>{
-  'id': 2,
   'title': 'Pen',
   'description': 'This is a great pen made in Egypt.',
   'images': json.encode(
@@ -82,7 +80,6 @@ final product2 = <String, dynamic>{
 };
 
 final product3 = <String, dynamic>{
-  'id': 3,
   'title': 'Bag',
   'description': 'This is a great bag made in China.',
   'images': json.encode(<String>[ImageAssets.bagImage, ImageAssets.bagImage]),
@@ -95,7 +92,6 @@ final product3 = <String, dynamic>{
 };
 
 final product4 = <String, dynamic>{
-  'id': 4,
   'title': 'Asus Rog Strix',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -113,7 +109,6 @@ final product4 = <String, dynamic>{
 };
 
 final product5 = <String, dynamic>{
-  'id': 5,
   'title': 'Asus Rog Zephyrus',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -138,7 +133,6 @@ final product5 = <String, dynamic>{
 };
 
 final product6 = <String, dynamic>{
-  'id': 6,
   'title': 'Asus TUF Dash',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -158,7 +152,6 @@ final product6 = <String, dynamic>{
 };
 
 final product7 = <String, dynamic>{
-  'id': 7,
   'title': 'Samson C10u pro usb',
   'description': 'This is a great Samson mic made in China.',
   'images': json.encode(
@@ -173,7 +166,6 @@ final product7 = <String, dynamic>{
 };
 
 final product8 = <String, dynamic>{
-  'id': 8,
   'title': 'Pencil',
   'description': 'This is a great pencil made in Egypt.',
   'images': json.encode(
@@ -188,7 +180,6 @@ final product8 = <String, dynamic>{
 };
 
 final product9 = <String, dynamic>{
-  'id': 9,
   'title': 'Pen',
   'description': 'This is a great pen made in Egypt.',
   'images': json.encode(
@@ -207,7 +198,6 @@ final product9 = <String, dynamic>{
 };
 
 final product10 = <String, dynamic>{
-  'id': 10,
   'title': 'Bag',
   'description': 'This is a great bag made in China.',
   'images': json.encode(<String>[ImageAssets.bagImage, ImageAssets.bagImage]),
@@ -220,7 +210,6 @@ final product10 = <String, dynamic>{
 };
 
 final product11 = <String, dynamic>{
-  'id': 11,
   'title': 'Asus Rog Strix',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -238,7 +227,6 @@ final product11 = <String, dynamic>{
 };
 
 final product12 = <String, dynamic>{
-  'id': 12,
   'title': 'Asus Rog Zephyrus',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -263,7 +251,6 @@ final product12 = <String, dynamic>{
 };
 
 final product13 = <String, dynamic>{
-  'id': 13,
   'title': 'Asus TUF Dash',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -283,7 +270,6 @@ final product13 = <String, dynamic>{
 };
 
 final product14 = <String, dynamic>{
-  'id': 14,
   'title': 'Samson C10u pro usb',
   'description': 'This is a great Samson mic made in China.',
   'images': json.encode(
@@ -298,7 +284,6 @@ final product14 = <String, dynamic>{
 };
 
 final product15 = <String, dynamic>{
-  'id': 15,
   'title': 'Pencil',
   'description': 'This is a great pencil made in Egypt.',
   'images': json.encode(
@@ -313,7 +298,6 @@ final product15 = <String, dynamic>{
 };
 
 final product16 = <String, dynamic>{
-  'id': 16,
   'title': 'Pen',
   'description': 'This is a great pen made in Egypt.',
   'images': json.encode(
@@ -332,7 +316,6 @@ final product16 = <String, dynamic>{
 };
 
 final product17 = <String, dynamic>{
-  'id': 17,
   'title': 'Bag',
   'description': 'This is a great bag made in China.',
   'images': json.encode(<String>[ImageAssets.bagImage, ImageAssets.bagImage]),
@@ -345,7 +328,6 @@ final product17 = <String, dynamic>{
 };
 
 final product18 = <String, dynamic>{
-  'id': 18,
   'title': 'Asus Rog Strix',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -363,7 +345,6 @@ final product18 = <String, dynamic>{
 };
 
 final product19 = <String, dynamic>{
-  'id': 19,
   'title': 'Asus Rog Zephyrus',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -388,7 +369,6 @@ final product19 = <String, dynamic>{
 };
 
 final product20 = <String, dynamic>{
-  'id': 20,
   'title': 'Asus TUF Dash',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -407,7 +387,6 @@ final product20 = <String, dynamic>{
   'category_id': 6,
 };
 final product21 = <String, dynamic>{
-  'id': 21,
   'title': 'Pencil',
   'description': 'This is a great pencil made in Egypt.',
   'images': json.encode(
@@ -422,7 +401,6 @@ final product21 = <String, dynamic>{
 };
 
 final product22 = <String, dynamic>{
-  'id': 22,
   'title': 'Pen',
   'description': 'This is a great pen made in Egypt.',
   'images': json.encode(
@@ -441,7 +419,6 @@ final product22 = <String, dynamic>{
 };
 
 final product23 = <String, dynamic>{
-  'id': 23,
   'title': 'Bag',
   'description': 'This is a great bag made in China.',
   'images': json.encode(<String>[ImageAssets.bagImage, ImageAssets.bagImage]),
@@ -454,7 +431,6 @@ final product23 = <String, dynamic>{
 };
 
 final product24 = <String, dynamic>{
-  'id': 24,
   'title': 'Asus Rog Strix',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -472,7 +448,6 @@ final product24 = <String, dynamic>{
 };
 
 final product25 = <String, dynamic>{
-  'id': 25,
   'title': 'Asus Rog Zephyrus',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -497,7 +472,6 @@ final product25 = <String, dynamic>{
 };
 
 final product26 = <String, dynamic>{
-  'id': 26,
   'title': 'Asus TUF Dash',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -517,7 +491,6 @@ final product26 = <String, dynamic>{
 };
 
 final product27 = <String, dynamic>{
-  'id': 27,
   'title': 'Samson C10u pro usb',
   'description': 'This is a great Samson mic made in China.',
   'images': json.encode(
@@ -532,7 +505,6 @@ final product27 = <String, dynamic>{
 };
 
 final product28 = <String, dynamic>{
-  'id': 28,
   'title': 'Pencil',
   'description': 'This is a great pencil made in Egypt.',
   'images': json.encode(
@@ -547,7 +519,6 @@ final product28 = <String, dynamic>{
 };
 
 final product29 = <String, dynamic>{
-  'id': 29,
   'title': 'Pen',
   'description': 'This is a great pen made in Egypt.',
   'images': json.encode(
@@ -566,7 +537,6 @@ final product29 = <String, dynamic>{
 };
 
 final product30 = <String, dynamic>{
-  'id': 30,
   'title': 'Bag',
   'description': 'This is a great bag made in China.',
   'images': json.encode(<String>[ImageAssets.bagImage, ImageAssets.bagImage]),
@@ -579,7 +549,6 @@ final product30 = <String, dynamic>{
 };
 
 final product31 = <String, dynamic>{
-  'id': 31,
   'title': 'Asus Rog Strix',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -597,7 +566,6 @@ final product31 = <String, dynamic>{
 };
 
 final product32 = <String, dynamic>{
-  'id': 32,
   'title': 'Asus Rog Zephyrus',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -622,7 +590,6 @@ final product32 = <String, dynamic>{
 };
 
 final product33 = <String, dynamic>{
-  'id': 33,
   'title': 'Asus TUF Dash',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -642,7 +609,6 @@ final product33 = <String, dynamic>{
 };
 
 final product34 = <String, dynamic>{
-  'id': 34,
   'title': 'Samson C10u pro usb',
   'description': 'This is a great Samson mic made in China.',
   'images': json.encode(
@@ -657,7 +623,6 @@ final product34 = <String, dynamic>{
 };
 
 final product35 = <String, dynamic>{
-  'id': 35,
   'title': 'Pencil',
   'description': 'This is a great pencil made in Egypt.',
   'images': json.encode(
@@ -672,7 +637,6 @@ final product35 = <String, dynamic>{
 };
 
 final product36 = <String, dynamic>{
-  'id': 36,
   'title': 'Pen',
   'description': 'This is a great pen made in Egypt.',
   'images': json.encode(
@@ -691,7 +655,6 @@ final product36 = <String, dynamic>{
 };
 
 final product37 = <String, dynamic>{
-  'id': 37,
   'title': 'Bag',
   'description': 'This is a great bag made in China.',
   'images': json.encode(<String>[ImageAssets.bagImage, ImageAssets.bagImage]),
@@ -704,7 +667,6 @@ final product37 = <String, dynamic>{
 };
 
 final product38 = <String, dynamic>{
-  'id': 38,
   'title': 'Asus Rog Strix',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -722,7 +684,6 @@ final product38 = <String, dynamic>{
 };
 
 final product39 = <String, dynamic>{
-  'id': 39,
   'title': 'Asus Rog Zephyrus',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(
@@ -747,7 +708,6 @@ final product39 = <String, dynamic>{
 };
 
 final product40 = <String, dynamic>{
-  'id': 40,
   'title': 'Asus TUF Dash',
   'description': 'This is a great Asus laptop made in China.',
   'images': json.encode(

@@ -18,7 +18,10 @@ class LoginButton extends StatelessWidget {
         child: MaterialButton(
           onPressed: viewModel.login,
           color: context.colorScheme.secondary,
-          child: const MyText(AppStrings.login),
+          child: MyText(
+            AppStrings.login,
+            style: TextStyle(color: context.colorScheme.onSecondary),
+          ),
         ),
       ),
     );
