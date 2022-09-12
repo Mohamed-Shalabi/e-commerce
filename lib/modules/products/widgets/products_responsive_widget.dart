@@ -25,7 +25,7 @@ class ProductsResponsiveWidget<T extends BaseProductsCubit>
             key: ObjectKey(product),
             create: (_) => ProductViewModel(
               product: product,
-              categoryProducts: products,
+              similarProducts: products,
             ),
             child: Builder(builder: (context) {
               return InkWell(
@@ -55,7 +55,7 @@ class ProductsResponsiveWidget<T extends BaseProductsCubit>
           return RepositoryProvider(
             create: (_) => ProductViewModel(
               product: product,
-              categoryProducts: products,
+              similarProducts: products,
             ),
             child: Builder(
               builder: (context) {

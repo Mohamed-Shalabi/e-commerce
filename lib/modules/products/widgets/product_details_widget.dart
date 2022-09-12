@@ -21,7 +21,7 @@ class ProductDetailsWidget extends StatelessWidget {
     final viewModel = context.read<ProductViewModel>();
     final product = viewModel.product;
     final similarProducts = viewModel.similarProducts;
-    final categoryProducts = viewModel.categoryProducts;
+    final categoryProducts = viewModel.similarProducts;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,7 +134,7 @@ class ProductDetailsWidget extends StatelessWidget {
                     return RepositoryProvider(
                       create: (_) => ProductViewModel(
                         product: product,
-                        categoryProducts: categoryProducts,
+                        similarProducts: categoryProducts,
                       ),
                       child: Builder(
                         builder: (context) {

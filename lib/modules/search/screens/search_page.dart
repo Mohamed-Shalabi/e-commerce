@@ -48,8 +48,8 @@ class SearchPage extends StatelessWidget {
                             );
                       } else {
                         context.read<SearchCubit>().clearSearchResults(
-                          value.trim(),
-                        );
+                              value.trim(),
+                            );
                       }
                     },
                   ),
@@ -81,7 +81,7 @@ class SearchPage extends StatelessWidget {
                                   return RepositoryProvider(
                                     create: (_) => ProductViewModel(
                                       product: product,
-                                      categoryProducts: products,
+                                      similarProducts: products,
                                     ),
                                     child: Builder(
                                       builder: (context) {

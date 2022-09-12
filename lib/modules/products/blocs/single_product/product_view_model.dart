@@ -5,14 +5,14 @@ part 'product_state.dart';
 class ProductViewModel {
   ProductViewModel({
     required this.product,
-    required this.categoryProducts,
-  });
+    required List<ProductModel> similarProducts,
+  }) : _similarProducts = similarProducts;
 
   final ProductModel product;
-  final List<ProductModel> categoryProducts;
+  final List<ProductModel> _similarProducts;
 
   List<ProductModel> get similarProducts => [
-        for (final categoryProduct in categoryProducts)
-          if (categoryProduct.id != product.id) categoryProduct
+        for (final similarProduct in _similarProducts)
+          if (similarProduct.id != product.id) similarProduct
       ];
 }

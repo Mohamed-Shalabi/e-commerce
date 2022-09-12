@@ -2,7 +2,6 @@ import 'package:e_commerce/models/product_model.dart';
 import 'package:e_commerce/models/user_model.dart';
 import 'package:e_commerce/modules/cart/blocs/base_shipping_data_cubit.dart';
 import 'package:e_commerce/modules/cart/cart_repository.dart';
-import 'package:e_commerce/shared/errors/base_exception.dart';
 import 'package:flutter/material.dart';
 
 part 'cart_state.dart';
@@ -15,48 +14,11 @@ class CartCubit extends BaseShippingDataCubit<CartState> {
   final couponController = TextEditingController();
 
   void initCart() async {
-    await CartRepository.initCart();
-    emit(CartFetched());
-  }
-
-  void addProductToCart(ProductModel product) async {
-    emit(CartAddOrRemoveProductLoading());
-    try {
-      await CartRepository.addProductToCart(product);
-      emit(CartAddOrRemoveProductSucceeded());
-    } on BaseException catch (e) {
-      emit(CartAddOrRemoveProductFailed(message: e.message));
-    }
-  }
-
-  void removeProductFromCart(ProductModel product) async {
-    emit(CartAddOrRemoveProductLoading());
-    try {
-      await CartRepository.removeProductFromCart(product);
-      emit(CartAddOrRemoveProductSucceeded());
-    } on BaseException catch (e) {
-      emit(CartAddOrRemoveProductFailed(message: e.message));
-    }
-  }
-
-  void applyCoupon() async {
-    emit(ApplyOrRemoveCouponLoading());
-    try {
-      await CartRepository.applyCoupon(couponController.text.trim());
-      emit(ApplyOrRemoveCouponSucceeded());
-    } on BaseException catch (e) {
-      emit(ApplyOrRemoveCouponFailed(message: e.message));
-    }
-  }
-
-  void removeCoupon() async {
-    emit(ApplyOrRemoveCouponLoading());
-    try {
-      await CartRepository.removeCoupon();
-      emit(ApplyOrRemoveCouponSucceeded());
-    } on BaseException catch (e) {
-      emit(ApplyOrRemoveCouponFailed(message: e.message));
-    }
+    final result = await CartRepository.initCart();
+    result.fold(
+      (l) => null,
+      (r) => emit(CartFetched()),
+    );
   }
 
   void updateFormData() {
@@ -67,13 +29,54 @@ class CartCubit extends BaseShippingDataCubit<CartState> {
     addressController.text = user.address;
   }
 
+  void addProductToCart(ProductModel product) async {
+    emit(CartAddOrRemoveProductLoading());
+
+    final result = await CartRepository.addProductToCart(product);
+    result.fold<void>(
+      (l) => emit(CartAddOrRemoveProductFailed(message: l)),
+      (r) => emit(CartAddOrRemoveProductSucceeded()),
+    );
+  }
+
+  void removeProductFromCart(ProductModel product) async {
+    emit(CartAddOrRemoveProductLoading());
+
+    final result = await CartRepository.removeProductFromCart(product);
+    result.fold<void>(
+      (l) => emit(CartAddOrRemoveProductFailed(message: l)),
+      (r) => emit(CartAddOrRemoveProductSucceeded()),
+    );
+  }
+
+  void applyCoupon() async {
+    emit(ApplyOrRemoveCouponLoading());
+    final result = await CartRepository.applyCoupon(
+      couponController.text.trim(),
+    );
+
+    result.fold<void>(
+      (l) => emit(ApplyOrRemoveCouponFailed(message: l)),
+      (r) => emit(ApplyOrRemoveCouponSucceeded()),
+    );
+  }
+
+  void removeCoupon() async {
+    emit(ApplyOrRemoveCouponLoading());
+
+    final result = await CartRepository.removeCoupon();
+    result.fold<void>(
+      (l) => emit(ApplyOrRemoveCouponFailed(message: l)),
+      (r) => emit(ApplyOrRemoveCouponSucceeded()),
+    );
+  }
+
   Future<void> clearCart() async {
     emit(ClearCartLoading());
-    try {
-      await CartRepository.clearCart();
-      emit(ClearCartSucceeded());
-    } on BaseException catch (e) {
-      emit(ClearCartFailed(message: e.message));
-    }
+    final result = await CartRepository.clearCart();
+    result.fold<void>(
+      (l) => emit(ClearCartFailed(message: l)),
+      (r) => emit(ClearCartSucceeded()),
+    );
   }
 }

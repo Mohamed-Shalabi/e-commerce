@@ -1,10 +1,9 @@
+import 'package:dartz/dartz.dart';
 import 'package:e_commerce/models/user_model.dart';
 import 'package:e_commerce/modules/auth/auth_service.dart';
-import 'package:e_commerce/shared/errors/base_exception.dart';
-import 'package:e_commerce/shared/errors/global_exceptions.dart';
 
 abstract class AuthRepository {
-  static Future<UserModel> signUp({
+  static Future<Either<String, UserModel>> signUp({
     required String name,
     required String email,
     required String password,
@@ -26,26 +25,30 @@ abstract class AuthRepository {
 
       if (result['status_code'] == 200) {
         UserModel.init(result['data']);
-        return UserModel.getInstance();
+        return Right<String, UserModel>(UserModel.getInstance());
       }
 
-      throw RequestFailedException(result['message']);
+      return Left<String, UserModel>(result['message']);
     } catch (e) {
-      throw RequestFailedException('An error occurred');
+      return Left<String, UserModel>(e.toString());
     }
   }
 
-  static Future<UserModel> login(String email, String password) async {
+  static Future<Either<String, UserModel>> login(
+    String email,
+    String password,
+  ) async {
     try {
       final result = await AuthService.login(email, password);
+
       if (result['status_code'] == 200) {
         UserModel.init(result['data']);
-        return UserModel.getInstance();
+        return Right<String, UserModel>(UserModel.getInstance());
       }
 
-      throw RequestFailedException(result['message']);
-    } on BaseException catch (e) {
-      throw RequestFailedException(e.message);
+      return Left<String, UserModel>(result['message']);
+    } catch (e) {
+      return Left<String, UserModel>(e.toString());
     }
   }
 }

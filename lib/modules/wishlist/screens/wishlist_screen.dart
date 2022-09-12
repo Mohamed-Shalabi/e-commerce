@@ -19,16 +19,16 @@ class WishlistScreen extends StatelessWidget {
       ),
       body: wishlist.isEmpty
           ? Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              MyErrorWidget(message: AppStrings.emptyWishlist)
-            ],
-          )
-        ],
-      )
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    MyErrorWidget(message: AppStrings.emptyWishlist)
+                  ],
+                )
+              ],
+            )
           : const ProductsResponsiveWidget<WishlistCubit>(),
     );
   }

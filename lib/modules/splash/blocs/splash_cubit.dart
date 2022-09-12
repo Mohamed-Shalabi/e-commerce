@@ -12,9 +12,10 @@ class SplashCubit extends Cubit<SplashState> {
 
   void getData() async {
     await Future.delayed(const Duration(seconds: 3));
-    final isLoggedIn = await splashRepository.isLoggedIn();
-    emit(
-      isLoggedIn ? SplashStateLoggedIn() : SplashStateNotLoggedIn(),
+    final result = await splashRepository.isLoggedIn();
+    result.fold<void>(
+      (l) => emit(SplashStateNotLoggedIn()),
+      (r) => emit(SplashStateLoggedIn()),
     );
   }
 }

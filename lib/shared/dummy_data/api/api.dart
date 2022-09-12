@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:e_commerce/shared/dummy_data/database/database_manager.dart';
-import 'package:e_commerce/shared/errors/base_exception.dart';
 import 'package:e_commerce/shared/functions/functions.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';
 
@@ -153,7 +154,7 @@ Future<Map<String, dynamic>> _futureRequest<T>(
   try {
     await Future.delayed(const Duration(seconds: 1));
     if (!await isConnected) {
-      throw InternetException(AppStrings.connectionError);
+      throw const SocketException('Check your internet connection');
     }
 
     final data = await getData();
@@ -168,20 +169,10 @@ Future<Map<String, dynamic>> _futureRequest<T>(
         'data': data,
       };
     }
-  } catch (e, s) {
-    print(e);
-    print(s);
+  } catch (e) {
     return {
       'status_code': 500,
       'message': e.toString(),
     };
   }
-}
-
-class RequestException extends BaseException {
-  RequestException(super.message);
-}
-
-class InternetException extends BaseException {
-  InternetException(super.message);
 }

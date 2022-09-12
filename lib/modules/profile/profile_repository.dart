@@ -1,14 +1,13 @@
-import 'package:e_commerce/models/cart_model.dart';
+import 'package:dartz/dartz.dart';
 import 'package:e_commerce/modules/profile/profile_service.dart';
-import 'package:e_commerce/shared/dummy_data/api/api.dart';
 
 abstract class ProfileRepository {
-  static Future<bool> logout() async {
+  static Future<Either<String, bool>> logout() async {
     final result = await ProfileService.logout();
     if (result['status_code'] == 200) {
-      return true;
+      return const Right<String, bool>(true);
     }
 
-    throw RequestException(result['message']);
+    return Left<String, bool>(result['message']);
   }
 }

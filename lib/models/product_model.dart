@@ -1,5 +1,4 @@
 import 'package:e_commerce/models/cart_model.dart';
-import 'package:e_commerce/models/model_creation_exception.dart';
 import 'package:e_commerce/shared/functions/functions.dart';
 
 class ProductModel {
@@ -11,25 +10,15 @@ class ProductModel {
   final List<String> components;
 
   ProductModel.fromMap(Map<String, dynamic> map)
-      : id = map['id'] ?? -1,
-        title = map['title'] ?? '',
+      : id = map['id'],
+        title = map['title'],
         description = map['description'] ?? '',
-        images =
-            ((map['images'] ?? '[]') as String).toJson.cast<String>() ?? [],
-        price = map['price'] ?? -1,
-        quantity = map['quantity'] ?? -1,
+        images = ((map['images']) as String).toJson.cast<String>(),
+        price = map['price'],
+        quantity = map['quantity'] ?? 0,
         components =
             ((map['components'] ?? '[]') as String).toJson.cast<String>() ??
-                [] {
-    if (id == -1 ||
-        title.isEmpty ||
-        description.isEmpty ||
-        images.isEmpty ||
-        price == -1 ||
-        quantity == -1) {
-      throw ModelCreationException('Error creating product model');
-    }
-  }
+                [];
 
   String get quantityAsString {
     if (quantity == 0) {

@@ -1,4 +1,5 @@
 class UserModel {
+  final int id;
   final String name, email, password, phone, country, city, address;
 
   static late UserModel? _instance;
@@ -10,7 +11,8 @@ class UserModel {
   }
 
   UserModel._fromMap(Map<String, dynamic> map)
-      : name = map['name'],
+      : id = map['id'],
+        name = map['name'],
         email = map['email'],
         password = map['password'],
         phone = map['phone'],

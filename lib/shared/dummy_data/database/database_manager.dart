@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:e_commerce/shared/dummy_data/api/api.dart';
 import 'package:e_commerce/shared/dummy_data/data/cart.dart';
 import 'package:e_commerce/shared/dummy_data/data/category.dart';
 import 'package:e_commerce/shared/dummy_data/data/product.dart';
@@ -164,10 +163,10 @@ class DatabaseManager {
     }
 
     if (userId == 0) {
-      throw RequestException('Email already exists');
+      throw _RequestException('Email already exists');
     }
 
-    throw RequestException('Could not save user');
+    throw _RequestException('Could not save user');
   }
 
   Future<Map<String, dynamic>> queryUserProfile(int userToken) async {
@@ -185,7 +184,7 @@ class DatabaseManager {
     Map<String, dynamic> cart = cartData,
   ]) async {
     if (cart['total'] < 0) {
-      throw RequestException('Cart total cannot be negative');
+      throw _RequestException('Cart total cannot be negative');
     }
 
     final result = await _database!.update(
@@ -230,14 +229,14 @@ class DatabaseManager {
 
   Future<List<Map<String, Object?>>?> queryCategories() {
     if (_database == null) {
-      throw RequestException('Error in database');
+      throw _RequestException('Error in database');
     }
     return _database!.query(_categoriesTableName);
   }
 
   Future<Map<String, Object?>?> queryCategory(int categoryId) {
     if (_database == null) {
-      throw RequestException('Error in database');
+      throw _RequestException('Error in database');
     }
 
     return _database!.query(
@@ -253,7 +252,7 @@ class DatabaseManager {
     int categoryId,
   ) async {
     if (_database == null) {
-      throw RequestException('Error in database');
+      throw _RequestException('Error in database');
     }
 
     return await _database!.query(
@@ -280,7 +279,7 @@ class DatabaseManager {
     );
 
     if (result.isEmpty) {
-      throw RequestException('Product not found');
+      throw _RequestException('Product not found');
     }
 
     return result.first;
@@ -295,7 +294,7 @@ class DatabaseManager {
       );
 
       if (result.isEmpty) {
-        throw RequestException('Wrong email or password');
+        throw _RequestException('Wrong email or password');
       }
 
       final id = result[0]['id'] as int;
@@ -304,7 +303,7 @@ class DatabaseManager {
 
       return result[0];
     } catch (_) {
-      throw RequestException('Wrong email or password');
+      throw _RequestException('Wrong email or password');
     }
   }
 
@@ -320,7 +319,7 @@ class DatabaseManager {
     );
 
     if (result.isEmpty) {
-      throw RequestException('Could not find cart');
+      throw _RequestException('Could not find cart');
     }
 
     final cart = result[0];
@@ -354,7 +353,7 @@ class DatabaseManager {
     final cartProductQuantity =
         cart['products'].where((element) => element['id'] == productId).length;
     if (cartProductQuantity >= (product!['quantity'] as int)) {
-      throw RequestException('Cannot add more');
+      throw _RequestException('Cannot add more');
     }
 
     cart['products_ids'] = cart['products'].map((e) => e['id']).toList();
@@ -395,7 +394,7 @@ class DatabaseManager {
 
       _updateCart(userToken, cart);
     } else {
-      throw RequestException('Could not remove from cart');
+      throw _RequestException('Could not remove from cart');
     }
     return cart;
   }
@@ -483,10 +482,10 @@ class DatabaseManager {
         return wishlist;
       }
 
-      throw RequestException('Could not remove product');
+      throw _RequestException('Could not remove product');
     }
 
-    throw RequestException('Could not find the product to remove');
+    throw _RequestException('Could not find the product to remove');
   }
 
   Future<List<Map<String, dynamic>>> addProductToWishlist(
@@ -502,9 +501,20 @@ class DatabaseManager {
         return wishlist;
       }
 
-      throw RequestException('Could not add product');
+      throw _RequestException('Could not add product');
     }
 
-    throw RequestException('Could not find the product to add');
+    throw _RequestException('Could not find the product to add');
+  }
+}
+
+class _RequestException implements Exception {
+  final String message;
+
+  _RequestException(this.message);
+
+  @override
+  String toString() {
+    return message;
   }
 }
