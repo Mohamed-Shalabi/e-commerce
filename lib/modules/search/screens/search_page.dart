@@ -1,5 +1,5 @@
 import 'package:e_commerce/models/product_model.dart';
-import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
+import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
 import 'package:e_commerce/modules/products/widgets/product_list_card.dart';
 import 'package:e_commerce/modules/search/blocs/search_cubit.dart';
 import 'package:e_commerce/routes.dart';
@@ -78,8 +78,8 @@ class SearchPage extends StatelessWidget {
                                 itemCount: products.length,
                                 itemBuilder: (context, index) {
                                   final product = products[index];
-                                  return RepositoryProvider(
-                                    create: (_) => ProductViewModel(
+                                  return BlocProvider(
+                                    create: (_) => ProductCubit(
                                       product: product,
                                       similarProducts: products,
                                     ),
@@ -88,7 +88,7 @@ class SearchPage extends StatelessWidget {
                                         return InkWell(
                                           onTap: () {
                                             final viewModel = context
-                                                .read<ProductViewModel>();
+                                                .read<ProductCubit>();
                                             context.navigate(
                                               Routes.singleProductRouteName,
                                               arguments: viewModel,

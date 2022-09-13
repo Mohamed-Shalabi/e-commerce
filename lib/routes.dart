@@ -8,7 +8,7 @@ import 'package:e_commerce/modules/categories/blocs/categories_cubit.dart';
 import 'package:e_commerce/modules/main_layout/blocs/main_layout_cubit.dart';
 import 'package:e_commerce/modules/main_layout/screens/main_layout.dart';
 import 'package:e_commerce/modules/products/blocs/products/products_cubit.dart';
-import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
+import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
 import 'package:e_commerce/modules/products/screens/products_screen.dart';
 import 'package:e_commerce/modules/products/screens/single_product_screen.dart';
 import 'package:e_commerce/modules/splash/screens/splash_screen.dart';
@@ -70,7 +70,7 @@ abstract class Routes {
           ),
         );
       case singleProductRouteName:
-        final productViewModel = settings.arguments as ProductViewModel;
+        final productViewModel = settings.arguments as ProductCubit;
         return MaterialPageRoute(
           builder: (_) => RepositoryProvider.value(
             value: productViewModel,

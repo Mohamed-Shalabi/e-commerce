@@ -1,6 +1,6 @@
 import 'package:e_commerce/models/cart_model.dart';
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
-import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
+import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
 import 'package:e_commerce/routes.dart';
 import 'package:e_commerce/shared/components/my_card.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
@@ -15,16 +15,16 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = context.read<ProductViewModel>().product;
-    return BlocConsumer<CartCubit, CartState>(
-      listener: (_, CartState state) {
-        if (state is CartAddOrRemoveProductFailed) {
+    final product = context.read<ProductCubit>().product;
+    return BlocConsumer<ProductCubit, ProductState>(
+      listener: (_, ProductState state) {
+        if (state is AddOrRemoveProductFailed) {
           context.showSnackBar(state.message);
         }
       },
-      builder: (_, CartState state) {
+      builder: (_, ProductState state) {
         context.watch<CartCubit>();
-        if (state is CartAddOrRemoveProductLoading) {
+        if (state is AddOrRemoveProductLoading) {
           return MyCard(
             width: 56,
             height: 56,
@@ -46,7 +46,7 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
               FloatingActionButton(
                 heroTag: 'add_product',
                 onPressed: () {
-                  context.read<CartCubit>().addProductToCart(product);
+                  context.read<ProductCubit>().addProductToCart(product);
                 },
                 child: const Icon(Icons.add),
               ),
@@ -108,7 +108,7 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
                   FloatingActionButton(
                     heroTag: 'remove',
                     onPressed: () {
-                      context.read<CartCubit>().removeProductFromCart(product);
+                      context.read<ProductCubit>().removeProductFromCart(product);
                     },
                     child: const Icon(Icons.remove),
                   ),

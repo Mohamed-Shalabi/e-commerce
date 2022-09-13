@@ -29,26 +29,6 @@ class CartCubit extends BaseShippingDataCubit<CartState> {
     addressController.text = user.address;
   }
 
-  void addProductToCart(ProductModel product) async {
-    emit(CartAddOrRemoveProductLoading());
-
-    final result = await CartRepository.addProductToCart(product);
-    result.fold<void>(
-      (l) => emit(CartAddOrRemoveProductFailed(message: l)),
-      (r) => emit(CartAddOrRemoveProductSucceeded()),
-    );
-  }
-
-  void removeProductFromCart(ProductModel product) async {
-    emit(CartAddOrRemoveProductLoading());
-
-    final result = await CartRepository.removeProductFromCart(product);
-    result.fold<void>(
-      (l) => emit(CartAddOrRemoveProductFailed(message: l)),
-      (r) => emit(CartAddOrRemoveProductSucceeded()),
-    );
-  }
-
   void applyCoupon() async {
     emit(ApplyOrRemoveCouponLoading());
     final result = await CartRepository.applyCoupon(
@@ -78,5 +58,9 @@ class CartCubit extends BaseShippingDataCubit<CartState> {
       (l) => emit(ClearCartFailed(message: l)),
       (r) => emit(ClearCartSucceeded()),
     );
+  }
+
+  void removeProductFromCart(ProductModel product) {
+    emit(CartAddOrRemoveProductSucceeded());
   }
 }

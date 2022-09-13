@@ -1,4 +1,4 @@
-import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
+import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
 import 'package:e_commerce/modules/products/widgets/product_details_widget.dart';
 import 'package:e_commerce/modules/products/widgets/product_images_slider.dart';
 import 'package:e_commerce/modules/products/widgets/single_product_floating_action_buttons.dart';
@@ -12,7 +12,7 @@ class SingleProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = context.read<ProductViewModel>().product;
+    final product = context.read<ProductCubit>().product;
     return Scaffold(
       appBar: AppBar(
         title: MyText(product.title),

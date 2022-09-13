@@ -1,5 +1,15 @@
-part of 'product_view_model.dart';
+part of 'product_cubit.dart';
 
-abstract class SingleProductState {}
+abstract class ProductState {}
 
-class SingleProductInitial extends SingleProductState {}
+class ProductInitial extends ProductState {}
+
+class AddOrRemoveProductLoading extends ProductState {}
+
+class AddOrRemoveProductFailed extends ProductState {
+  final String message;
+
+  AddOrRemoveProductFailed({required this.message});
+}
+
+class AddOrRemoveProductSucceeded extends ProductState {}

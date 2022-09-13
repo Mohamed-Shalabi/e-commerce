@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
+import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
 import 'package:e_commerce/modules/products/widgets/product_list_card.dart';
 import 'package:e_commerce/modules/products/widgets/toggle_is_product_in_wishlist_button.dart';
 import 'package:e_commerce/routes.dart';
@@ -18,7 +18,7 @@ class ProductDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<ProductViewModel>();
+    final viewModel = context.read<ProductCubit>();
     final product = viewModel.product;
     final similarProducts = viewModel.similarProducts;
     final categoryProducts = viewModel.similarProducts;
@@ -131,8 +131,8 @@ class ProductDetailsWidget extends StatelessWidget {
                   itemCount: similarProducts.length,
                   itemBuilder: (context, index) {
                     final product = similarProducts[index];
-                    return RepositoryProvider(
-                      create: (_) => ProductViewModel(
+                    return BlocProvider(
+                      create: (_) => ProductCubit(
                         product: product,
                         similarProducts: categoryProducts,
                       ),
@@ -142,7 +142,7 @@ class ProductDetailsWidget extends StatelessWidget {
                             onTap: () {
                               context.navigate(
                                 Routes.singleProductRouteName,
-                                arguments: context.read<ProductViewModel>(),
+                                arguments: context.read<ProductCubit>(),
                               );
                             },
                             child: const ProductGridCard(

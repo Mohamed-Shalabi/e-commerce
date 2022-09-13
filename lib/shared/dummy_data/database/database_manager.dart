@@ -298,7 +298,6 @@ class DatabaseManager {
       }
 
       final id = result[0]['id'] as int;
-      print(id);
       Prefs.saveOrRemoveData<int>(key: Prefs.userTokenKey, value: id);
 
       return result[0];
@@ -311,6 +310,7 @@ class DatabaseManager {
     return await Prefs.saveOrRemoveData<int>(key: Prefs.userTokenKey);
   }
 
+  // gets the cart with products as mapa
   Future<Map<String, dynamic>> queryCart(int userToken) async {
     final result = await _database!.query(
       _cartsTableName,
@@ -381,17 +381,11 @@ class DatabaseManager {
     final index = cart['products'].indexWhere(
       (element) => element['id'] == product!['id'],
     );
+
     if (index != -1) {
-      final productsIdsString = json.encode(
-        cart['products'].map((e) => e['id']).toList()..removeAt(index),
-      );
       cart['total'] -= product!['price'];
-      cart['products_ids'] = productsIdsString;
-      cart.remove('products');
 
-      cart['discount'] = cart['coupon']['discount'];
-      cart['coupon'] = cart['coupon']['coupon'];
-
+      _prepareCartForDatabaseInsertion(cart);
       _updateCart(userToken, cart);
     } else {
       throw _RequestException('Could not remove from cart');
@@ -409,14 +403,7 @@ class DatabaseManager {
     cart['coupon']['coupon'] = coupon;
     cart['coupon']['discount'] = discount;
 
-    final productsIdsString = json.encode(
-      cart['products'].map((e) => e['id']).toList(),
-    );
-    cart.remove('products');
-    cart['products_ids'] = productsIdsString;
-
-    cart['discount'] = cart['coupon']['discount'];
-    cart['coupon'] = cart['coupon']['coupon'];
+    _prepareCartForDatabaseInsertion(cart);
 
     _updateCart(userToken, cart);
     return resultCart;
@@ -429,6 +416,12 @@ class DatabaseManager {
     cart['coupon']['coupon'] = '';
     cart['coupon']['discount'] = 0;
 
+    _prepareCartForDatabaseInsertion(cart);
+    _updateCart(userToken, cart);
+    return resultCart;
+  }
+
+  void _prepareCartForDatabaseInsertion(Map<String, dynamic> cart) {
     final productsIdsString = json.encode(
       cart['products'].map((e) => e['id']).toList(),
     );
@@ -437,9 +430,6 @@ class DatabaseManager {
 
     cart['discount'] = cart['coupon']['discount'];
     cart['coupon'] = cart['coupon']['coupon'];
-
-    _updateCart(userToken, cart);
-    return resultCart;
   }
 
   Future<bool> clearCart(int userToken) {

@@ -1,5 +1,5 @@
 import 'package:e_commerce/modules/products/blocs/products/products_cubit.dart';
-import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
+import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
 import 'package:e_commerce/modules/products/widgets/product_list_card.dart';
 import 'package:e_commerce/modules/products/widgets/products_responsive_widget.dart';
 import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';

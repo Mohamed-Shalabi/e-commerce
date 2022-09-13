@@ -1,4 +1,5 @@
-import 'package:e_commerce/models/product_model.dart';
+import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
+import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';
@@ -10,10 +11,10 @@ class CartProductListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = context.read<ProductModel>();
+    final product = context.read<ProductCubit>().product;
     return SizedBox(
       width: double.infinity,
-      height: 120,
+      height: 88,
       child: Row(
         children: [
           Image.asset(
@@ -25,62 +26,82 @@ class CartProductListTile extends StatelessWidget {
           const VerticalDivider(thickness: 3),
           Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FittedBox(
-                  child: MyText(
-                    AppStrings.price,
-                    style: context.textTheme.subtitle1,
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      MyText(
+                        AppStrings.price,
+                        style: context.textTheme.subtitle1,
+                      ),
+                      MyText(
+                        '\$${product.price.toStringAsFixed(2)}',
+                        style: context.textTheme.subtitle1,
+                      ),
+                    ],
                   ),
                 ),
-                FittedBox(
-                  child: MyText(
-                    '\$${product.price.toStringAsFixed(2)}',
-                    style: context.textTheme.subtitle1,
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      MyText(
+                        AppStrings.quantity,
+                        style: context.textTheme.subtitle1,
+                      ),
+                      BlocBuilder<CartCubit, CartState>(
+                        builder: (context, state) {
+                          return MyText(
+                            '${product.quantityInCart}',
+                            style: context.textTheme.subtitle1,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      MyText(
+                        AppStrings.total,
+                        style: context.textTheme.subtitle1,
+                      ),
+                      MyText(
+                        '\$${product.totalPriceInCart.toStringAsFixed(2)}',
+                        style: context.textTheme.subtitle1,
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
           const VerticalDivider(thickness: 3),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                FittedBox(
-                  child: MyText(
-                    AppStrings.quantity,
-                    style: context.textTheme.subtitle1,
-                  ),
-                ),
-                FittedBox(
-                  child: MyText(
-                    '${product.quantityInCart}',
-                    style: context.textTheme.subtitle1,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const VerticalDivider(thickness: 3),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                FittedBox(
-                  child: MyText(
-                    AppStrings.total,
-                    style: context.textTheme.subtitle1,
-                  ),
-                ),
-                FittedBox(
-                  child: MyText(
-                    '\$${product.totalPriceInCart.toStringAsFixed(2)}',
-                    style: context.textTheme.subtitle1,
-                  ),
-                ),
-              ],
-            ),
+          BlocConsumer<ProductCubit, ProductState>(
+            listener: (context, state) {
+              if (state is AddOrRemoveProductSucceeded) {
+                context.read<CartCubit>().removeProductFromCart(product);
+              }
+            },
+            builder: (context, state) {
+              context.watch<CartCubit>();
+              return state is AddOrRemoveProductLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : IconButton(
+                      onPressed: () {
+                        context
+                            .read<ProductCubit>()
+                            .removeProductFromCart(product);
+                      },
+                      icon: const Icon(Icons.remove_circle_outlined),
+                    );
+            },
           ),
         ],
       ),

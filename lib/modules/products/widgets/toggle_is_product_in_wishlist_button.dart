@@ -1,4 +1,4 @@
-import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
+import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
 import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
 import 'package:e_commerce/shared/components/show_snack_bar.dart';
 import 'package:e_commerce/shared/styles/app_colors.dart';
@@ -17,7 +17,7 @@ class ToggleIsProductInWishlistButton extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        final product = context.read<ProductViewModel>().product;
+        final product = context.read<ProductCubit>().product;
 
         if (state is WishlistToggleProductLoading &&
             product.id == state.productId) {

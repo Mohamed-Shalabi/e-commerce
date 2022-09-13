@@ -1,5 +1,5 @@
 import 'package:e_commerce/modules/products/blocs/products/base_products_cubit.dart';
-import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
+import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
 import 'package:e_commerce/modules/products/widgets/product_list_card.dart';
 import 'package:e_commerce/responsive/responsive_widget.dart';
 import 'package:e_commerce/routes.dart';
@@ -21,16 +21,16 @@ class ProductsResponsiveWidget<T extends BaseProductsCubit>
         itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];
-          return RepositoryProvider(
+          return BlocProvider(
             key: ObjectKey(product),
-            create: (_) => ProductViewModel(
+            create: (_) => ProductCubit(
               product: product,
               similarProducts: products,
             ),
             child: Builder(builder: (context) {
               return InkWell(
                 onTap: () {
-                  final viewModel = context.read<ProductViewModel>();
+                  final viewModel = context.read<ProductCubit>();
                   context.navigate(
                     Routes.singleProductRouteName,
                     arguments: viewModel,
@@ -52,8 +52,8 @@ class ProductsResponsiveWidget<T extends BaseProductsCubit>
         itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];
-          return RepositoryProvider(
-            create: (_) => ProductViewModel(
+          return BlocProvider(
+            create: (_) => ProductCubit(
               product: product,
               similarProducts: products,
             ),
@@ -61,7 +61,7 @@ class ProductsResponsiveWidget<T extends BaseProductsCubit>
               builder: (context) {
                 return InkWell(
                   onTap: () {
-                    final viewModel = context.read<ProductViewModel>();
+                    final viewModel = context.read<ProductCubit>();
                     context.navigate(
                       Routes.singleProductRouteName,
                       arguments: viewModel,

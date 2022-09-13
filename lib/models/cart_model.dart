@@ -74,6 +74,10 @@ class CartModel extends Iterable<ProductModel> {
 
   CouponModel get coupon => _coupon;
 
+  List<ProductModel> get unique {
+    return toSet().toList();
+  }
+
   void copyFrom(CartModel other) {
     _coupon = other.coupon;
     _total = other.total;

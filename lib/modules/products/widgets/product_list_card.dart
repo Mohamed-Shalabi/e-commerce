@@ -1,4 +1,4 @@
-import 'package:e_commerce/modules/products/blocs/single_product/product_view_model.dart';
+import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
 import 'package:e_commerce/modules/products/widgets/toggle_is_product_in_wishlist_button.dart';
 import 'package:e_commerce/shared/components/my_card.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
@@ -12,7 +12,7 @@ class ProductVerticalListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<ProductViewModel>();
+    final viewModel = context.read<ProductCubit>();
     final product = viewModel.product;
     return MyCard(
       height: 80,
@@ -78,7 +78,7 @@ class ProductGridCardContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<ProductViewModel>();
+    final viewModel = context.read<ProductCubit>();
     final product = viewModel.product;
 
     return Stack(
@@ -124,7 +124,7 @@ class ProductPrice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final price = context.read<ProductViewModel>().product.price;
+    final price = context.read<ProductCubit>().product.price;
     return MyCard(
       color: context.colorScheme.secondary,
       margin: const EdgeInsets.all(8),
@@ -152,7 +152,7 @@ class ProductListCardDataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<ProductViewModel>();
+    final viewModel = context.read<ProductCubit>();
     final product = viewModel.product;
     return Row(
       children: [
