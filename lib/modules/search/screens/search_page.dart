@@ -80,22 +80,21 @@ class SearchPage extends StatelessWidget {
                                   final product = products[index];
                                   return BlocProvider(
                                     create: (_) => ProductCubit(
-                                      product: product,
-                                      similarProducts: products,
+                                      productId: product.id,
+                                      categoryId: product.categoryId,
                                     ),
                                     child: Builder(
                                       builder: (context) {
                                         return InkWell(
                                           onTap: () {
-                                            final viewModel = context
-                                                .read<ProductCubit>();
+                                            final viewModel =
+                                                context.read<ProductCubit>();
                                             context.navigate(
                                               Routes.singleProductRouteName,
                                               arguments: viewModel,
                                             );
                                           },
-                                          child:
-                                              const ProductVerticalListCard(),
+                                          child: const ProductListCard(),
                                         );
                                       },
                                     ),

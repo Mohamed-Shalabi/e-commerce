@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:e_commerce/models/cart_model.dart';
 import 'package:e_commerce/models/product_model.dart';
@@ -61,13 +63,23 @@ abstract class CartRepository {
     return Left<String, void>(result['message']);
   }
 
-  static Future<Either<String, void>> clearCart() async {
-    final result = await CartService.clearCart();
+  static final _placeOrderStreamController =
+      StreamController<Either<String, void>>.broadcast();
+
+  static void listenToPlaceOrderStream(
+    void Function(Either<String, void> event) action,
+  ) {
+    _placeOrderStreamController.stream.listen(action);
+  }
+
+  static Future<void> placeOrderAndClearCart() async {
+    final result = await CartService.placeOrderAndClearCart();
     if (result['status_code'] == 200) {
       CartModel.clear();
-      return const Right<String, void>(null);
+      _placeOrderStreamController.add(const Right<String, void>(null));
+      return;
     }
 
-    return Left<String, void>(result['message']);
+    _placeOrderStreamController.add(Left<String, void>(result['message']));
   }
 }

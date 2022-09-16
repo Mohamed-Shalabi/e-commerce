@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:e_commerce/shared/dummy_data/api/api.dart';
 import 'package:e_commerce/shared/local/prefs.dart';
 

@@ -1,4 +1,4 @@
-import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
+import 'package:e_commerce/models/product_model.dart';
 import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
 import 'package:e_commerce/shared/components/show_snack_bar.dart';
 import 'package:e_commerce/shared/styles/app_colors.dart';
@@ -17,21 +17,20 @@ class ToggleIsProductInWishlistButton extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        final product = context.read<ProductCubit>().product;
+        final product = context.read<ProductModel>();
 
-        if (state is WishlistToggleProductLoading &&
-            product.id == state.productId) {
+        if (context.read<WishlistCubit>().isProductLoading(product.id)) {
           return const CircularProgressIndicator();
         }
 
         final wishlistCubit = context.watch<WishlistCubit>();
-        final wishlist = wishlistCubit.wishlist;
+        final products = wishlistCubit.products;
         return IconButton(
           onPressed: () {
             wishlistCubit.toggleIsProductInWishlist(product.id);
           },
           icon: Icon(
-            product.isInWishlist(wishlist)
+            product.isInWishlist(products)
                 ? Icons.favorite
                 : Icons.favorite_border,
             color: AppColors.favourites,

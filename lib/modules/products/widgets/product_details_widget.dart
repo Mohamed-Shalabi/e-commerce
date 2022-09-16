@@ -1,7 +1,8 @@
 import 'dart:math';
 
+import 'package:e_commerce/models/product_model.dart';
 import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
-import 'package:e_commerce/modules/products/widgets/product_list_card.dart';
+import 'package:e_commerce/modules/products/widgets/product_grid_card.dart';
 import 'package:e_commerce/modules/products/widgets/toggle_is_product_in_wishlist_button.dart';
 import 'package:e_commerce/routes.dart';
 import 'package:e_commerce/shared/components/my_card.dart';
@@ -18,10 +19,9 @@ class ProductDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<ProductCubit>();
+    final viewModel = context.watch<ProductCubit>();
     final product = viewModel.product;
     final similarProducts = viewModel.similarProducts;
-    final categoryProducts = viewModel.similarProducts;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +39,10 @@ class ProductDetailsWidget extends StatelessWidget {
                       style: context.textTheme.titleLarge,
                     ),
                   ),
-                  const ToggleIsProductInWishlistButton(),
+                  RepositoryProvider.value(
+                    value: product,
+                    child: const ToggleIsProductInWishlistButton(),
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
@@ -131,18 +134,15 @@ class ProductDetailsWidget extends StatelessWidget {
                   itemCount: similarProducts.length,
                   itemBuilder: (context, index) {
                     final product = similarProducts[index];
-                    return BlocProvider(
-                      create: (_) => ProductCubit(
-                        product: product,
-                        similarProducts: categoryProducts,
-                      ),
+                    return RepositoryProvider.value(
+                      value: product,
                       child: Builder(
                         builder: (context) {
                           return InkWell(
                             onTap: () {
                               context.navigate(
                                 Routes.singleProductRouteName,
-                                arguments: context.read<ProductCubit>(),
+                                arguments: context.read<ProductModel>(),
                               );
                             },
                             child: const ProductGridCard(

@@ -13,26 +13,23 @@ class ProductImagesSlider extends StatelessWidget {
     final viewModel = context.read<ProductCubit>();
     final product = viewModel.product;
 
-    return Hero(
-      tag: 'product_image:${product.id}',
-      child: CarouselSlider(
-        options: CarouselOptions(
-          padEnds: true,
-          autoPlay: true,
-          enlargeCenterPage: true,
-          pageSnapping: true,
-          autoPlayInterval: const Duration(seconds: 2),
-        ),
-        items: [
-          for (final image in product.images)
-            Image.asset(
-              image,
-              width: context.screenWidth,
-              height: context.screenHeight * 0.33,
-              fit: BoxFit.contain,
-            ),
-        ],
+    return CarouselSlider(
+      options: CarouselOptions(
+        padEnds: true,
+        autoPlay: true,
+        enlargeCenterPage: true,
+        pageSnapping: true,
+        autoPlayInterval: const Duration(seconds: 2),
       ),
+      items: [
+        for (final image in product.images)
+          Image.asset(
+            image,
+            width: context.screenWidth,
+            height: context.screenHeight * 0.33,
+            fit: BoxFit.contain,
+          ),
+      ],
     );
   }
 }

@@ -31,8 +31,8 @@ abstract class CartService {
     return _api.removeCoupon(userToken);
   }
 
-  static Future<Map<String, dynamic>> clearCart() {
+  static Future<Map<String, dynamic>> placeOrderAndClearCart() {
     final userToken = Prefs.getData<int>(key: Prefs.userTokenKey)!;
-    return _api.clearCart(userToken);
+    return _api.placeOrderAndClearCart(userToken);
   }
 }

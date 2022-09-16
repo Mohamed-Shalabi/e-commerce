@@ -16,15 +16,14 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final product = context.read<ProductCubit>().product;
-    return BlocConsumer<ProductCubit, ProductState>(
-      listener: (_, ProductState state) {
-        if (state is AddOrRemoveProductFailed) {
+    return BlocConsumer<CartCubit, CartState>(
+      listener: (_, CartState state) {
+        if (state is CartAddOrRemoveProductFailed) {
           context.showSnackBar(state.message);
         }
       },
-      builder: (_, ProductState state) {
-        context.watch<CartCubit>();
-        if (state is AddOrRemoveProductLoading) {
+      builder: (_, CartState state) {
+        if (context.read<CartCubit>().isProductLoading(product.id)) {
           return MyCard(
             width: 56,
             height: 56,
@@ -35,8 +34,6 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
           );
         }
 
-        final cart = CartModel.getInstance();
-
         return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -44,9 +41,9 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
             if (product.quantity > 0 &&
                 product.quantityInCart < product.quantity)
               FloatingActionButton(
-                heroTag: 'add_product',
+                heroTag: null,
                 onPressed: () {
-                  context.read<ProductCubit>().addProductToCart(product);
+                  context.read<CartCubit>().addProductToCart(product);
                 },
                 child: const Icon(Icons.add),
               ),
@@ -57,7 +54,7 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
                 Stack(
                   children: [
                     FloatingActionButton(
-                      heroTag: 'remove_product',
+                      heroTag: null,
                       onPressed: () {
                         context.navigate(Routes.cartRouteName);
                       },
@@ -74,7 +71,7 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
                           padding: const EdgeInsets.all(2),
                           child: Center(
                             child: MyText(
-                              '${cart.length}',
+                              '${CartModel.getInstance().length}',
                               style: context.textTheme.labelSmall?.copyWith(
                                 color: context.colorScheme.onError,
                               ),
@@ -106,9 +103,9 @@ class SingleProductFloatingActionButtons extends StatelessWidget {
                 if (product.quantityInCart > 0) ...[
                   const SizedBox(width: 8),
                   FloatingActionButton(
-                    heroTag: 'remove',
+                    heroTag: null,
                     onPressed: () {
-                      context.read<ProductCubit>().removeProductFromCart(product);
+                      context.read<CartCubit>().removeProductFromCart(product);
                     },
                     child: const Icon(Icons.remove),
                   ),

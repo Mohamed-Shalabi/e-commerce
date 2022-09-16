@@ -9,9 +9,18 @@ part 'cart_state.dart';
 class CartCubit extends BaseShippingDataCubit<CartState> {
   CartCubit() : super(CartInitial()) {
     initCart();
+    CartRepository.listenToPlaceOrderStream((event) {
+      event.fold<void>(
+        (l) => emit(PlaceOrderFailed(message: l)),
+        (r) => emit(PlaceOrderSucceeded()),
+      );
+    });
   }
 
   final couponController = TextEditingController();
+  final _loadingProductsIds = <int>{};
+
+  bool isProductLoading(int id) => _loadingProductsIds.contains(id);
 
   void initCart() async {
     final result = await CartRepository.initCart();
@@ -27,6 +36,32 @@ class CartCubit extends BaseShippingDataCubit<CartState> {
     countryController.text = user.country;
     cityController.text = user.city;
     addressController.text = user.address;
+  }
+
+  void addProductToCart(ProductModel product) async {
+    _loadingProductsIds.add(product.id);
+    emit(CartAddOrRemoveProductLoading());
+
+    final result = await CartRepository.addProductToCart(product);
+    _loadingProductsIds.remove(product.id);
+
+    result.fold<void>(
+      (l) => emit(CartAddOrRemoveProductFailed(message: l)),
+      (r) => emit(CartAddOrRemoveProductSucceeded()),
+    );
+  }
+
+  void removeProductFromCart(ProductModel product) async {
+    _loadingProductsIds.add(product.id);
+    emit(CartAddOrRemoveProductLoading());
+
+    final result = await CartRepository.removeProductFromCart(product);
+    _loadingProductsIds.remove(product.id);
+
+    result.fold<void>(
+      (l) => emit(CartAddOrRemoveProductFailed(message: l)),
+      (r) => emit(CartAddOrRemoveProductSucceeded()),
+    );
   }
 
   void applyCoupon() async {
@@ -51,16 +86,8 @@ class CartCubit extends BaseShippingDataCubit<CartState> {
     );
   }
 
-  Future<void> clearCart() async {
-    emit(ClearCartLoading());
-    final result = await CartRepository.clearCart();
-    result.fold<void>(
-      (l) => emit(ClearCartFailed(message: l)),
-      (r) => emit(ClearCartSucceeded()),
-    );
-  }
-
-  void removeProductFromCart(ProductModel product) {
-    emit(CartAddOrRemoveProductSucceeded());
+  void placeOrderAndClearCart() {
+    emit(PlaceOrderLoading());
+    CartRepository.placeOrderAndClearCart();
   }
 }

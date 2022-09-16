@@ -11,13 +11,13 @@ class WishlistScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wishlist = context.watch<WishlistCubit>().wishlist;
+    final products = context.watch<WishlistCubit>().products;
 
     return Scaffold(
       appBar: AppBar(
         title: const MyText(AppStrings.wishlist),
       ),
-      body: wishlist.isEmpty
+      body: products.isEmpty
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -83,6 +83,18 @@ class ProfilePage extends StatelessWidget {
                     width: double.infinity,
                     height: double.infinity,
                     child: TextButton(
+                      onPressed: () {},
+                      child: const MyText(AppStrings.trackOrders),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                MyCard(
+                  height: 48,
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: TextButton(
                       onPressed: () {
                         context.navigate(Routes.wishlistRouteName);
                       },

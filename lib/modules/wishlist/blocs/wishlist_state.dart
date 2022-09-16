@@ -5,11 +5,7 @@ abstract class WishlistState {}
 
 class WishlistInitial extends WishlistState {}
 
-class WishlistToggleProductLoading extends WishlistState {
-  final int productId;
-
-  WishlistToggleProductLoading({required this.productId});
-}
+class WishlistToggleProductLoading extends WishlistState {}
 
 class WishlistToggleProductDone extends WishlistState {}
 

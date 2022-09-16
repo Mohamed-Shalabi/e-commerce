@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:e_commerce/shared/dummy_data/database/database_manager.dart';
 import 'package:e_commerce/shared/functions/functions.dart';
-import 'package:e_commerce/shared/utils/app_strings.dart';
 
 class Api {
   Api._();
@@ -141,9 +140,9 @@ class Api {
     );
   }
 
-  Future<Map<String, dynamic>> clearCart(int userToken) {
+  Future<Map<String, dynamic>> placeOrderAndClearCart(int userToken) {
     return _futureRequest(
-      () => _databaseManager.clearCart(userToken),
+      () => _databaseManager.placeOrderAndClearCart(userToken),
     );
   }
 }
@@ -152,7 +151,7 @@ Future<Map<String, dynamic>> _futureRequest<T>(
   Future<T?> Function() getData,
 ) async {
   try {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 600));
     if (!await isConnected) {
       throw const SocketException('Check your internet connection');
     }

@@ -44,4 +44,5 @@ abstract class AppStrings {
   static const toggleDarkMode = 'Toggle dark mode';
   static const wishlist = 'Wishlist';
   static const emptyWishlist = 'Your wishlist is empty';
+  static const trackOrders = 'Track orders';
 }

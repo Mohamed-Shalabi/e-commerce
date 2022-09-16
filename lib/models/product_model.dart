@@ -1,8 +1,9 @@
 import 'package:e_commerce/models/cart_model.dart';
 import 'package:e_commerce/shared/functions/functions.dart';
+import 'package:equatable/equatable.dart';
 
-class ProductModel {
-  final int id;
+class ProductModel extends Equatable {
+  final int id, categoryId;
   final String title, description;
   final List<String> images;
   final double price;
@@ -11,6 +12,7 @@ class ProductModel {
 
   ProductModel.fromMap(Map<String, dynamic> map)
       : id = map['id'],
+        categoryId = map['category_id'],
         title = map['title'],
         description = map['description'] ?? '',
         images = ((map['images']) as String).toJson.cast<String>(),
@@ -36,7 +38,7 @@ class ProductModel {
     return 'Available';
   }
 
-  bool isInWishlist(List<ProductModel> wishlist) {
+  bool isInWishlist(Iterable<ProductModel> wishlist) {
     return wishlist.any((element) => element.id == id);
   }
 
@@ -49,4 +51,7 @@ class ProductModel {
   static List<ProductModel> parseList(List<Map<String, dynamic>> list) {
     return list.map((map) => ProductModel.fromMap(map)).toList();
   }
+
+  @override
+  List<Object?> get props => [id];
 }

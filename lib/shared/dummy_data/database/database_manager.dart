@@ -285,6 +285,15 @@ class DatabaseManager {
     return result.first;
   }
 
+  Future<int> _updateProduct(Map<String, dynamic> product) {
+    return _database!.update(
+      _productsTableName,
+      product,
+      where: 'id=?',
+      whereArgs: [product['id']],
+    );
+  }
+
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       final result = await _database!.query(
@@ -310,7 +319,7 @@ class DatabaseManager {
     return await Prefs.saveOrRemoveData<int>(key: Prefs.userTokenKey);
   }
 
-  // gets the cart with products as mapa
+  // gets the cart with products as a map
   Future<Map<String, dynamic>> queryCart(int userToken) async {
     final result = await _database!.query(
       _cartsTableName,
@@ -379,11 +388,12 @@ class DatabaseManager {
     final product = await queryProduct(productId);
     final cart = await queryCart(userToken);
     final index = cart['products'].indexWhere(
-      (element) => element['id'] == product!['id'],
+      (element) => element['id'] == productId,
     );
 
     if (index != -1) {
       cart['total'] -= product!['price'];
+      cart['products'].removeAt(index);
 
       _prepareCartForDatabaseInsertion(cart);
       _updateCart(userToken, cart);
@@ -432,7 +442,17 @@ class DatabaseManager {
     cart['coupon'] = cart['coupon']['coupon'];
   }
 
-  Future<bool> clearCart(int userToken) {
+  Future<bool> placeOrderAndClearCart(int userToken) async {
+    final cart = await queryCart(userToken);
+    final products = cart['products'];
+    for (final product in products) {
+      final Map<String, dynamic> growableProduct = {
+        ...(await queryProduct(product['id']))!,
+      };
+      growableProduct['quantity'] -= 1;
+      await _updateProduct(growableProduct);
+    }
+
     return _updateCart(
       userToken,
       {

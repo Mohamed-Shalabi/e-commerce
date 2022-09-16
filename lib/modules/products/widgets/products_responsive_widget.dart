@@ -1,5 +1,5 @@
 import 'package:e_commerce/modules/products/blocs/products/base_products_cubit.dart';
-import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
+import 'package:e_commerce/modules/products/widgets/product_grid_card.dart';
 import 'package:e_commerce/modules/products/widgets/product_list_card.dart';
 import 'package:e_commerce/responsive/responsive_widget.dart';
 import 'package:e_commerce/routes.dart';
@@ -20,23 +20,19 @@ class ProductsResponsiveWidget<T extends BaseProductsCubit>
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
         itemCount: products.length,
         itemBuilder: (context, index) {
-          final product = products[index];
-          return BlocProvider(
+          final product = products.elementAt(index);
+          return RepositoryProvider.value(
             key: ObjectKey(product),
-            create: (_) => ProductCubit(
-              product: product,
-              similarProducts: products,
-            ),
+            value: product,
             child: Builder(builder: (context) {
               return InkWell(
                 onTap: () {
-                  final viewModel = context.read<ProductCubit>();
                   context.navigate(
                     Routes.singleProductRouteName,
-                    arguments: viewModel,
+                    arguments: product,
                   );
                 },
-                child: const ProductVerticalListCard(),
+                child: const ProductListCard(),
               );
             }),
           );
@@ -51,20 +47,17 @@ class ProductsResponsiveWidget<T extends BaseProductsCubit>
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
         itemCount: products.length,
         itemBuilder: (context, index) {
-          final product = products[index];
-          return BlocProvider(
-            create: (_) => ProductCubit(
-              product: product,
-              similarProducts: products,
-            ),
+          final product = products.elementAt(index);
+          return RepositoryProvider.value(
+            key: ObjectKey(product),
+            value: product,
             child: Builder(
               builder: (context) {
                 return InkWell(
                   onTap: () {
-                    final viewModel = context.read<ProductCubit>();
                     context.navigate(
                       Routes.singleProductRouteName,
-                      arguments: viewModel,
+                      arguments: product,
                     );
                   },
                   child: const ProductGridCard(),

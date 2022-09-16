@@ -4,7 +4,6 @@ import 'package:e_commerce/modules/cart/widgets/add_coupon_dialog.dart';
 import 'package:e_commerce/modules/cart/widgets/cart_product_list_tile.dart';
 import 'package:e_commerce/modules/cart/widgets/checkout_modal_sheet.dart';
 import 'package:e_commerce/modules/cart/widgets/total_price_text.dart';
-import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
 import 'package:e_commerce/responsive/responsive_utils.dart';
 import 'package:e_commerce/shared/components/my_card.dart';
 import 'package:e_commerce/shared/components/my_error_widget.dart';
@@ -71,8 +70,8 @@ class CartPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     for (final product in cart.unique) ...[
-                      BlocProvider(
-                        create: (_) => ProductCubit(product: product),
+                      RepositoryProvider.value(
+                        value: product,
                         child: const CartProductListTile(),
                       ),
                       const Divider(thickness: 3),

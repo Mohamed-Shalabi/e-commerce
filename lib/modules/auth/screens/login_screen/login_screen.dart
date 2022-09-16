@@ -28,7 +28,7 @@ class LoginScreen extends StatelessWidget {
           if (state is LoginSucceeded) {
             context.read<CartCubit>().updateFormData();
             context.read<CartCubit>().initCart();
-            context.read<WishlistCubit>().wishlist.clear();
+            context.read<WishlistCubit>().clearWishlist();
             context.navigateAndRemovePreviousRoutes(
               Routes.mainLayoutRouteName,
             );

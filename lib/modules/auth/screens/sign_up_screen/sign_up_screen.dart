@@ -32,7 +32,7 @@ class SignUpScreen extends StatelessWidget {
           if (state is SignUpSucceeded) {
             context.read<CartCubit>().updateFormData();
             context.read<CartCubit>().initCart();
-            context.read<WishlistCubit>().wishlist.clear();
+            context.read<WishlistCubit>().clearWishlist();
             context.navigateAndRemovePreviousRoutes(
               Routes.mainLayoutRouteName,
             );

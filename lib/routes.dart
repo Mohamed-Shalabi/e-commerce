@@ -1,4 +1,5 @@
 import 'package:e_commerce/models/category_model.dart';
+import 'package:e_commerce/models/product_model.dart';
 import 'package:e_commerce/modules/auth/blocs/login/login_cubit.dart';
 import 'package:e_commerce/modules/auth/blocs/sign_up/sign_up_cubit.dart';
 import 'package:e_commerce/modules/auth/screens/login_screen/login_screen.dart';
@@ -70,10 +71,13 @@ abstract class Routes {
           ),
         );
       case singleProductRouteName:
-        final productViewModel = settings.arguments as ProductCubit;
+        final product = settings.arguments as ProductModel;
         return MaterialPageRoute(
-          builder: (_) => RepositoryProvider.value(
-            value: productViewModel,
+          builder: (_) => BlocProvider(
+            create: (_) => ProductCubit(
+              productId: product.id,
+              categoryId: product.categoryId,
+            )..getProductData(),
             child: const SingleProductScreen(),
           ),
         );

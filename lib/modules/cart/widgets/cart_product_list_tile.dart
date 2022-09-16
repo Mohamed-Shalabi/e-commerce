@@ -1,6 +1,7 @@
+import 'package:e_commerce/models/product_model.dart';
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
-import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
+import 'package:e_commerce/shared/components/show_snack_bar.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class CartProductListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = context.read<ProductCubit>().product;
+    final product = context.read<ProductModel>();
     return SizedBox(
       width: double.infinity,
       height: 88,
@@ -81,28 +82,30 @@ class CartProductListTile extends StatelessWidget {
             ),
           ),
           const VerticalDivider(thickness: 3),
-          BlocConsumer<ProductCubit, ProductState>(
-            listener: (context, state) {
-              if (state is AddOrRemoveProductSucceeded) {
-                context.read<CartCubit>().removeProductFromCart(product);
+          BlocConsumer<CartCubit, CartState>(
+            listener: (_, CartState state) {
+              if (state is CartAddOrRemoveProductFailed) {
+                context.showSnackBar(state.message);
               }
             },
-            builder: (context, state) {
-              context.watch<CartCubit>();
-              return state is AddOrRemoveProductLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : IconButton(
-                      onPressed: () {
-                        context
-                            .read<ProductCubit>()
-                            .removeProductFromCart(product);
-                      },
-                      icon: const Icon(Icons.remove_circle_outlined),
-                    );
+            builder: (BuildContext context, CartState state) {
+              if (context.read<CartCubit>().isProductLoading(product.id)) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              return IconButton(
+                onPressed: () {
+                  context.read<CartCubit>().removeProductFromCart(product);
+                },
+                icon: Icon(
+                  Icons.remove_circle_outlined,
+                  color: context.colorScheme.primary,
+                ),
+              );
             },
-          ),
+          )
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:e_commerce/models/product_model.dart';
+import 'package:e_commerce/models/wishlist_model.dart';
 import 'package:e_commerce/modules/products/blocs/products/base_products_cubit.dart';
 import 'package:e_commerce/modules/wishlist/wishlist_repository.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,10 @@ part 'wishlist_state.dart';
 class WishlistCubit extends BaseProductsCubit<WishlistState> {
   WishlistCubit() : super(WishlistInitial());
 
-  List<ProductModel> get wishlist => products;
+  final _wishlist = WishlistModel.getInstance();
+  final _loadingProductsIds = <int>{};
+
+  bool isProductLoading(int id) => _loadingProductsIds.contains(id);
 
   void getWishlist() async {
     final result = await WishlistRepository.getWishlist();
@@ -22,12 +26,15 @@ class WishlistCubit extends BaseProductsCubit<WishlistState> {
   }
 
   void toggleIsProductInWishlist(int productId) async {
-    emit(WishlistToggleProductLoading(productId: productId));
+    _loadingProductsIds.add(productId);
+    emit(WishlistToggleProductLoading());
 
-    if (wishlist.any((element) => element.id == productId)) {
+    if (_wishlist.any((element) => element.id == productId)) {
       final result = await WishlistRepository.removeProductFromWishlist(
         productId,
       );
+
+      _loadingProductsIds.remove(productId);
 
       result.fold<void>(
         (l) => emit(WishlistToggleProductFailed(message: l)),
@@ -41,6 +48,8 @@ class WishlistCubit extends BaseProductsCubit<WishlistState> {
         productId,
       );
 
+      _loadingProductsIds.remove(productId);
+
       result.fold<void>(
         (l) => emit(WishlistToggleProductFailed(message: l)),
         (r) {
@@ -49,5 +58,19 @@ class WishlistCubit extends BaseProductsCubit<WishlistState> {
         },
       );
     }
+  }
+
+  @override
+  Iterable<ProductModel> get products => _wishlist;
+
+  @override
+  set products(Iterable<ProductModel> products) {
+    _wishlist
+      ..clear()
+      ..addAll(products);
+  }
+
+  void clearWishlist() {
+    _wishlist.clear();
   }
 }

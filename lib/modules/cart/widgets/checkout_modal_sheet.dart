@@ -16,7 +16,7 @@ class CheckoutModalSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<CartCubit, CartState>(
       listener: (context, state) {
-        if (state is ClearCartSucceeded) {
+        if (state is PlaceOrderSucceeded) {
           context.pop();
           context.showSnackBar(AppStrings.orderDone);
         }
@@ -43,8 +43,8 @@ class CheckoutModalSheet extends StatelessWidget {
                 Center(
                   child: MaterialButton(
                     color: context.colorScheme.primary,
-                    onPressed: () async {
-                      await context.read<CartCubit>().clearCart();
+                    onPressed: () {
+                      context.read<CartCubit>().placeOrderAndClearCart();
                     },
                     child: MyText(
                       AppStrings.checkout,

@@ -6,4 +6,8 @@ abstract class ProductsService {
   static Future<Map<String, dynamic>> fetchCategoryProducts(int categoryId) {
     return _api.queryCategoryProducts(categoryId);
   }
+
+  static Future<Map<String, dynamic>> fetchProduct(int productId) {
+    return _api.queryProduct(productId);
+  }
 }
