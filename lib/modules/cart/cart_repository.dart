@@ -18,7 +18,7 @@ abstract class CartRepository {
   }
 
   static Future<Either<String, void>> addProductToCart(
-    ProductModel product,
+    BaseProductModel product,
   ) async {
     final cart = CartModel.getInstance();
     final result = await CartService.addProductToCart(product.id);
@@ -31,7 +31,7 @@ abstract class CartRepository {
   }
 
   static Future<Either<String, void>> removeProductFromCart(
-    ProductModel product,
+    BaseProductModel product,
   ) async {
     final cart = CartModel.getInstance();
     final result = await CartService.removeProductFromCart(product.id);

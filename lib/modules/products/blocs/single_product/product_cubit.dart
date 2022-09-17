@@ -21,7 +21,7 @@ class ProductCubit extends Cubit<ProductState> {
   final int categoryId;
 
   late ProductModel product;
-  late List<ProductModel> similarProducts;
+  late List<ProductListModel> similarProducts;
 
   void getProductData() async {
     emit(GetProductLoading());

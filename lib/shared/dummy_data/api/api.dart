@@ -33,9 +33,7 @@ class Api {
     );
   }
 
-  Future<Map<String, dynamic>> searchProducts(
-    String searchTerm,
-  ) async {
+  Future<Map<String, dynamic>> searchForProducts(String searchTerm) async {
     return _futureRequest(
       () => _databaseManager.searchForProducts(searchTerm),
     );
@@ -145,6 +143,12 @@ class Api {
       () => _databaseManager.placeOrderAndClearCart(userToken),
     );
   }
+
+  Future<Map<String, dynamic>> queryOrders(int userToken) {
+    return _futureRequest(
+      () => _databaseManager.queryOrders(userToken),
+    );
+  }
 }
 
 Future<Map<String, dynamic>> _futureRequest<T>(
@@ -168,7 +172,9 @@ Future<Map<String, dynamic>> _futureRequest<T>(
         'data': data,
       };
     }
-  } catch (e) {
+  } catch (e, s) {
+    print(e);
+    print(s);
     return {
       'status_code': 500,
       'message': e.toString(),

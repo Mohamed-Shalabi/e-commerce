@@ -18,7 +18,7 @@ class ProductsCubit extends BaseProductsCubit<ProductsState> {
 
   final CategoryModel category;
   @override
-  Iterable<ProductModel> products = [];
+  Iterable<ProductListModel> products = [];
 
   Future<void> getProducts() async {
     emit(ProductsLoading());

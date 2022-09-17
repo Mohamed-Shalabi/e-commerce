@@ -39,7 +39,7 @@ class ProductGridCardContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = context.read<ProductModel>();
+    final product = context.read<ProductListModel>();
 
     return Stack(
       children: [
@@ -49,7 +49,7 @@ class ProductGridCardContents extends StatelessWidget {
               width: isFromSingleProductScreen ? 120 : null,
               height: isFromSingleProductScreen ? 120 : null,
               child: Image.asset(
-                product.images[0],
+                product.mainImage,
                 width: isFromSingleProductScreen ? 120 : double.infinity,
                 height: isFromSingleProductScreen
                     ? 120

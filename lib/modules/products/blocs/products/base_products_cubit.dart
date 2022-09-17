@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 abstract class BaseProductsCubit<T> extends Cubit<T> {
   BaseProductsCubit(super.initialState);
 
-  Iterable<ProductModel> get products;
+  Iterable<ProductListModel> get products;
 
-  set products(Iterable<ProductModel> value);
+  set products(Iterable<ProductListModel> value);
 }

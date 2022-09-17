@@ -1,15 +1,15 @@
 import 'package:e_commerce/models/product_model.dart';
 
-class CartModel extends Iterable<ProductModel> {
+class CartModel extends Iterable<ProductListModel> {
   double _total;
   CouponModel _coupon;
-  List<ProductModel> _products = [];
+  List<ProductListModel> _products = [];
 
   static final CartModel _instance = CartModel._fromMap({});
 
   static void buildInstance(Map<String, dynamic> map) {
     final temp = CartModel._fromMap(map);
-    _instance.copyFrom(temp);
+    _instance._copyFrom(temp);
   }
 
   factory CartModel.getInstance() => _instance;
@@ -19,7 +19,7 @@ class CartModel extends Iterable<ProductModel> {
         _coupon = CouponModel._fromMap(map['coupon'] ?? {}) {
     _products
       ..clear()
-      ..addAll(ProductModel.parseList(map['products'] ?? []));
+      ..addAll(ProductListModel.parseList(map['products'] ?? []));
   }
 
   static void clear() {
@@ -31,16 +31,20 @@ class CartModel extends Iterable<ProductModel> {
 
   double get totalAfterDiscount => total - coupon.discount;
 
-  void addProduct(ProductModel product) {
-    _products.add(product);
+  void addProduct(BaseProductModel product) {
+    if (product is ProductListModel) {
+      _products.add(product);
+    } else if (product is ProductModel) {
+      _products.add(product.asProductListModel);
+    }
   }
 
-  void removeProduct(ProductModel product) {
+  void removeProduct(BaseProductModel product) {
     final index = _products.indexWhere((element) => element.id == product.id);
     _products.removeAt(index);
   }
 
-  bool containsProduct(ProductModel product) {
+  bool containsProduct(BaseProductModel product) {
     return _products.contains(product);
   }
 
@@ -48,9 +52,9 @@ class CartModel extends Iterable<ProductModel> {
   int get length => _products.length;
 
   @override
-  Iterator<ProductModel> get iterator => _products.iterator;
+  Iterator<ProductListModel> get iterator => _products.iterator;
 
-  int numberOfProduct(ProductModel product) {
+  int numberOfProduct(BaseProductModel product) {
     return where((element) => element.id == product.id).length;
   }
 
@@ -74,11 +78,11 @@ class CartModel extends Iterable<ProductModel> {
 
   CouponModel get coupon => _coupon;
 
-  List<ProductModel> get unique {
+  List<ProductListModel> get unique {
     return toSet().toList();
   }
 
-  void copyFrom(CartModel other) {
+  void _copyFrom(CartModel other) {
     _coupon = other.coupon;
     _total = other.total;
     _products = other._products;

@@ -12,14 +12,14 @@ class CartProductListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = context.read<ProductModel>();
+    final product = context.read<ProductListModel>();
     return SizedBox(
       width: double.infinity,
       height: 88,
       child: Row(
         children: [
           Image.asset(
-            product.images.first,
+            product.mainImage,
             height: 80,
             width: 80,
             fit: BoxFit.cover,

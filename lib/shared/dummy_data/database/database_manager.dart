@@ -13,12 +13,14 @@ class DatabaseManager {
   DatabaseManager._();
 
   static final DatabaseManager _instance = DatabaseManager._();
+
   static const String _databaseName = 'app_database.db';
-  static const String _categoriesTableName = 'Categories';
-  static const String _productsTableName = 'Products';
-  static const String _usersTableName = 'Users';
-  static const String _cartsTableName = 'Carts';
-  static const String _wishlistsTableName = 'Wishlists';
+  static const String _categoriesTableName = 'categories';
+  static const String _productsTableName = 'products';
+  static const String _usersTableName = 'users';
+  static const String _cartsTableName = 'carts';
+  static const String _wishlistsTableName = 'wishlists';
+  static const String _ordersTableName = 'orders';
 
   factory DatabaseManager.getInstance() => _instance;
 
@@ -32,19 +34,27 @@ class DatabaseManager {
       p.join(path, _databaseName),
       version: 1,
       onCreate: (database, version) async {
-        await _createProductsTable(database);
-        await _createCategoriesTable(database);
-        await _createCartsTable(database);
-        await _createWishlistsTable(database);
-        await _createUsersTable(database);
-        await _fillCategories(database);
-        await _fillProducts(database);
+        await _createTables(database);
+        await _fillTables(database);
       },
     );
   }
 
-  Future<void> _createProductsTable([Database? db]) async {
-    final database = db ?? _database!;
+  Future<void> _createTables(Database database) async {
+    await _createProductsTable(database);
+    await _createCategoriesTable(database);
+    await _createCartsTable(database);
+    await _createWishlistsTable(database);
+    await _createUsersTable(database);
+    await _createOrdersTable(database);
+  }
+
+  Future<void> _fillTables(Database database) async {
+    await _fillCategories(database);
+    await _fillProducts(database);
+  }
+
+  Future<void> _createProductsTable(Database database) async {
     return database.execute(
       'CREATE TABLE $_productsTableName ('
       'id INTEGER PRIMARY KEY AUTOINCREMENT, '
@@ -59,8 +69,7 @@ class DatabaseManager {
     );
   }
 
-  Future<void> _createCategoriesTable([Database? db]) async {
-    final database = db ?? _database!;
+  Future<void> _createCategoriesTable(Database database) async {
     return database.execute(
       'CREATE TABLE $_categoriesTableName ('
       'id INTEGER PRIMARY KEY AUTOINCREMENT, '
@@ -69,8 +78,7 @@ class DatabaseManager {
     );
   }
 
-  Future<void> _createUsersTable([Database? db]) async {
-    final database = db ?? _database!;
+  Future<void> _createUsersTable(Database database) async {
     return database.execute(
       'CREATE TABLE $_usersTableName ('
       'id INTEGER PRIMARY KEY AUTOINCREMENT, '
@@ -85,8 +93,7 @@ class DatabaseManager {
     );
   }
 
-  Future<void> _createCartsTable([Database? db]) async {
-    final database = db ?? _database!;
+  Future<void> _createCartsTable(Database database) async {
     return database.execute(
       'CREATE TABLE $_cartsTableName ('
       'id INTEGER PRIMARY KEY, '
@@ -113,11 +120,21 @@ class DatabaseManager {
     return result > 0;
   }
 
-  Future<void> _createWishlistsTable([Database? db]) async {
-    final database = db ?? _database!;
+  Future<void> _createWishlistsTable(Database database) async {
     return database.execute(
       'CREATE TABLE $_wishlistsTableName ('
       'id INTEGER PRIMARY KEY, '
+      'products_ids TEXT NOT NULL'
+      ')',
+    );
+  }
+
+  Future<void> _createOrdersTable(Database database) async {
+    return database.execute(
+      'CREATE TABLE $_ordersTableName ('
+      'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+      'user_id INTEGER, '
+      'total DOUBLE, '
       'products_ids TEXT NOT NULL'
       ')',
     );
@@ -133,6 +150,19 @@ class DatabaseManager {
     );
 
     return result > 0;
+  }
+
+  Future<int> _addOrderFromCart(Map<String, dynamic> cart) async {
+    return await _database!.insert(
+      _ordersTableName,
+      {
+        'user_id': cart['id'],
+        'total': cart['total'],
+        'products_ids': json.encode(
+          cart['products'].map((e) => e['id']).toList(),
+        ),
+      },
+    );
   }
 
   Future<Map<String, dynamic>?> createUser({
@@ -155,10 +185,10 @@ class DatabaseManager {
     };
 
     final userId = await _database!.insert(_usersTableName, user);
-    final isCartSaved = await addCart(userId);
-    final isWishlistSaved = await addWishlist(userId);
+    final isCartCreated = await addCart(userId);
+    final isWishlistCreated = await addWishlist(userId);
 
-    if (isCartSaved && isWishlistSaved && userId > 0) {
+    if (isCartCreated && isWishlistCreated && userId > 0) {
       return await login(email, password);
     }
 
@@ -172,7 +202,7 @@ class DatabaseManager {
   Future<Map<String, dynamic>> queryUserProfile(int userToken) async {
     final result = await _database!.query(
       _usersTableName,
-      where: 'id = ?',
+      where: 'id=?',
       whereArgs: [userToken],
     );
 
@@ -190,7 +220,7 @@ class DatabaseManager {
     final result = await _database!.update(
       _cartsTableName,
       cart,
-      where: 'id = ? ',
+      where: 'id=? ',
       whereArgs: [userToken],
     );
 
@@ -206,7 +236,7 @@ class DatabaseManager {
     final result = await _database!.update(
       _wishlistsTableName,
       {'products_ids': json.encode(productsIds)},
-      where: 'id = ?',
+      where: 'id=?',
       whereArgs: [userToken],
     );
 
@@ -228,20 +258,13 @@ class DatabaseManager {
   }
 
   Future<List<Map<String, Object?>>?> queryCategories() {
-    if (_database == null) {
-      throw _RequestException('Error in database');
-    }
     return _database!.query(_categoriesTableName);
   }
 
   Future<Map<String, Object?>?> queryCategory(int categoryId) {
-    if (_database == null) {
-      throw _RequestException('Error in database');
-    }
-
     return _database!.query(
       _categoriesTableName,
-      where: 'id = ?',
+      where: 'id=?',
       whereArgs: [categoryId],
     ).then((value) {
       return value.first;
@@ -251,31 +274,55 @@ class DatabaseManager {
   Future<List<Map<String, Object?>>?> queryCategoryProducts(
     int categoryId,
   ) async {
-    if (_database == null) {
-      throw _RequestException('Error in database');
-    }
-
-    return await _database!.query(
+    final products = await _database!.query(
       _productsTableName,
-      where: 'category_id = ?',
+      columns: ['id', 'category_id', 'quantity', 'price', 'title', 'images'],
+      where: 'category_id=?',
       whereArgs: [categoryId],
     );
+
+    final result = <Map<String, dynamic>>[];
+
+    for (final product in products) {
+      final growableProduct = {...product};
+      _prepareProductForProductListModel(growableProduct);
+      result.add(growableProduct);
+    }
+
+    return result;
   }
 
   Future<List<Map<String, Object?>>?> searchForProducts(
     String searchTerm,
   ) async {
-    final result = await _database?.query(_productsTableName,
-        distinct: true, where: 'title LIKE ?', whereArgs: ['%$searchTerm%']);
+    final products = await _database?.query(
+      _productsTableName,
+      distinct: true,
+      where: 'title LIKE ?',
+      whereArgs: ['%$searchTerm%'],
+      columns: ['id', 'category_id', 'quantity', 'price', 'title', 'images'],
+    );
+
+    final result = <Map<String, dynamic>>[];
+
+    for (final product in products!) {
+      final growableProduct = {...product};
+      _prepareProductForProductListModel(growableProduct);
+      result.add(growableProduct);
+    }
 
     return result;
   }
 
-  Future<Map<String, Object?>?> queryProduct(int productId) async {
+  Future<Map<String, Object?>?> queryProduct(
+    int productId, {
+    List<String>? columns,
+  }) async {
     final result = await _database!.query(
       _productsTableName,
-      where: 'id = ?',
+      where: 'id=?',
       whereArgs: [productId],
+      columns: columns,
     );
 
     if (result.isEmpty) {
@@ -298,7 +345,7 @@ class DatabaseManager {
     try {
       final result = await _database!.query(
         _usersTableName,
-        where: 'email = ? AND password = ?',
+        where: 'email=? AND password=?',
         whereArgs: [email, password],
       );
 
@@ -323,13 +370,9 @@ class DatabaseManager {
   Future<Map<String, dynamic>> queryCart(int userToken) async {
     final result = await _database!.query(
       _cartsTableName,
-      where: 'id = ?',
+      where: 'id=?',
       whereArgs: [userToken],
     );
-
-    if (result.isEmpty) {
-      throw _RequestException('Could not find cart');
-    }
 
     final cart = result[0];
     final cartProductsIds = json.decode(cart['products_ids'] as String);
@@ -431,19 +474,9 @@ class DatabaseManager {
     return resultCart;
   }
 
-  void _prepareCartForDatabaseInsertion(Map<String, dynamic> cart) {
-    final productsIdsString = json.encode(
-      cart['products'].map((e) => e['id']).toList(),
-    );
-    cart.remove('products');
-    cart['products_ids'] = productsIdsString;
-
-    cart['discount'] = cart['coupon']['discount'];
-    cart['coupon'] = cart['coupon']['coupon'];
-  }
-
   Future<bool> placeOrderAndClearCart(int userToken) async {
     final cart = await queryCart(userToken);
+    _addOrderFromCart(cart);
     final products = cart['products'];
     for (final product in products) {
       final Map<String, dynamic> growableProduct = {
@@ -464,20 +497,42 @@ class DatabaseManager {
     );
   }
 
+  Future<List<Map<String, Object?>>> queryOrders(int userToken) {
+    return _database!.query(
+      _ordersTableName,
+      where: 'user_id=?',
+      whereArgs: [userToken],
+    );
+  }
+
   Future<List<Map<String, dynamic>>> queryWishlist(int userToken) async {
-    final result = await _database!.query(
+    final wishlists = await _database!.query(
       _wishlistsTableName,
-      where: 'id = ?',
+      where: 'id=?',
       whereArgs: [userToken],
     );
 
+    final wishlistProductsIds =
+        json.decode(wishlists[0]['products_ids'] as String).cast<int>();
+
     final products = <Map<String, dynamic>>[];
-    for (final productId
-        in json.decode(result[0]['products_ids'] as String).cast<int>()) {
-      products.add((await queryProduct(productId))!);
+    for (final productId in wishlistProductsIds) {
+      final result = await queryProduct(
+        productId,
+        columns: ['id', 'category_id', 'quantity', 'price', 'title', 'images'],
+      );
+      products.add(result!);
     }
 
-    return products;
+    final result = <Map<String, dynamic>>[];
+
+    for (final product in products) {
+      final growableProduct = {...product};
+      _prepareProductForProductListModel(growableProduct);
+      result.add(growableProduct);
+    }
+
+    return result;
   }
 
   Future<List<Map<String, dynamic>>> removeProductFromWishlist(
@@ -505,7 +560,9 @@ class DatabaseManager {
     final product = await queryProduct(productId);
     final wishlist = await queryWishlist(userToken);
     if (!wishlist.any((element) => element['id'] == productId)) {
-      wishlist.add(product!);
+      final growableProduct = {...product!};
+      _prepareProductForProductListModel(growableProduct);
+      wishlist.add(growableProduct);
       final isDone = await _createWishlist(userToken, wishlist);
       if (isDone) {
         return wishlist;
@@ -515,6 +572,22 @@ class DatabaseManager {
     }
 
     throw _RequestException('Could not find the product to add');
+  }
+
+  void _prepareCartForDatabaseInsertion(Map<String, dynamic> cart) {
+    final productsIdsString = json.encode(
+      cart['products'].map((e) => e['id']).toList(),
+    );
+    cart.remove('products');
+    cart['products_ids'] = productsIdsString;
+
+    cart['discount'] = cart['coupon']['discount'];
+    cart['coupon'] = cart['coupon']['coupon'];
+  }
+
+  void _prepareProductForProductListModel(Map<String, dynamic> product) {
+    product['main_image'] = json.decode(product['images'] as String).first;
+    product.remove('images');
   }
 }
 

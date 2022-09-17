@@ -1,5 +1,4 @@
 import 'package:e_commerce/models/product_model.dart';
-import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
 import 'package:e_commerce/modules/products/widgets/product_list_card.dart';
 import 'package:e_commerce/modules/search/blocs/search_cubit.dart';
 import 'package:e_commerce/routes.dart';
@@ -29,7 +28,7 @@ class SearchPage extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            final List<ProductModel> products =
+            final List<ProductListModel> products =
                 state is SearchDone ? state.products : [];
 
             return Padding(
@@ -78,20 +77,15 @@ class SearchPage extends StatelessWidget {
                                 itemCount: products.length,
                                 itemBuilder: (context, index) {
                                   final product = products[index];
-                                  return BlocProvider(
-                                    create: (_) => ProductCubit(
-                                      productId: product.id,
-                                      categoryId: product.categoryId,
-                                    ),
+                                  return RepositoryProvider.value(
+                                    value: product,
                                     child: Builder(
                                       builder: (context) {
                                         return InkWell(
                                           onTap: () {
-                                            final viewModel =
-                                                context.read<ProductCubit>();
                                             context.navigate(
                                               Routes.singleProductRouteName,
-                                              arguments: viewModel,
+                                              arguments: product,
                                             );
                                           },
                                           child: const ProductListCard(),

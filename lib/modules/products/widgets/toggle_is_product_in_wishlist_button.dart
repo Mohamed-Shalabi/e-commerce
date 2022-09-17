@@ -5,11 +5,13 @@ import 'package:e_commerce/shared/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ToggleIsProductInWishlistButton extends StatelessWidget {
+class ToggleIsProductInWishlistButton<T extends BaseProductModel>
+    extends StatelessWidget {
   const ToggleIsProductInWishlistButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    assert(T != dynamic, 'Type T cannot be empty');
     return BlocConsumer<WishlistCubit, WishlistState>(
       listener: (context, state) {
         if (state is WishlistToggleProductFailed) {
@@ -17,7 +19,7 @@ class ToggleIsProductInWishlistButton extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        final product = context.read<ProductModel>();
+        final product = context.read<T>();
 
         if (context.read<WishlistCubit>().isProductLoading(product.id)) {
           return const CircularProgressIndicator();

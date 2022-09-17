@@ -3,16 +3,16 @@ import 'package:e_commerce/models/product_model.dart';
 import 'package:e_commerce/modules/products/products_service.dart';
 
 abstract class ProductsRepository {
-  static Future<Either<String, List<ProductModel>>> getCategoryProducts(
+  static Future<Either<String, List<ProductListModel>>> getCategoryProducts(
     int categoryId,
   ) async {
     final result = await ProductsService.fetchCategoryProducts(categoryId);
     if (result['status_code'] == 200) {
-      final products = ProductModel.parseList(result['data']);
-      return Right<String, List<ProductModel>>(products);
+      final products = ProductListModel.parseList(result['data']);
+      return Right<String, List<ProductListModel>>(products);
     }
 
-    return Left<String, List<ProductModel>>(result['message']);
+    return Left<String, List<ProductListModel>>(result['message']);
   }
 
   static Future<Either<String, ProductData>> getProductData(
@@ -26,7 +26,7 @@ abstract class ProductsRepository {
 
     if (results[0]['status_code'] == 200 && results[1]['status_code'] == 200) {
       final product = ProductModel.fromMap(results[0]['data']);
-      final similarProducts = ProductModel.parseList(results[1]['data']);
+      final similarProducts = ProductListModel.parseList(results[1]['data']);
       return Right<String, ProductData>(
         ProductData(
           product: product,
@@ -45,7 +45,7 @@ abstract class ProductsRepository {
 
 class ProductData {
   final ProductModel product;
-  final List<ProductModel> similarProducts;
+  final List<ProductListModel> similarProducts;
 
   ProductData({
     required this.product,

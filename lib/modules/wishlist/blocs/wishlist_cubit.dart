@@ -61,10 +61,10 @@ class WishlistCubit extends BaseProductsCubit<WishlistState> {
   }
 
   @override
-  Iterable<ProductModel> get products => _wishlist;
+  Iterable<ProductListModel> get products => _wishlist;
 
   @override
-  set products(Iterable<ProductModel> products) {
+  set products(Iterable<ProductListModel> products) {
     _wishlist
       ..clear()
       ..addAll(products);

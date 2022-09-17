@@ -38,7 +38,7 @@ class CartCubit extends BaseShippingDataCubit<CartState> {
     addressController.text = user.address;
   }
 
-  void addProductToCart(ProductModel product) async {
+  void addProductToCart(BaseProductModel product) async {
     _loadingProductsIds.add(product.id);
     emit(CartAddOrRemoveProductLoading());
 
@@ -51,7 +51,7 @@ class CartCubit extends BaseShippingDataCubit<CartState> {
     );
   }
 
-  void removeProductFromCart(ProductModel product) async {
+  void removeProductFromCart(BaseProductModel product) async {
     _loadingProductsIds.add(product.id);
     emit(CartAddOrRemoveProductLoading());
 

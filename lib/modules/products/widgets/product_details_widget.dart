@@ -41,7 +41,8 @@ class ProductDetailsWidget extends StatelessWidget {
                   ),
                   RepositoryProvider.value(
                     value: product,
-                    child: const ToggleIsProductInWishlistButton(),
+                    child:
+                        const ToggleIsProductInWishlistButton<ProductModel>(),
                   ),
                 ],
               ),

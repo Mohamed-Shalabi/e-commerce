@@ -71,7 +71,7 @@ abstract class Routes {
           ),
         );
       case singleProductRouteName:
-        final product = settings.arguments as ProductModel;
+        final product = settings.arguments as ProductListModel;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (_) => ProductCubit(

@@ -8,7 +8,7 @@ class SearchInitial extends SearchState {}
 class SearchLoading extends SearchState {}
 
 class SearchDone extends SearchState {
-  final List<ProductModel> products;
+  final List<ProductListModel> products;
 
   SearchDone(this.products);
 }

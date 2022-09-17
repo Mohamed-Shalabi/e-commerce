@@ -1,7 +1,7 @@
 import 'package:e_commerce/models/product_model.dart';
 
-class WishlistModel extends Iterable<ProductModel> {
-  final List<ProductModel> _products;
+class WishlistModel extends Iterable<ProductListModel> {
+  final List<ProductListModel> _products;
 
   WishlistModel._() : _products = [];
 
@@ -10,9 +10,9 @@ class WishlistModel extends Iterable<ProductModel> {
   factory WishlistModel.getInstance() => _instance;
 
   @override
-  Iterator<ProductModel> get iterator => _products.iterator;
+  Iterator<ProductListModel> get iterator => _products.iterator;
 
-  void add(ProductModel product) {
+  void add(ProductListModel product) {
     _products.add(product);
   }
 
@@ -24,7 +24,7 @@ class WishlistModel extends Iterable<ProductModel> {
     _products.clear();
   }
 
-  void addAll(Iterable<ProductModel> products) {
+  void addAll(Iterable<ProductListModel> products) {
     _products.addAll(products);
   }
 }

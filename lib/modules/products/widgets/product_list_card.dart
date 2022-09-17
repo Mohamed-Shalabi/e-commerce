@@ -13,7 +13,7 @@ class ProductListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = context.read<ProductModel>();
+    final product = context.read<ProductListModel>();
     return MyCard(
       height: 80,
       margin: const EdgeInsets.only(bottom: 16),
@@ -22,7 +22,7 @@ class ProductListCard extends StatelessWidget {
           Row(
             children: [
               Image.asset(
-                product.images[0],
+                product.mainImage,
                 width: context.screenWidth / 3 - 24,
                 height: double.infinity,
                 fit: BoxFit.cover,
@@ -52,7 +52,7 @@ class ProductListCardContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = context.read<ProductModel>();
+    final product = context.read<ProductListModel>();
     return Row(
       children: [
         Expanded(
@@ -79,7 +79,7 @@ class ProductListCardContents extends StatelessWidget {
               if (isFromSingleProductScreen)
                 const Align(
                   alignment: AlignmentDirectional.centerEnd,
-                  child: ToggleIsProductInWishlistButton(),
+                  child: ToggleIsProductInWishlistButton<ProductListModel>(),
                 )
             ],
           ),
@@ -87,7 +87,7 @@ class ProductListCardContents extends StatelessWidget {
         if (!isFromSingleProductScreen)
           IconButton(
             onPressed: () {},
-            icon: const ToggleIsProductInWishlistButton(),
+            icon: const ToggleIsProductInWishlistButton<ProductListModel>(),
           ),
       ],
     );
