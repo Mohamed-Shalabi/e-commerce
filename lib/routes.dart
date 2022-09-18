@@ -21,12 +21,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 abstract class Routes {
   static const splashRouteName = '/';
   static const mainLayoutRouteName = '/main_layout';
-  static const wishlistRouteName = '/main_layout/wishlist';
-  static const productsRouteName = '/main_layout/products';
-  static const singleProductRouteName = '/main_layout/products/product';
+  static const wishlistRouteName = '/wishlist';
+  static const productsRouteName = '/products';
+  static const singleProductRouteName = '/product';
   static const signUpRouteName = '/sign_up';
   static const loginRouteName = '/log_in';
-  static const cartRouteName = '/main_layout/products/product/cart';
+  static const cartRouteName = '/cart';
+  static const myOrdersRouteName = '/my_orders';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -83,6 +84,8 @@ abstract class Routes {
         );
       case cartRouteName:
         return MaterialPageRoute(builder: (_) => const CartPage());
+      case myOrdersRouteName:
+        return MaterialPageRoute(builder: (_) => const MyOrdersScreen());
       default:
         throw Exception(AppStrings.routeError);
     }

@@ -497,12 +497,35 @@ class DatabaseManager {
     );
   }
 
-  Future<List<Map<String, Object?>>> queryOrders(int userToken) {
-    return _database!.query(
+  Future<List<Map<String, Object?>>> queryOrders(int userToken) async {
+    final orders = await _database!.query(
       _ordersTableName,
       where: 'user_id=?',
       whereArgs: [userToken],
+      columns: ['id', 'total', 'products_ids'],
     );
+
+    final result = <Map<String, dynamic>>[];
+
+    for (final order in orders) {
+      final products = <Map<String, dynamic>>[];
+      final growableOrder = {...order};
+      final productsIds = json.decode(growableOrder['products_ids'] as String);
+      for (final productId in productsIds) {
+        final result = await queryProduct(
+          productId,
+          columns: ['id', 'category_id', 'quantity', 'price', 'title', 'images'],
+        );
+        products.add(result!);
+      }
+
+      growableOrder.remove('products_ids');
+      growableOrder['products'] = products;
+
+      result.add(growableOrder);
+    }
+
+    return result;
   }
 
   Future<List<Map<String, dynamic>>> queryWishlist(int userToken) async {
