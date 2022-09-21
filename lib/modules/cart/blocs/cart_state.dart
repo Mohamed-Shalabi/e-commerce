@@ -7,6 +7,12 @@ class CartInitial extends CartState {}
 
 class CartFetched extends CartState {}
 
+class CartFetchError extends CartState {
+  final String message;
+
+  CartFetchError({required this.message});
+}
+
 class CartAddOrRemoveProductLoading extends CartState {}
 
 class CartAddOrRemoveProductFailed extends CartState {

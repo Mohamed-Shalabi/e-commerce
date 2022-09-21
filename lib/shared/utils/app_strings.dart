@@ -45,4 +45,8 @@ abstract class AppStrings {
   static const wishlist = 'Wishlist';
   static const emptyWishlist = 'Your wishlist is empty';
   static const myOrders = 'My orders';
+  static const tryAgain = 'Try again';
+  static const placeOrderFailed = 'Place Order Failed';
+
+  static const cartError = 'Could not fetch cart, building an empty one...';
 }

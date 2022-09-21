@@ -46,17 +46,7 @@ class CartPage extends StatelessWidget {
               ),
             ),
       body: cart.isEmpty
-          ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    MyErrorWidget(message: AppStrings.emptyCart),
-                  ],
-                ),
-              ],
-            )
+          ? const MyErrorWidget(message: AppStrings.emptyCart)
           : Center(
               child: MyCard(
                 margin: const EdgeInsets.all(16),

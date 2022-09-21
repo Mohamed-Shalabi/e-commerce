@@ -58,20 +58,7 @@ class SearchPage extends StatelessWidget {
                             child: CircularProgressIndicator(),
                           )
                         : products.isEmpty || state is SearchFailed
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                    children: const [
-                                      MyErrorWidget(
-                                        message: AppStrings.noResults,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
+                            ? const MyErrorWidget(message: AppStrings.noResults)
                             : ListView.builder(
                                 padding: const EdgeInsets.only(top: 16),
                                 itemCount: products.length,

@@ -8,13 +8,18 @@ part 'categories_state.dart';
 class CategoriesCubit extends Cubit<CategoriesState> {
   CategoriesCubit() : super(CategoriesInitial());
 
+  late List<CategoryModel> categories;
+
   void getCategories() async {
     emit(CategoriesLoading());
     final result = await CategoriesRepository.getCategories();
 
     result.fold<void>(
       (l) => emit(CategoriesFetchError(l)),
-      (r) => emit(CategoriesFetched(r)),
+      (r) {
+        categories = r;
+        emit(CategoriesFetched());
+      },
     );
   }
 }

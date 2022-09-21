@@ -38,33 +38,18 @@ class ProductsScreen extends StatelessWidget {
         if (state is ProductsFetchError) {
           return Scaffold(
             appBar: appBar,
-            body: SizedBox(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: context.screenWidth * 0.5,
-                    child: MyErrorWidget(message: state.message),
-                  )
-                ],
-              ),
-            ),
+            body: MyErrorWidget(message: state.message),
           );
         }
 
-        if (state is ProductsFetched) {
-          return Scaffold(
-            appBar: appBar,
-            body: BlocBuilder<WishlistCubit, WishlistState>(
-              builder: (context, state) {
-                return const ProductsResponsiveWidget<ProductsCubit>();
-              },
-            ),
-          );
-        }
-
-        return const MyErrorWidget(message: AppStrings.unknownError);
+        return Scaffold(
+          appBar: appBar,
+          body: BlocBuilder<WishlistCubit, WishlistState>(
+            builder: (context, state) {
+              return const ProductsResponsiveWidget<ProductsCubit>();
+            },
+          ),
+        );
       },
     );
   }

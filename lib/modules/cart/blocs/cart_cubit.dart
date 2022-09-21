@@ -2,13 +2,13 @@ import 'package:e_commerce/models/product_model.dart';
 import 'package:e_commerce/models/user_model.dart';
 import 'package:e_commerce/modules/cart/blocs/base_shipping_data_cubit.dart';
 import 'package:e_commerce/modules/cart/cart_repository.dart';
+import 'package:e_commerce/shared/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 
 part 'cart_state.dart';
 
 class CartCubit extends BaseShippingDataCubit<CartState> {
   CartCubit() : super(CartInitial()) {
-    initCart();
     CartRepository.listenToPlaceOrderStream((event) {
       event.fold<void>(
         (l) => emit(PlaceOrderFailed(message: l)),
@@ -24,10 +24,14 @@ class CartCubit extends BaseShippingDataCubit<CartState> {
 
   void initCart() async {
     final result = await CartRepository.initCart();
-    result.fold(
-      (l) => null,
+    result.fold<void>(
+      (l) => emit(CartFetchError(message: l)),
       (r) => emit(CartFetched()),
     );
+  }
+
+  void initCartEmpty() {
+    CartRepository.initCartEmpty();
   }
 
   void updateFormData() {

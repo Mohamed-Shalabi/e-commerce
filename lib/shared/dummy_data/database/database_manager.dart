@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:e_commerce/shared/dummy_data/data/cart.dart';
 import 'package:e_commerce/shared/dummy_data/data/category.dart';
 import 'package:e_commerce/shared/dummy_data/data/product.dart';
+import 'package:e_commerce/shared/functions/functions.dart';
 import 'package:e_commerce/shared/local/prefs.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -134,6 +135,7 @@ class DatabaseManager {
       'CREATE TABLE $_ordersTableName ('
       'id INTEGER PRIMARY KEY AUTOINCREMENT, '
       'user_id INTEGER, '
+      'date VARCHAR(10), '
       'total DOUBLE, '
       'products_ids TEXT NOT NULL'
       ')',
@@ -152,11 +154,12 @@ class DatabaseManager {
     return result > 0;
   }
 
-  Future<int> _addOrderFromCart(Map<String, dynamic> cart) async {
+  Future<int> _insertOrderFromCart(Map<String, dynamic> cart) async {
     return await _database!.insert(
       _ordersTableName,
       {
         'user_id': cart['id'],
+        'date': DateTime.now().withoutTime.formatted,
         'total': cart['total'],
         'products_ids': json.encode(
           cart['products'].map((e) => e['id']).toList(),
@@ -381,7 +384,9 @@ class DatabaseManager {
       final product =
           (await queryProduct(productId))?.cast<String, dynamic>() ?? {};
       if (product.isNotEmpty) {
-        products.add(product);
+        final growableProduct = {...product};
+        _prepareProductForProductListModel(growableProduct);
+        products.add(growableProduct);
       }
     }
     final growableCart = {...cart};
@@ -476,7 +481,7 @@ class DatabaseManager {
 
   Future<bool> placeOrderAndClearCart(int userToken) async {
     final cart = await queryCart(userToken);
-    _addOrderFromCart(cart);
+    await _insertOrderFromCart(cart);
     final products = cart['products'];
     for (final product in products) {
       final Map<String, dynamic> growableProduct = {
@@ -502,7 +507,7 @@ class DatabaseManager {
       _ordersTableName,
       where: 'user_id=?',
       whereArgs: [userToken],
-      columns: ['id', 'total', 'products_ids'],
+      columns: ['id', 'date', 'total', 'products_ids'],
     );
 
     final result = <Map<String, dynamic>>[];
@@ -512,11 +517,15 @@ class DatabaseManager {
       final growableOrder = {...order};
       final productsIds = json.decode(growableOrder['products_ids'] as String);
       for (final productId in productsIds) {
-        final result = await queryProduct(
+        var product = await queryProduct(
           productId,
           columns: ['id', 'category_id', 'quantity', 'price', 'title', 'images'],
         );
-        products.add(result!);
+
+        product = {...product!};
+
+        _prepareProductForProductListModel(product);
+        products.add(product);
       }
 
       growableOrder.remove('products_ids');

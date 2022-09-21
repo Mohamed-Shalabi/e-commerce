@@ -32,56 +32,41 @@ class CategoriesPage extends StatelessWidget {
           }
 
           if (state is CategoriesFetchError) {
-            return SizedBox(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: context.screenWidth * 0.5,
-                    child: MyErrorWidget(message: state.message),
-                  )
-                ],
-              ),
-            );
+            return MyErrorWidget(message: state.message);
           }
 
-          if (state is CategoriesFetched) {
-            final categories = state.categories;
+          final categories = context.read<CategoriesCubit>().categories;
 
-            return ResponsiveWidget(
-              mobileWidget: ListView.builder(
-                itemCount: categories.length,
-                padding: const EdgeInsets.only(top: 24),
-                itemBuilder: (context, index) {
-                  final category = categories[index];
-                  return RepositoryProvider.value(
-                    value: category,
-                    child: const CategoryCard(),
-                  );
-                },
+          return ResponsiveWidget(
+            mobileWidget: ListView.builder(
+              itemCount: categories.length,
+              padding: const EdgeInsets.only(top: 24),
+              itemBuilder: (context, index) {
+                final category = categories[index];
+                return RepositoryProvider.value(
+                  value: category,
+                  child: const CategoryCard(),
+                );
+              },
+            ),
+            tabletWidget: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: context.screenHeight > 500 ? 3 : 2,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
               ),
-              tabletWidget: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: context.screenHeight > 500 ? 3 : 2,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                ),
-                padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 0, 16),
-                itemCount: categories.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  final category = categories[index];
-                  return RepositoryProvider.value(
-                    value: category,
-                    child: const CategoryCard(),
-                  );
-                },
-              ),
-            );
-          }
-
-          return const MyErrorWidget(message: AppStrings.unknownError);
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 0, 16),
+              itemCount: categories.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                final category = categories[index];
+                return RepositoryProvider.value(
+                  value: category,
+                  child: const CategoryCard(),
+                );
+              },
+            ),
+          );
         },
       ),
     );

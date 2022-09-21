@@ -27,9 +27,4 @@ abstract class AuthService {
   static Future<Map<String, dynamic>> login(String email, String password) {
     return _api.login(email, password);
   }
-
-  static Future<Map<String, dynamic>> getUserProfile() async {
-    final userToken = Prefs.getData<int>(key: Prefs.userTokenKey) ?? -1;
-    return await _api.queryUserProfile(userToken);
-  }
 }

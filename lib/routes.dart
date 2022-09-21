@@ -8,10 +8,13 @@ import 'package:e_commerce/modules/cart/screens/cart_page.dart';
 import 'package:e_commerce/modules/categories/blocs/categories_cubit.dart';
 import 'package:e_commerce/modules/main_layout/blocs/main_layout_cubit.dart';
 import 'package:e_commerce/modules/main_layout/screens/main_layout.dart';
+import 'package:e_commerce/modules/my_orders/blocs/my_orders_cubit.dart';
 import 'package:e_commerce/modules/products/blocs/products/products_cubit.dart';
 import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
 import 'package:e_commerce/modules/products/screens/products_screen.dart';
 import 'package:e_commerce/modules/products/screens/single_product_screen.dart';
+import 'package:e_commerce/modules/my_orders/screens/my_orders_screen.dart';
+import 'package:e_commerce/modules/splash/blocs/splash_cubit.dart';
 import 'package:e_commerce/modules/splash/screens/splash_screen.dart';
 import 'package:e_commerce/modules/wishlist/screens/wishlist_screen.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';
@@ -32,39 +35,46 @@ abstract class Routes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splashRouteName:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
+        return MaterialPageRoute<void>(
+          builder: (_) => BlocProvider<SplashCubit>(
+            create: (_) => SplashCubit()..getData(),
+            child: const SplashScreen(),
+          ),
+        );
       case signUpRouteName:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
+        return MaterialPageRoute<void>(
+          builder: (_) => BlocProvider<SignUpCubit>(
             create: (_) => SignUpCubit(),
             child: const SignUpScreen(),
           ),
         );
       case loginRouteName:
-        return MaterialPageRoute(
+        return MaterialPageRoute<void>(
           builder: (_) => BlocProvider<LoginCubit>(
             create: (_) => LoginCubit(),
             child: const LoginScreen(),
           ),
         );
       case mainLayoutRouteName:
-        return MaterialPageRoute(
+        return MaterialPageRoute<void>(
           builder: (_) => MultiBlocProvider(
             providers: [
-              BlocProvider(
+              BlocProvider<MainLayoutCubit>(
                 create: (BuildContext context) => MainLayoutCubit(context),
               ),
-              BlocProvider(create: (_) => CategoriesCubit()..getCategories()),
+              BlocProvider<CategoriesCubit>(
+                create: (_) => CategoriesCubit()..getCategories(),
+              ),
             ],
             child: const MainLayout(),
           ),
         );
       case wishlistRouteName:
-        return MaterialPageRoute(builder: (_) => const WishlistScreen());
+        return MaterialPageRoute<void>(builder: (_) => const WishlistScreen());
       case productsRouteName:
         final category = settings.arguments as CategoryModel;
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
+        return MaterialPageRoute<void>(
+          builder: (_) => BlocProvider<ProductsCubit>(
             create: (_) {
               return ProductsCubit(category: category)..getProducts();
             },
@@ -73,8 +83,8 @@ abstract class Routes {
         );
       case singleProductRouteName:
         final product = settings.arguments as ProductListModel;
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
+        return MaterialPageRoute<void>(
+          builder: (_) => BlocProvider<ProductCubit>(
             create: (_) => ProductCubit(
               productId: product.id,
               categoryId: product.categoryId,
@@ -83,9 +93,14 @@ abstract class Routes {
           ),
         );
       case cartRouteName:
-        return MaterialPageRoute(builder: (_) => const CartPage());
+        return MaterialPageRoute<void>(builder: (_) => const CartPage());
       case myOrdersRouteName:
-        return MaterialPageRoute(builder: (_) => const MyOrdersScreen());
+        return MaterialPageRoute<void>(
+          builder: (_) => BlocProvider<MyOrdersCubit>(
+            create: (context) => MyOrdersCubit()..getOrders(),
+            child: const MyOrdersScreen(),
+          ),
+        );
       default:
         throw Exception(AppStrings.routeError);
     }

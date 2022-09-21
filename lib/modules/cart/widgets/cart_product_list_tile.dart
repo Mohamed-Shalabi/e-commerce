@@ -8,7 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CartProductListTile extends StatelessWidget {
-  const CartProductListTile({Key? key}) : super(key: key);
+  const CartProductListTile({
+    Key? key,
+    this.isInOrdersScreen = false,
+  }) : super(key: key);
+
+  final bool isInOrdersScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -82,30 +87,31 @@ class CartProductListTile extends StatelessWidget {
             ),
           ),
           const VerticalDivider(thickness: 3),
-          BlocConsumer<CartCubit, CartState>(
-            listener: (_, CartState state) {
-              if (state is CartAddOrRemoveProductFailed) {
-                context.showSnackBar(state.message);
-              }
-            },
-            builder: (BuildContext context, CartState state) {
-              if (context.read<CartCubit>().isProductLoading(product.id)) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+          if (!isInOrdersScreen)
+            BlocConsumer<CartCubit, CartState>(
+              listener: (_, CartState state) {
+                if (state is CartAddOrRemoveProductFailed) {
+                  context.showSnackBar(state.message);
+                }
+              },
+              builder: (BuildContext context, CartState state) {
+                if (context.read<CartCubit>().isProductLoading(product.id)) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-              return IconButton(
-                onPressed: () {
-                  context.read<CartCubit>().removeProductFromCart(product);
-                },
-                icon: Icon(
-                  Icons.remove_circle_outlined,
-                  color: context.colorScheme.primary,
-                ),
-              );
-            },
-          )
+                return IconButton(
+                  onPressed: () {
+                    context.read<CartCubit>().removeProductFromCart(product);
+                  },
+                  icon: Icon(
+                    Icons.remove_circle_outlined,
+                    color: context.colorScheme.primary,
+                  ),
+                );
+              },
+            )
         ],
       ),
     );

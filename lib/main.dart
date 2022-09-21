@@ -6,12 +6,16 @@ import 'package:e_commerce/shared/local/prefs.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
+
+// DO NOT Forget BlocObserver and dynamic coupon
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Prefs.init();
   await Api.init();
+  initializeDateFormatting();
 
   runApp(
     MultiBlocProvider(

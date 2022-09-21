@@ -6,8 +6,7 @@ import 'package:e_commerce/shared/functions/functions.dart';
 class Api {
   Api._();
 
-  static final DatabaseManager _databaseManager =
-      DatabaseManager.getInstance();
+  static final DatabaseManager _databaseManager = DatabaseManager.getInstance();
 
   static final Api _instance = Api._();
 
@@ -154,13 +153,14 @@ class Api {
 Future<Map<String, dynamic>> _futureRequest<T>(
   Future<T?> Function() getData,
 ) async {
-  try {
-    await Future.delayed(const Duration(milliseconds: 600));
-    if (!await isConnected) {
-      throw const SocketException('Check your internet connection');
-    }
+  await Future.delayed(const Duration(milliseconds: 600));
+  if (!await isConnected) {
+    throw const SocketException('Check your internet connection');
+  }
 
+  try {
     final data = await getData();
+    print(data);
     if (data == null) {
       return {
         'status_code': 500,

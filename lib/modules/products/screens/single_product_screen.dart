@@ -24,17 +24,7 @@ class SingleProductScreen extends StatelessWidget {
         }
 
         if (state is GetProductFailed) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MyErrorWidget(message: state.message),
-                ],
-              )
-            ],
-          );
+          return MyErrorWidget(message: state.message);
         }
 
         final product = context.read<ProductCubit>().product;

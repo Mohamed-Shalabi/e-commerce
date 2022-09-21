@@ -19,6 +19,13 @@ class CheckoutModalSheet extends StatelessWidget {
         if (state is PlaceOrderSucceeded) {
           context.pop();
           context.showSnackBar(AppStrings.orderDone);
+          return;
+        }
+
+        if (state is PlaceOrderFailed) {
+          context.pop();
+          context.showSnackBar(AppStrings.placeOrderFailed);
+          return;
         }
       },
       child: DraggableScrollableSheet(

@@ -8,8 +8,8 @@ abstract class ProfileService {
     return _api.logout();
   }
 
-  static Future<Map<String, dynamic>> queryOrders() {
-    final userToken = Prefs.getData<int>(key: Prefs.userTokenKey)!;
-    return _api.queryOrders(userToken);
+  static Future<Map<String, dynamic>> getUserProfile() async {
+    final userToken = Prefs.getData<int>(key: Prefs.userTokenKey) ?? -1;
+    return await _api.queryUserProfile(userToken);
   }
 }

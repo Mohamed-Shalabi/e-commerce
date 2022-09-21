@@ -10,10 +10,11 @@ class MyErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyCard(
-      color: context.colorScheme.error,
-      padding: const EdgeInsets.all(24),
-      child: Center(
+    return Center(
+      child: MyCard(
+        margin: const EdgeInsets.all(32),
+        color: context.colorScheme.error,
+        padding: const EdgeInsets.all(24),
         child: MyText(
           message,
           style: context.textTheme.titleLarge?.copyWith(
