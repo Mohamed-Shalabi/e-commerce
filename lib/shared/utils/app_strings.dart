@@ -31,11 +31,7 @@ abstract class AppStrings {
   static const addressValidationText = 'Address cannot be empty';
   static const discount = 'Discount';
   static const totalAfterDiscount = 'Total after discount';
-  static const applyCoupon = 'Apply Coupon';
-  static const coupon = 'Coupon';
-  static const couponValidationText = 'Coupon cannot be empty';
   static const cancel = 'Cancel';
-  static const removeCoupon = 'Remove Coupon';
   static const shippingCost = 'Shipping Cost';
   static const checkout = 'Checkout';
   static const orderDone = 'Your order is placed successfully';

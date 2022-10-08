@@ -23,7 +23,6 @@ class DatabaseManager {
   static const String _productsImagesTableName = 'images';
   static const String _usersTableName = 'users';
   static const String _cartsTableName = 'carts';
-  static const String _cartsCouponsTableName = 'carts_coupons';
   static const String _wishlistsTableName = 'wishlists';
   static const String _ordersTableName = 'orders';
   static const String _ordersProductsTableName = 'orders_products';
@@ -52,7 +51,6 @@ class DatabaseManager {
     await _createProductsImagesTable(database);
     await _createCategoriesTable(database);
     await _createCartsTable(database);
-    await _createCartsCouponsTable(database);
     await _createWishlistsTable(database);
     await _createUsersTable(database);
     await _createOrdersTable(database);
@@ -130,16 +128,6 @@ class DatabaseManager {
       'product_id INTEGER NOT NULL, '
       'count INTEGER DEFAULT(1), '
       'PRIMARY KEY (user_id, product_id)'
-      ')',
-    );
-  }
-
-  Future<void> _createCartsCouponsTable(Database database) {
-    return database.execute(
-      'CREATE TABLE $_cartsCouponsTableName ('
-      'user_id INTEGER NOT NULL PRIMARY KEY, '
-      'discount DOUBLE NOT NULL, '
-      'coupon TEXT NOT NULL'
       ')',
     );
   }
@@ -385,22 +373,8 @@ class DatabaseManager {
       products.add(growableProduct);
     }
 
-    final couponsData = await _database!.query(
-      _cartsCouponsTableName,
-      where: 'user_id = ?',
-      whereArgs: [userToken],
-    );
-
-    final couponData = couponsData.isEmpty ? {} : couponsData[0];
-
     final cart = <String, dynamic>{
       'products': products,
-      'coupon': couponData.isEmpty
-          ? {}
-          : {
-              'coupon': couponData['coupon'],
-              'discount': couponData['discount'],
-            }
     };
     return json.encode(cart);
   }
@@ -466,33 +440,6 @@ class DatabaseManager {
     return await queryCart(userToken);
   }
 
-  Future<String> applyCoupon(
-    String coupon,
-    double discount,
-    int userToken,
-  ) async {
-    await _database!.insert(
-      _cartsCouponsTableName ,
-      {
-        'user_id': userToken,
-        'coupon': coupon,
-        'discount': discount,
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-
-    return await queryCart(userToken);
-  }
-
-  Future<String> removeCoupon(int userToken) async {
-    await _database!.execute(
-      'DELETE FROM $_cartsCouponsTableName '
-      'WHERE user_id = $userToken',
-    );
-
-    return await queryCart(userToken);
-  }
-
   Future<String> placeOrderAndClearCart(int userToken) async {
     final cartResult = await queryCart(userToken);
     final cart = json.decode(cartResult);
@@ -507,12 +454,11 @@ class DatabaseManager {
         'user_id': userToken,
         'date': DateUtils.today.formatted,
         'total': cart['products'].fold<double>(
-              0.0,
-              (double previousValue, element) {
-                return previousValue + element['price'] * element['count'];
-              },
-            ) -
-            (cart['coupon']['discount'] ?? 0.0),
+          0.0,
+          (double previousValue, element) {
+            return previousValue + element['price'] * element['count'];
+          },
+        ),
       },
     );
 

@@ -71,40 +71,6 @@ abstract class CartRepository {
     }
   }
 
-  static Future<Either<String, void>> applyCoupon(String coupon) async {
-    try {
-      final result = await CartService.applyCoupon(coupon);
-      if (result['status_code'] == 200) {
-        final data = json.decode(result['data']);
-        CartModel.buildInstance(data);
-        return const Right<String, void>(null);
-      }
-
-      return Left<String, void>(result['message']);
-    } on SocketException {
-      return const Left<String, void>(AppStrings.connectionError);
-    } catch (_) {
-      return const Left<String, void>(AppStrings.unknownError);
-    }
-  }
-
-  static Future<Either<String, void>> removeCoupon() async {
-    try {
-      final result = await CartService.removeCoupon();
-      if (result['status_code'] == 200) {
-        final data = json.decode(result['data']);
-        CartModel.buildInstance(data);
-        return const Right<String, void>(null);
-      }
-
-      return Left<String, void>(result['message']);
-    } on SocketException {
-      return const Left<String, void>(AppStrings.connectionError);
-    } catch (_, __) {
-      return const Left<String, void>(AppStrings.unknownError);
-    }
-  }
-
   static final _placeOrderStreamController =
       StreamController<Either<String, void>>.broadcast();
 

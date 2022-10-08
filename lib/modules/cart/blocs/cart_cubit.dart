@@ -68,28 +68,6 @@ class CartCubit extends BaseShippingDataCubit<CartState> {
     );
   }
 
-  void applyCoupon() async {
-    emit(ApplyOrRemoveCouponLoading());
-    final result = await CartRepository.applyCoupon(
-      couponController.text.trim(),
-    );
-
-    result.fold<void>(
-      (l) => emit(ApplyOrRemoveCouponFailed(message: l)),
-      (r) => emit(ApplyOrRemoveCouponSucceeded()),
-    );
-  }
-
-  void removeCoupon() async {
-    emit(ApplyOrRemoveCouponLoading());
-
-    final result = await CartRepository.removeCoupon();
-    result.fold<void>(
-      (l) => emit(ApplyOrRemoveCouponFailed(message: l)),
-      (r) => emit(ApplyOrRemoveCouponSucceeded()),
-    );
-  }
-
   void placeOrderAndClearCart() {
     emit(PlaceOrderLoading());
     CartRepository.placeOrderAndClearCart();

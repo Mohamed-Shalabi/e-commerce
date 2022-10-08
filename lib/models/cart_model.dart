@@ -2,7 +2,6 @@ import 'package:e_commerce/models/product_model.dart';
 
 class CartModel extends Iterable<ProductListModel> {
   double _total;
-  CouponModel _coupon;
   Map<ProductListModel, int> _products = {};
 
   static final CartModel _instance = CartModel._fromMap({});
@@ -14,9 +13,7 @@ class CartModel extends Iterable<ProductListModel> {
 
   factory CartModel.getInstance() => _instance;
 
-  CartModel._fromMap(Map<String, dynamic> map)
-      : _total = map['total'] ?? 0,
-        _coupon = CouponModel._fromMap(map['coupon'] ?? {}) {
+  CartModel._fromMap(Map<String, dynamic> map) : _total = map['total'] ?? 0 {
     for (final productMapped in map['products'] ?? []) {
       _products[ProductListModel.fromMap(productMapped)] =
           productMapped['count'];
@@ -25,12 +22,8 @@ class CartModel extends Iterable<ProductListModel> {
 
   static void clean() {
     _instance._products.clear();
-    _instance.coupon.coupon = '';
-    _instance.coupon.discount = 0;
     _instance._total = 0;
   }
-
-  double get totalAfterDiscount => total - coupon.discount;
 
   void addProduct(BaseProductModel product) {
     if (product is ProductListModel) {
@@ -88,56 +81,23 @@ class CartModel extends Iterable<ProductListModel> {
     }
   }
 
-  double get priceBeforeDiscount {
+  double get price {
     return _products.keys.fold(
       0,
-      (previousValue, product) => previousValue + product.price,
+      (previousValue, product) {
+        return previousValue + product.price * _products[product]!;
+      },
     );
   }
 
-  double get priceAfterDiscount {
-    final result = priceBeforeDiscount - coupon.discount;
-    if (result < 0) {
-      return 0;
-    } else {
-      return result;
-    }
-  }
-
   double get total => _total;
-
-  CouponModel get coupon => _coupon;
 
   List<ProductListModel> get unique {
     return toSet().toList();
   }
 
   void _copyFrom(CartModel other) {
-    _coupon = other.coupon;
     _total = other.total;
     _products = other._products;
   }
-}
-
-class CouponModel {
-  String coupon;
-  double discount;
-
-  static final _instance = CouponModel._initiate();
-
-  factory CouponModel.getInstance({String? coupon, double? discount}) {
-    _instance.coupon = coupon ?? _instance.coupon;
-    _instance.discount = discount ?? _instance.discount;
-    return _instance;
-  }
-
-  factory CouponModel._fromMap(Map<String, dynamic> map) {
-    _instance.coupon = map['coupon'] ?? '';
-    _instance.discount = map['discount']?.toDouble() ?? 0;
-    return _instance;
-  }
-
-  CouponModel._initiate()
-      : coupon = '',
-        discount = 0.0;
 }

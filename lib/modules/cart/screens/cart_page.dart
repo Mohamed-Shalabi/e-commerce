@@ -1,6 +1,5 @@
 import 'package:e_commerce/models/cart_model.dart';
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
-import 'package:e_commerce/modules/cart/widgets/add_coupon_dialog.dart';
 import 'package:e_commerce/modules/cart/widgets/cart_product_list_tile.dart';
 import 'package:e_commerce/modules/cart/widgets/checkout_modal_sheet.dart';
 import 'package:e_commerce/modules/cart/widgets/total_price_text.dart';
@@ -70,58 +69,14 @@ class CartPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: MyText(
                         '${AppStrings.total}: '
-                        '\$${cart.priceBeforeDiscount.toStringAsFixed(2)}',
+                        '\$${cart.price.toStringAsFixed(2)}',
                         style: context.textTheme.subtitle1,
                       ),
-                    ),
-                    const Divider(thickness: 3),
-                    BlocBuilder<CartCubit, CartState>(
-                      builder: (context, state) {
-                        if (state is ApplyOrRemoveCouponLoading) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            MyText(
-                              '${AppStrings.discount}: '
-                              '\$${cart.coupon.discount.toStringAsFixed(2)}',
-                              style: context.textTheme.subtitle1,
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                if (cart.coupon.coupon.isEmpty) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return BlocProvider.value(
-                                        value: context.read<CartCubit>(),
-                                        child: const AddCouponDialog(),
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  viewModel.removeCoupon();
-                                }
-                              },
-                              child: MyText(
-                                cart.coupon.coupon.isNotEmpty
-                                    ? AppStrings.removeCoupon
-                                    : AppStrings.applyCoupon,
-                              ),
-                            ),
-                          ],
-                        );
-                      },
                     ),
                     const Divider(thickness: 3),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: MyText(
-                        // TODO: make the shipping cost dynamic
                         '${AppStrings.shippingCost}: '
                         '\$${55.toStringAsFixed(2)}',
                         style: context.textTheme.subtitle1,

@@ -96,23 +96,6 @@ class Api {
     );
   }
 
-  // TODO: Remove discount
-  Future<Map<String, dynamic>> applyCoupon(
-    String coupon,
-    double discount,
-    int userToken,
-  ) {
-    return _futureRequest(
-      () => _databaseManager.applyCoupon(coupon, discount, userToken),
-    );
-  }
-
-  Future<Map<String, dynamic>> removeCoupon(int userToken) {
-    return _futureRequest(
-      () => _databaseManager.removeCoupon(userToken),
-    );
-  }
-
   Future<Map<String, dynamic>> queryWishlist(int userToken) {
     return _futureRequest(() => _databaseManager.queryWishlist(userToken));
   }

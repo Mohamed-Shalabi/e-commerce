@@ -16,9 +16,8 @@ class TotalPriceText extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: MyText(
-        // TODO: make the shipping cost dynamic
         '${AppStrings.totalAfterDiscount}: '
-        '\$${(cart.priceAfterDiscount + 55).toStringAsFixed(2)}',
+        '\$${(cart.price + 55).toStringAsFixed(2)}',
         style: context.textTheme.subtitle1,
       ),
     );
