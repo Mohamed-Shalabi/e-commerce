@@ -1,4 +1,4 @@
-import 'package:e_commerce/modules/auth/blocs/shipping/base_shipping_data_cubit.dart';
+import 'package:e_commerce/modules/auth/blocs/shipping/shipping_data_provider.dart';
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
 import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
 import 'package:e_commerce/routes.dart';

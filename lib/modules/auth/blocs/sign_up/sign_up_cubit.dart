@@ -1,5 +1,5 @@
 import 'package:e_commerce/modules/auth/auth_repository.dart';
-import 'package:e_commerce/modules/auth/blocs/shipping/base_shipping_data_cubit.dart';
+import 'package:e_commerce/modules/auth/blocs/shipping/shipping_data_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

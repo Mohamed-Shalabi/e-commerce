@@ -1,4 +1,4 @@
-import 'package:e_commerce/modules/auth/blocs/shipping/base_shipping_data_cubit.dart';
+import 'package:e_commerce/modules/auth/blocs/shipping/shipping_data_provider.dart';
 import 'package:e_commerce/modules/auth/blocs/sign_up/sign_up_cubit.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
@@ -19,8 +19,10 @@ class SignUpButton extends StatelessWidget {
           onPressed: () {
             final signUpCubit = context.read<SignUpCubit>();
             final shippingDataCubit = context.read<ShippingDataProvider>();
-            if (signUpCubit.isSignUpFormValidated &&
-                shippingDataCubit.isShippingDataFormValidated) {
+
+            final isSignUpFormValidated = signUpCubit.isSignUpFormValidated;
+            final isShippingDataFormValidated = shippingDataCubit.isShippingDataFormValidated;
+            if (isSignUpFormValidated && isShippingDataFormValidated) {
               signUpCubit.signUp(
                 shippingDataCubit.phoneController.text.trim(),
                 shippingDataCubit.countryController.text.trim(),

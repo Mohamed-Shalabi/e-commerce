@@ -1,6 +1,6 @@
 import 'package:e_commerce/models/product_model.dart';
 import 'package:e_commerce/models/user_model.dart';
-import 'package:e_commerce/modules/auth/blocs/shipping/base_shipping_data_cubit.dart';
+import 'package:e_commerce/modules/auth/blocs/shipping/shipping_data_provider.dart';
 import 'package:e_commerce/modules/cart/cart_repository.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';
 import 'package:flutter/material.dart';

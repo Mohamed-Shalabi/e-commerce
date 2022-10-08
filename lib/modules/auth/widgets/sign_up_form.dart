@@ -1,6 +1,6 @@
 import 'package:e_commerce/modules/auth/blocs/sign_up/sign_up_cubit.dart';
 import 'package:e_commerce/modules/auth/widgets/sign_up_button.dart';
-import 'package:e_commerce/modules/auth/blocs/shipping/base_shipping_data_cubit.dart';
+import 'package:e_commerce/modules/auth/blocs/shipping/shipping_data_provider.dart';
 import 'package:e_commerce/responsive/responsive_widget.dart';
 import 'package:e_commerce/shared/components/my_card.dart';
 import 'package:e_commerce/shared/functions/functions.dart';

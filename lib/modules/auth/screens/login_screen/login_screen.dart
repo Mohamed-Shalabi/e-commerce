@@ -1,5 +1,5 @@
 import 'package:e_commerce/modules/auth/blocs/login/login_cubit.dart';
-import 'package:e_commerce/modules/auth/blocs/shipping/base_shipping_data_cubit.dart';
+import 'package:e_commerce/modules/auth/blocs/shipping/shipping_data_provider.dart';
 import 'package:e_commerce/modules/auth/screens/login_screen/mobile_login_screen_body.dart';
 import 'package:e_commerce/modules/auth/screens/login_screen/tablet_login_screen_body.dart';
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
