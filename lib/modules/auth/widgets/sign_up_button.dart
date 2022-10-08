@@ -1,3 +1,4 @@
+import 'package:e_commerce/modules/auth/blocs/shipping/base_shipping_data_cubit.dart';
 import 'package:e_commerce/modules/auth/blocs/sign_up/sign_up_cubit.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
@@ -15,7 +16,19 @@ class SignUpButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: MaterialButton(
-          onPressed: context.read<SignUpCubit>().signUp,
+          onPressed: () {
+            final signUpCubit = context.read<SignUpCubit>();
+            final shippingDataCubit = context.read<ShippingDataProvider>();
+            if (signUpCubit.isSignUpFormValidated &&
+                shippingDataCubit.isShippingDataFormValidated) {
+              signUpCubit.signUp(
+                shippingDataCubit.phoneController.text.trim(),
+                shippingDataCubit.countryController.text.trim(),
+                shippingDataCubit.cityController.text.trim(),
+                shippingDataCubit.addressController.text.trim(),
+              );
+            }
+          },
           color: context.colorScheme.secondary,
           child: MyText(
             AppStrings.signUp,

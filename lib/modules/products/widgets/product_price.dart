@@ -5,13 +5,12 @@ import 'package:e_commerce/shared/styles/app_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProductPrice<T extends ProductListModel> extends StatelessWidget {
+class ProductPrice extends StatelessWidget {
   const ProductPrice({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    assert(T != dynamic, 'Type T cannot be dynamic');
-    final price = context.read<T>().price;
+    final price = context.read<ProductListModel>().price;
     return MyCard(
       color: context.colorScheme.secondary,
       margin: const EdgeInsets.all(8),

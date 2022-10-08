@@ -1,3 +1,4 @@
+import 'package:e_commerce/modules/auth/blocs/shipping/base_shipping_data_cubit.dart';
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
 import 'package:e_commerce/modules/splash/blocs/splash_cubit.dart';
 import 'package:e_commerce/modules/splash/widgets/welcome_widget.dart';
@@ -25,9 +26,8 @@ class SplashScreen extends StatelessWidget {
             context.showSnackBar(AppStrings.connectionError);
             break;
           case SplashStateLoggedIn:
-            context.read<CartCubit>()
-              ..updateFormData()
-              ..initCart();
+            context.read<ShippingDataProvider>().updateShippingData();
+            context.read<CartCubit>().initCart();
             context.navigateAndRemovePreviousRoutes(
               Routes.mainLayoutRouteName,
             );

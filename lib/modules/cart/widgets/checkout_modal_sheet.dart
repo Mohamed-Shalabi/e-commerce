@@ -45,7 +45,7 @@ class CheckoutModalSheet extends StatelessWidget {
                   child: TotalPriceText(),
                 ),
                 const Divider(thickness: 3),
-                const AdditionalInputFormFields<CartCubit>(),
+                const AdditionalInputFormFields(),
                 const SizedBox(height: 24),
                 Center(
                   child: MaterialButton(

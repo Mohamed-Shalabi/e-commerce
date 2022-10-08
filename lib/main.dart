@@ -1,16 +1,14 @@
+import 'package:e_commerce/modules/auth/blocs/shipping/base_shipping_data_cubit.dart';
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
 import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
 import 'package:e_commerce/routes.dart';
 import 'package:e_commerce/shared/dummy_data/api/api.dart';
-import 'package:e_commerce/shared/dummy_data/database/database_manager.dart';
 import 'package:e_commerce/shared/local/prefs.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-
-// DO NOT Forget BlocObserver and dynamic coupon
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -25,7 +23,10 @@ void main() async {
         BlocProvider(create: (_) => WishlistCubit()),
         BlocProvider(create: (_) => CartCubit()),
       ],
-      child: const MyApp(),
+      child: RepositoryProvider(
+        create: (_) => ShippingDataProvider(),
+        child: const MyApp(),
+      ),
     ),
   );
 }

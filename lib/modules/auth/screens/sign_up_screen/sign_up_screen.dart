@@ -1,3 +1,4 @@
+import 'package:e_commerce/modules/auth/blocs/shipping/base_shipping_data_cubit.dart';
 import 'package:e_commerce/modules/auth/blocs/sign_up/sign_up_cubit.dart';
 import 'package:e_commerce/modules/auth/screens/sign_up_screen/mobile_sign_up_screen_body.dart';
 import 'package:e_commerce/modules/auth/screens/sign_up_screen/tablet_sign_up_screen_body.dart';
@@ -30,9 +31,8 @@ class SignUpScreen extends StatelessWidget {
           }
 
           if (state is SignUpSucceeded) {
-            context.read<CartCubit>()
-              ..updateFormData()
-              ..initCartEmpty();
+            context.read<ShippingDataProvider>().updateShippingData();
+            context.read<CartCubit>().initCartEmpty();
             context.read<WishlistCubit>().clearWishlist();
             context.navigateAndRemovePreviousRoutes(
               Routes.mainLayoutRouteName,

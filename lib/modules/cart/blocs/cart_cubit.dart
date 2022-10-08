@@ -1,13 +1,14 @@
 import 'package:e_commerce/models/product_model.dart';
 import 'package:e_commerce/models/user_model.dart';
-import 'package:e_commerce/modules/cart/blocs/base_shipping_data_cubit.dart';
+import 'package:e_commerce/modules/auth/blocs/shipping/base_shipping_data_cubit.dart';
 import 'package:e_commerce/modules/cart/cart_repository.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'cart_state.dart';
 
-class CartCubit extends BaseShippingDataCubit<CartState> {
+class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartInitial()) {
     CartRepository.listenToPlaceOrderStream((event) {
       event.fold<void>(
@@ -32,14 +33,6 @@ class CartCubit extends BaseShippingDataCubit<CartState> {
 
   void initCartEmpty() {
     CartRepository.initCartEmpty();
-  }
-
-  void updateFormData() {
-    final user = UserModel.getInstance();
-    phoneController.text = user.phone;
-    countryController.text = user.country;
-    cityController.text = user.city;
-    addressController.text = user.address;
   }
 
   void addProductToCart(BaseProductModel product) async {
