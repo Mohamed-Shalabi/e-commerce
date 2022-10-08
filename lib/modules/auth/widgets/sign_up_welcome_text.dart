@@ -1,7 +1,7 @@
-import 'package:e_commerce/shared/components/my_card.dart';
-import 'package:e_commerce/shared/components/my_text.dart';
-import 'package:e_commerce/shared/styles/app_themes.dart';
-import 'package:e_commerce/shared/utils/app_strings.dart';
+import 'package:e_commerce/core/components/my_card.dart';
+import 'package:e_commerce/core/components/my_text.dart';
+import 'package:e_commerce/core/styles/app_themes.dart';
+import 'package:e_commerce/core/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class SignUpWelcomeText extends StatelessWidget {

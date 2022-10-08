@@ -1,14 +1,14 @@
+import 'package:e_commerce/core/components/my_error_widget.dart';
+import 'package:e_commerce/core/components/my_text.dart';
+import 'package:e_commerce/core/components/show_snack_bar.dart';
+import 'package:e_commerce/core/functions/navigate.dart';
+import 'package:e_commerce/core/utils/app_strings.dart';
+import 'package:e_commerce/core/utils/media_query_utils.dart';
 import 'package:e_commerce/modules/auth/blocs/shipping/shipping_data_provider.dart';
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
 import 'package:e_commerce/modules/splash/blocs/splash_cubit.dart';
 import 'package:e_commerce/modules/splash/widgets/welcome_widget.dart';
 import 'package:e_commerce/routes.dart';
-import 'package:e_commerce/shared/components/my_error_widget.dart';
-import 'package:e_commerce/shared/components/my_text.dart';
-import 'package:e_commerce/shared/components/show_snack_bar.dart';
-import 'package:e_commerce/shared/functions/navigate.dart';
-import 'package:e_commerce/shared/utils/app_strings.dart';
-import 'package:e_commerce/shared/utils/media_query_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,8 +1,8 @@
-import 'package:e_commerce/models/product_model.dart';
+import 'package:e_commerce/core/components/my_card.dart';
+import 'package:e_commerce/core/utils/media_query_utils.dart';
+import 'package:e_commerce/modules/products/models/product_model.dart';
 import 'package:e_commerce/modules/products/widgets/product_list_card.dart';
 import 'package:e_commerce/modules/products/widgets/product_price.dart';
-import 'package:e_commerce/shared/components/my_card.dart';
-import 'package:e_commerce/shared/utils/media_query_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -51,9 +51,8 @@ class ProductGridCardContents extends StatelessWidget {
               child: Image.asset(
                 product.mainImage,
                 width: isFromSingleProductScreen ? 120 : double.infinity,
-                height: isFromSingleProductScreen
-                    ? 120
-                    : context.screenWidth * 0.3,
+                height:
+                    isFromSingleProductScreen ? 120 : context.screenWidth * 0.3,
                 fit: BoxFit.cover,
               ),
             ),

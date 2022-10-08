@@ -1,5 +1,5 @@
-import 'package:e_commerce/models/product_model.dart';
-import 'package:e_commerce/modules/search/search_repository.dart';
+import 'package:e_commerce/modules/products/models/product_model.dart';
+import 'package:e_commerce/modules/search/repositories/search_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

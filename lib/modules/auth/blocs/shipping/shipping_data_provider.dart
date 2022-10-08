@@ -1,4 +1,4 @@
-import 'package:e_commerce/models/user_model.dart';
+import 'package:e_commerce/modules/auth/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class ShippingDataProvider {

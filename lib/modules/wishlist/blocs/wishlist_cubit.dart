@@ -1,6 +1,6 @@
-import 'package:e_commerce/models/product_model.dart';
-import 'package:e_commerce/models/wishlist_model.dart';
-import 'package:e_commerce/modules/wishlist/wishlist_repository.dart';
+import 'package:e_commerce/modules/products/models/product_model.dart';
+import 'package:e_commerce/modules/wishlist/models/wishlist_model.dart';
+import 'package:e_commerce/modules/wishlist/repositories/wishlist_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -61,6 +61,7 @@ class WishlistCubit extends Cubit<WishlistState> {
   }
 
   Iterable<ProductListModel> get products => _wishlist;
+
   set products(Iterable<ProductListModel> products) {
     _wishlist
       ..clear()

@@ -1,6 +1,6 @@
-import 'package:e_commerce/models/product_model.dart';
-import 'package:e_commerce/modules/cart/cart_repository.dart';
-import 'package:e_commerce/modules/products/products_repository.dart';
+import 'package:e_commerce/modules/cart/repositories/cart_repository.dart';
+import 'package:e_commerce/modules/products/models/product_model.dart';
+import 'package:e_commerce/modules/products/repositories/products_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'product_state.dart';

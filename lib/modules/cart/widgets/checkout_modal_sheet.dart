@@ -1,11 +1,11 @@
+import 'package:e_commerce/core/components/my_text.dart';
+import 'package:e_commerce/core/components/show_snack_bar.dart';
+import 'package:e_commerce/core/functions/functions.dart';
+import 'package:e_commerce/core/styles/app_themes.dart';
+import 'package:e_commerce/core/utils/app_strings.dart';
 import 'package:e_commerce/modules/auth/widgets/sign_up_form.dart';
 import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
 import 'package:e_commerce/modules/cart/widgets/total_price_text.dart';
-import 'package:e_commerce/shared/components/my_text.dart';
-import 'package:e_commerce/shared/components/show_snack_bar.dart';
-import 'package:e_commerce/shared/functions/functions.dart';
-import 'package:e_commerce/shared/styles/app_themes.dart';
-import 'package:e_commerce/shared/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

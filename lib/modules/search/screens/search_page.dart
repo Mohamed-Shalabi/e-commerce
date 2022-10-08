@@ -1,12 +1,12 @@
-import 'package:e_commerce/models/product_model.dart';
+import 'package:e_commerce/core/components/my_error_widget.dart';
+import 'package:e_commerce/core/components/my_text.dart';
+import 'package:e_commerce/core/components/show_snack_bar.dart';
+import 'package:e_commerce/core/functions/functions.dart';
+import 'package:e_commerce/core/utils/app_strings.dart';
+import 'package:e_commerce/modules/products/models/product_model.dart';
 import 'package:e_commerce/modules/products/widgets/product_list_card.dart';
 import 'package:e_commerce/modules/search/blocs/search_cubit.dart';
 import 'package:e_commerce/routes.dart';
-import 'package:e_commerce/shared/components/my_error_widget.dart';
-import 'package:e_commerce/shared/components/my_text.dart';
-import 'package:e_commerce/shared/components/show_snack_bar.dart';
-import 'package:e_commerce/shared/functions/functions.dart';
-import 'package:e_commerce/shared/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

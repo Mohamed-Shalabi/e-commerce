@@ -1,16 +1,13 @@
-import 'package:e_commerce/models/order_model.dart';
-import 'package:e_commerce/modules/cart/widgets/cart_product_list_tile.dart';
+import 'package:e_commerce/core/components/my_card.dart';
+import 'package:e_commerce/core/components/my_error_widget.dart';
+import 'package:e_commerce/core/components/my_text.dart';
+import 'package:e_commerce/core/components/show_snack_bar.dart';
+import 'package:e_commerce/core/responsive/responsive_widget.dart';
+import 'package:e_commerce/core/utils/app_strings.dart';
 import 'package:e_commerce/modules/my_orders/blocs/my_orders_cubit.dart';
 import 'package:e_commerce/modules/my_orders/widgets/orders_expansion_list.dart';
-import 'package:e_commerce/responsive/responsive_widget.dart';
-import 'package:e_commerce/shared/components/my_card.dart';
-import 'package:e_commerce/shared/components/my_divider.dart';
-import 'package:e_commerce/shared/components/my_error_widget.dart';
-import 'package:e_commerce/shared/components/my_text.dart';
-import 'package:e_commerce/shared/components/show_snack_bar.dart';
-import 'package:e_commerce/shared/utils/app_strings.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyOrdersScreen extends StatelessWidget {
   const MyOrdersScreen({Key? key}) : super(key: key);

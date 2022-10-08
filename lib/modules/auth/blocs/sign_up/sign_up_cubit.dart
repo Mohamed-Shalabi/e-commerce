@@ -1,5 +1,4 @@
-import 'package:e_commerce/modules/auth/auth_repository.dart';
-import 'package:e_commerce/modules/auth/blocs/shipping/shipping_data_provider.dart';
+import 'package:e_commerce/modules/auth/repositories/auth_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,11 +16,11 @@ class SignUpCubit extends Cubit<SignUpState> {
   bool get isSignUpFormValidated => signUpFormKey.currentState!.validate();
 
   void signUp(
-      String phone,
-      String country,
-      String city,
-      String address,
-      ) async {
+    String phone,
+    String country,
+    String city,
+    String address,
+  ) async {
     emit(SignUpLoading());
     final result = await AuthRepository.signUp(
       name: nameController.text.trim(),

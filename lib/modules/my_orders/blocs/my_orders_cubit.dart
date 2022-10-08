@@ -1,5 +1,5 @@
-import 'package:e_commerce/models/order_model.dart';
-import 'package:e_commerce/modules/my_orders/my_orders_repository.dart';
+import 'package:e_commerce/modules/my_orders/models/order_model.dart';
+import 'package:e_commerce/modules/my_orders/repositories/my_orders_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

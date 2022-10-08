@@ -1,7 +1,7 @@
+import 'package:e_commerce/core/functions/navigate.dart';
+import 'package:e_commerce/core/styles/app_themes.dart';
+import 'package:e_commerce/core/utils/app_strings.dart';
 import 'package:e_commerce/routes.dart';
-import 'package:e_commerce/shared/functions/navigate.dart';
-import 'package:e_commerce/shared/styles/app_themes.dart';
-import 'package:e_commerce/shared/utils/app_strings.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 

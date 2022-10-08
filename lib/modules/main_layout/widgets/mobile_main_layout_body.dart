@@ -1,6 +1,6 @@
+import 'package:e_commerce/core/styles/app_themes.dart';
+import 'package:e_commerce/core/utils/app_strings.dart';
 import 'package:e_commerce/modules/main_layout/blocs/main_layout_cubit.dart';
-import 'package:e_commerce/shared/styles/app_themes.dart';
-import 'package:e_commerce/shared/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

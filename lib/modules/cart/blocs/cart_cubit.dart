@@ -1,8 +1,5 @@
-import 'package:e_commerce/models/product_model.dart';
-import 'package:e_commerce/models/user_model.dart';
-import 'package:e_commerce/modules/auth/blocs/shipping/shipping_data_provider.dart';
-import 'package:e_commerce/modules/cart/cart_repository.dart';
-import 'package:e_commerce/shared/utils/app_strings.dart';
+import 'package:e_commerce/modules/cart/repositories/cart_repository.dart';
+import 'package:e_commerce/modules/products/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

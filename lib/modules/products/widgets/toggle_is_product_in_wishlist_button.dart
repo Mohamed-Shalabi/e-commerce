@@ -1,7 +1,7 @@
-import 'package:e_commerce/models/product_model.dart';
+import 'package:e_commerce/core/components/show_snack_bar.dart';
+import 'package:e_commerce/core/styles/app_colors.dart';
+import 'package:e_commerce/modules/products/models/product_model.dart';
 import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
-import 'package:e_commerce/shared/components/show_snack_bar.dart';
-import 'package:e_commerce/shared/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

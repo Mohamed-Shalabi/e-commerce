@@ -1,9 +1,9 @@
+import 'package:e_commerce/core/components/my_error_widget.dart';
+import 'package:e_commerce/core/components/my_text.dart';
+import 'package:e_commerce/core/styles/app_themes.dart';
+import 'package:e_commerce/core/utils/app_strings.dart';
 import 'package:e_commerce/modules/my_orders/blocs/my_orders_cubit.dart';
 import 'package:e_commerce/modules/my_orders/widgets/order_product_expansion_list_tile.dart';
-import 'package:e_commerce/shared/components/my_error_widget.dart';
-import 'package:e_commerce/shared/components/my_text.dart';
-import 'package:e_commerce/shared/styles/app_themes.dart';
-import 'package:e_commerce/shared/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

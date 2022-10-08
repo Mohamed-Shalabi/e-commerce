@@ -1,23 +1,23 @@
-import 'package:e_commerce/models/category_model.dart';
-import 'package:e_commerce/models/product_model.dart';
+import 'package:e_commerce/core/utils/app_strings.dart';
 import 'package:e_commerce/modules/auth/blocs/login/login_cubit.dart';
 import 'package:e_commerce/modules/auth/blocs/sign_up/sign_up_cubit.dart';
 import 'package:e_commerce/modules/auth/screens/login_screen/login_screen.dart';
 import 'package:e_commerce/modules/auth/screens/sign_up_screen/sign_up_screen.dart';
 import 'package:e_commerce/modules/cart/screens/cart_page.dart';
 import 'package:e_commerce/modules/categories/blocs/categories_cubit.dart';
+import 'package:e_commerce/modules/categories/categories/category_model.dart';
 import 'package:e_commerce/modules/main_layout/blocs/main_layout_cubit.dart';
 import 'package:e_commerce/modules/main_layout/screens/main_layout.dart';
 import 'package:e_commerce/modules/my_orders/blocs/my_orders_cubit.dart';
+import 'package:e_commerce/modules/my_orders/screens/my_orders_screen.dart';
 import 'package:e_commerce/modules/products/blocs/products/products_cubit.dart';
 import 'package:e_commerce/modules/products/blocs/single_product/product_cubit.dart';
+import 'package:e_commerce/modules/products/models/product_model.dart';
 import 'package:e_commerce/modules/products/screens/products_screen.dart';
 import 'package:e_commerce/modules/products/screens/single_product_screen.dart';
-import 'package:e_commerce/modules/my_orders/screens/my_orders_screen.dart';
 import 'package:e_commerce/modules/splash/blocs/splash_cubit.dart';
 import 'package:e_commerce/modules/splash/screens/splash_screen.dart';
 import 'package:e_commerce/modules/wishlist/screens/wishlist_screen.dart';
-import 'package:e_commerce/shared/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,4 +1,4 @@
-import 'package:e_commerce/modules/auth/auth_repository.dart';
+import 'package:e_commerce/modules/auth/repositories/auth_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

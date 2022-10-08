@@ -1,5 +1,5 @@
-import 'package:e_commerce/models/category_model.dart';
-import 'package:e_commerce/modules/categories/categories_repository.dart';
+import 'package:e_commerce/modules/categories/categories/category_model.dart';
+import 'package:e_commerce/modules/categories/repositories/categories_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

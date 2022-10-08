@@ -1,4 +1,4 @@
-import 'package:e_commerce/modules/splash/splash_repository.dart';
+import 'package:e_commerce/modules/splash/repositories/splash_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'splash_state.dart';

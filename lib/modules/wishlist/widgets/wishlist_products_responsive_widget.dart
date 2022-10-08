@@ -1,10 +1,9 @@
-import 'package:e_commerce/modules/products/blocs/products/products_cubit.dart';
+import 'package:e_commerce/core/functions/functions.dart';
+import 'package:e_commerce/core/responsive/responsive_widget.dart';
 import 'package:e_commerce/modules/products/widgets/product_grid_card.dart';
 import 'package:e_commerce/modules/products/widgets/product_list_card.dart';
 import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
-import 'package:e_commerce/responsive/responsive_widget.dart';
 import 'package:e_commerce/routes.dart';
-import 'package:e_commerce/shared/functions/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
