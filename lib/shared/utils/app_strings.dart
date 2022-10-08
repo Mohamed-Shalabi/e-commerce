@@ -47,6 +47,6 @@ abstract class AppStrings {
   static const myOrders = 'My orders';
   static const tryAgain = 'Try again';
   static const placeOrderFailed = 'Place Order Failed';
-
   static const cartError = 'Could not fetch cart, building an empty one...';
+  static const noOrders = 'You do not have orders yet';
 }

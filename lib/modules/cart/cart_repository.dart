@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
@@ -12,16 +14,17 @@ abstract class CartRepository {
     try {
       final map = await CartService.fetchCart();
       if (map['status_code'] == 200) {
-        CartModel.buildInstance(map['data']);
+        final data = json.decode(map['data']);
+        CartModel.buildInstance(data);
         return const Right<String, void>(null);
       }
 
-      CartModel.buildInstance({});
+      initCartEmpty();
       return const Left<String, void>(AppStrings.cartError);
     } on SocketException {
       return const Left<String, void>(AppStrings.connectionError);
     } catch (_) {
-      CartModel.buildInstance({});
+      initCartEmpty();
       return const Left<String, void>(AppStrings.unknownError);
     }
   }
@@ -72,7 +75,8 @@ abstract class CartRepository {
     try {
       final result = await CartService.applyCoupon(coupon);
       if (result['status_code'] == 200) {
-        CartModel.buildInstance(result['data']);
+        final data = json.decode(result['data']);
+        CartModel.buildInstance(data);
         return const Right<String, void>(null);
       }
 
@@ -88,14 +92,15 @@ abstract class CartRepository {
     try {
       final result = await CartService.removeCoupon();
       if (result['status_code'] == 200) {
-        CartModel.buildInstance(result['data']);
+        final data = json.decode(result['data']);
+        CartModel.buildInstance(data);
         return const Right<String, void>(null);
       }
 
       return Left<String, void>(result['message']);
     } on SocketException {
       return const Left<String, void>(AppStrings.connectionError);
-    } catch (_) {
+    } catch (_, __) {
       return const Left<String, void>(AppStrings.unknownError);
     }
   }
@@ -113,7 +118,7 @@ abstract class CartRepository {
     try {
       final result = await CartService.placeOrderAndClearCart();
       if (result['status_code'] == 200) {
-        CartModel.clear();
+        CartModel.clean();
         _placeOrderStreamController.add(const Right<String, void>(null));
         return;
       }

@@ -1,12 +1,12 @@
 import 'package:e_commerce/models/product_model.dart';
 import 'package:e_commerce/models/wishlist_model.dart';
-import 'package:e_commerce/modules/products/blocs/products/base_products_cubit.dart';
 import 'package:e_commerce/modules/wishlist/wishlist_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'wishlist_state.dart';
 
-class WishlistCubit extends BaseProductsCubit<WishlistState> {
+class WishlistCubit extends Cubit<WishlistState> {
   WishlistCubit() : super(WishlistInitial());
 
   final _wishlist = WishlistModel.getInstance();
@@ -60,10 +60,7 @@ class WishlistCubit extends BaseProductsCubit<WishlistState> {
     }
   }
 
-  @override
   Iterable<ProductListModel> get products => _wishlist;
-
-  @override
   set products(Iterable<ProductListModel> products) {
     _wishlist
       ..clear()

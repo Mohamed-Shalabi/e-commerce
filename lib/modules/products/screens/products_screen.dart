@@ -3,8 +3,6 @@ import 'package:e_commerce/modules/products/widgets/products_responsive_widget.d
 import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
 import 'package:e_commerce/shared/components/my_error_widget.dart';
 import 'package:e_commerce/shared/components/show_snack_bar.dart';
-import 'package:e_commerce/shared/utils/app_strings.dart';
-import 'package:e_commerce/shared/utils/media_query_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,11 +42,7 @@ class ProductsScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: appBar,
-          body: BlocBuilder<WishlistCubit, WishlistState>(
-            builder: (context, state) {
-              return const ProductsResponsiveWidget<ProductsCubit>();
-            },
-          ),
+          body: const ProductsResponsiveWidget(),
         );
       },
     );

@@ -8,9 +8,6 @@ const allCategoriesData = <Map<String, dynamic>>[
   category7,
   category8,
   category9,
-  category10,
-  category11,
-  category12
 ];
 
 const category1 = <String, dynamic>{
@@ -42,21 +39,9 @@ const category7 = <String, dynamic>{
 };
 
 const category8 = <String, dynamic>{
-  'name': 'Cups',
+  'name': 'Processors',
 };
 
 const category9 = <String, dynamic>{
-  'name': 'Plates',
-};
-
-const category10 = <String, dynamic>{
   'name': 'Mobile Phones',
-};
-
-const category11 = <String, dynamic>{
-  'name': 'Home Devices',
-};
-
-const category12 = <String, dynamic>{
-  'name': 'Tables',
 };

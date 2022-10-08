@@ -1,18 +1,19 @@
 import 'package:e_commerce/modules/products/blocs/products/products_cubit.dart';
 import 'package:e_commerce/modules/products/widgets/product_grid_card.dart';
 import 'package:e_commerce/modules/products/widgets/product_list_card.dart';
+import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
 import 'package:e_commerce/responsive/responsive_widget.dart';
 import 'package:e_commerce/routes.dart';
 import 'package:e_commerce/shared/functions/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProductsResponsiveWidget extends StatelessWidget {
-  const ProductsResponsiveWidget({Key? key}) : super(key: key);
+class WishlistProductsResponsiveWidget extends StatelessWidget {
+  const WishlistProductsResponsiveWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final products = context.watch<ProductsCubit>().products;
+    final products = context.watch<WishlistCubit>().products;
 
     return ResponsiveWidget(
       mobileWidget: ListView.builder(

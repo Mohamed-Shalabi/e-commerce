@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
@@ -10,7 +11,9 @@ abstract class MyOrdersRepository {
     try {
       final result = await MyOrdersService.fetchMyOrders();
       if (result['status_code'] == 200) {
-        final wishlist = OrderModel.parseList(result['data']);
+        final jsonData =
+            json.decode(result['data']).cast<Map<String, dynamic>>();
+        final wishlist = OrderModel.parseList(jsonData);
         return Right<String, List<OrderModel>>(wishlist);
       }
 

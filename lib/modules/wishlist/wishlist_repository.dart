@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
@@ -10,7 +11,10 @@ abstract class WishlistRepository {
     try {
       final result = await WishlistService.fetchWishList();
       if (result['status_code'] == 200) {
-        final wishlist = ProductListModel.parseList(result['data']);
+        final jsonData = json.decode(result['data']);
+        final wishlist = ProductListModel.parseList(
+          jsonData.cast<Map<String, dynamic>>(),
+        );
         return Right<String, List<ProductListModel>>(wishlist);
       }
 
@@ -32,7 +36,10 @@ abstract class WishlistRepository {
     try {
       final result = await WishlistService.addProductToWishlist(productId);
       if (result['status_code'] == 200) {
-        final wishlist = ProductListModel.parseList(result['data']);
+        final jsonData = json.decode(result['data']);
+        final wishlist = ProductListModel.parseList(
+          jsonData.cast<Map<String, dynamic>>(),
+        );
         return Right<String, List<ProductListModel>>(wishlist);
       }
 
@@ -53,7 +60,10 @@ abstract class WishlistRepository {
     try {
       final result = await WishlistService.removeProductFromWishlist(productId);
       if (result['status_code'] == 200) {
-        final wishlist = ProductListModel.parseList(result['data']);
+        final jsonData = json.decode(result['data']);
+        final wishlist = ProductListModel.parseList(
+          jsonData.cast<Map<String, dynamic>>(),
+        );
         return Right<String, List<ProductListModel>>(wishlist);
       }
 

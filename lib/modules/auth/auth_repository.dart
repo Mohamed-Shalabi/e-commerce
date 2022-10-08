@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:e_commerce/models/user_model.dart';
 import 'package:e_commerce/modules/auth/auth_service.dart';
@@ -24,7 +26,8 @@ abstract class AuthRepository {
       );
 
       if (result['status_code'] == 200) {
-        UserModel.init(result['data']);
+        final data = json.decode(result['data']);
+        UserModel.init(data);
         return Right<String, UserModel>(UserModel.getInstance());
       }
 
@@ -42,7 +45,8 @@ abstract class AuthRepository {
       final result = await AuthService.login(email, password);
 
       if (result['status_code'] == 200) {
-        UserModel.init(result['data']);
+        final data = json.decode(result['data']);
+        UserModel.init(data);
         return Right<String, UserModel>(UserModel.getInstance());
       }
 

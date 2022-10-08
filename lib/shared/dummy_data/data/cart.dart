@@ -4,5 +4,4 @@ const cartData = {
     'coupon': '',
     'discount': 0.0,
   },
-  'products': [],
 };

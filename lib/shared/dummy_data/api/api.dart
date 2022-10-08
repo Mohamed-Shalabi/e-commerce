@@ -24,9 +24,7 @@ class Api {
     return _futureRequest(() => _databaseManager.queryCategory(categoryId));
   }
 
-  Future<Map<String, dynamic>> queryCategoryProducts(
-    int categoryId,
-  ) async {
+  Future<Map<String, dynamic>> queryCategoryProducts(int categoryId) async {
     return _futureRequest(
       () => _databaseManager.queryCategoryProducts(categoryId),
     );

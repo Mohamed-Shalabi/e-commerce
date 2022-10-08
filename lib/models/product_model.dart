@@ -15,7 +15,7 @@ abstract class BaseProductModel extends Equatable
         categoryId = map['category_id'],
         title = map['title'],
         price = map['price'],
-        quantity = map['quantity'] ?? 0;
+        quantity = map['count'] ?? 0;
 
   String get quantityAsString {
     if (quantity == 0) {
@@ -42,7 +42,7 @@ abstract class BaseProductModel extends Equatable
   bool get isInCart => CartModel.getInstance().containsProduct(this);
 
   @override
-  int get quantityInCart => CartModel.getInstance().numberOfProduct(this);
+  int get quantityInCart => CartModel.getInstance().getProductCount(this);
 
   @override
   double get totalPriceInCart => quantityInCart * price;
@@ -88,9 +88,9 @@ class ProductListModel extends BaseProductModel {
 
   @override
   Map<String, dynamic> get toMap => {
-    ...super.toMap,
-    'main_image': mainImage,
-  };
+        ...super.toMap,
+        'main_image': mainImage,
+      };
 }
 
 class ProductModel extends BaseProductModel {
@@ -100,10 +100,9 @@ class ProductModel extends BaseProductModel {
 
   ProductModel.fromMap(Map<String, dynamic> map)
       : description = map['description'] ?? '',
-        images = ((map['images']) as String).toJson.cast<String>(),
+        images = map['images'].cast<String>(),
         components =
-            ((map['components'] ?? '[]') as String).toJson.cast<String>() ??
-                [],
+            ((map['components'] ?? '[]') as String).toJson.cast<String>() ?? [],
         super.fromMap(map);
 
   ProductListModel get asProductListModel {
@@ -116,9 +115,9 @@ class ProductModel extends BaseProductModel {
 
   @override
   Map<String, dynamic> get toMap => {
-    ...super.toMap,
-    'description': description,
-    'images': json.encode(images),
-    'components': json.encode(components),
-  };
+        ...super.toMap,
+        'description': description,
+        'images': json.encode(images),
+        'components': json.encode(components),
+      };
 }

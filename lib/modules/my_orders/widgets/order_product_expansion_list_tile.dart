@@ -1,18 +1,20 @@
 import 'package:e_commerce/models/product_model.dart';
-import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
+import 'package:e_commerce/modules/my_orders/blocs/my_orders_cubit.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
-import 'package:e_commerce/shared/components/show_snack_bar.dart';
 import 'package:e_commerce/shared/styles/app_themes.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CartProductListTile extends StatelessWidget {
-  const CartProductListTile({Key? key}) : super(key: key);
+class OrderProductExpansionListTile extends StatelessWidget {
+  const OrderProductExpansionListTile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final product = context.read<ProductListModel>();
+    final productMapEntry = context.read<MapEntry<ProductListModel, int>>();
+    final product = productMapEntry.key;
+    final productCount = productMapEntry.value;
+
     return SizedBox(
       width: double.infinity,
       height: 88,
@@ -52,10 +54,10 @@ class CartProductListTile extends StatelessWidget {
                         AppStrings.quantity,
                         style: context.textTheme.subtitle1,
                       ),
-                      BlocBuilder<CartCubit, CartState>(
+                      BlocBuilder<MyOrdersCubit, MyOrdersState>(
                         builder: (context, state) {
                           return MyText(
-                            '${product.quantityInCart}',
+                            '$productCount',
                             style: context.textTheme.subtitle1,
                           );
                         },
@@ -72,7 +74,7 @@ class CartProductListTile extends StatelessWidget {
                         style: context.textTheme.subtitle1,
                       ),
                       MyText(
-                        '\$${product.totalPriceInCart.toStringAsFixed(2)}',
+                        '\$${(product.price * productCount).toStringAsFixed(2)}',
                         style: context.textTheme.subtitle1,
                       ),
                     ],
@@ -81,31 +83,6 @@ class CartProductListTile extends StatelessWidget {
               ],
             ),
           ),
-          const VerticalDivider(thickness: 3),
-          BlocConsumer<CartCubit, CartState>(
-            listener: (_, CartState state) {
-              if (state is CartAddOrRemoveProductFailed) {
-                context.showSnackBar(state.message);
-              }
-            },
-            builder: (BuildContext context, CartState state) {
-              if (context.read<CartCubit>().isProductLoading(product.id)) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-
-              return IconButton(
-                onPressed: () {
-                  context.read<CartCubit>().removeProductFromCart(product);
-                },
-                icon: Icon(
-                  Icons.remove_circle_outlined,
-                  color: context.colorScheme.primary,
-                ),
-              );
-            },
-          )
         ],
       ),
     );

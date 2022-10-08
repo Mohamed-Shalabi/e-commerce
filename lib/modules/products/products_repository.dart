@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
@@ -12,7 +13,8 @@ abstract class ProductsRepository {
     try {
       final result = await ProductsService.fetchCategoryProducts(categoryId);
       if (result['status_code'] == 200) {
-        final products = ProductListModel.parseList(result['data']);
+        final data = json.decode(result['data']).cast<Map<String, dynamic>>();
+        final products = ProductListModel.parseList(data);
         return Right<String, List<ProductListModel>>(products);
       }
 
@@ -40,8 +42,11 @@ abstract class ProductsRepository {
 
       if (results[0]['status_code'] == 200 &&
           results[1]['status_code'] == 200) {
-        final product = ProductModel.fromMap(results[0]['data']);
-        final similarProducts = ProductListModel.parseList(results[1]['data']);
+        final productData = json.decode(results[0]['data']);
+        final product = ProductModel.fromMap(productData);
+        final similarProductsData =
+            json.decode(results[1]['data']).cast<Map<String, dynamic>>();
+        final similarProducts = ProductListModel.parseList(similarProductsData);
         return Right<String, ProductData>(
           ProductData(
             product: product,

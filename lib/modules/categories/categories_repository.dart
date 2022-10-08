@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
@@ -11,8 +12,9 @@ abstract class CategoriesRepository {
       final result = await CategoriesService.getCategories();
 
       if (result['status_code'] == 200) {
+        final data = json.decode(result['data']).cast<Map<String, dynamic>>();
         return Right<String, List<CategoryModel>>(
-          CategoryModel.parseList(result['data']),
+          CategoryModel.parseList(data),
         );
       }
 

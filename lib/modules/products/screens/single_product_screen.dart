@@ -24,7 +24,9 @@ class SingleProductScreen extends StatelessWidget {
         }
 
         if (state is GetProductFailed) {
-          return MyErrorWidget(message: state.message);
+          return Scaffold(
+            body: MyErrorWidget(message: state.message),
+          );
         }
 
         final product = context.read<ProductCubit>().product;

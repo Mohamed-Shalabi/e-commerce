@@ -1,5 +1,5 @@
-import 'package:e_commerce/modules/products/widgets/products_responsive_widget.dart';
 import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
+import 'package:e_commerce/modules/wishlist/widgets/wishlist_products_responsive_widget.dart';
 import 'package:e_commerce/shared/components/my_error_widget.dart';
 import 'package:e_commerce/shared/components/my_text.dart';
 import 'package:e_commerce/shared/utils/app_strings.dart';
@@ -19,7 +19,7 @@ class WishlistScreen extends StatelessWidget {
       ),
       body: products.isEmpty
           ? const MyErrorWidget(message: AppStrings.emptyWishlist)
-          : const ProductsResponsiveWidget<WishlistCubit>(),
+          : const WishlistProductsResponsiveWidget(),
     );
   }
 }
