@@ -12,7 +12,10 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  flutter_bloc: ^8.1.1
+  flutter_stateful_bloc:
+    git:
+      url: git@github.com:Mohamed-Shalabi/flutter-stateful-bloc.git
+      ref: dev
   equatable: ^2.0.5
   flutter_svg: ^1.1.4
   path_provider: ^2.0.11

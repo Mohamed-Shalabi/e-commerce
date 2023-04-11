@@ -1,11 +1,11 @@
 import 'package:e_commerce/modules/auth/repositories/auth_repository.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stateful_bloc/flutter_stateful_bloc.dart';
 
 part 'login_state.dart';
 
-class LoginCubit extends Cubit<LoginState> {
-  LoginCubit() : super(LoginInitial());
+class LoginCubit extends StatelessCubit<LoginState> {
+  LoginCubit();
 
   final GlobalKey<FormState> formKey = GlobalKey();
   final emailController = TextEditingController();

@@ -9,6 +9,8 @@ import 'package:e_commerce/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../cubits.dart';
+
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -50,18 +52,6 @@ class ProfilePage extends StatelessWidget {
                           ),
                   ),
                 ),
-                // const SizedBox(height: 16),
-                // MyCard(
-                //   height: 48,
-                //   child: SizedBox(
-                //     width: double.infinity,
-                //     height: double.infinity,
-                //     child: TextButton(
-                //       onPressed: () {},
-                //       child: const MyText(AppStrings.profile),
-                //     ),
-                //   ),
-                // ),
                 const SizedBox(height: 16),
                 MyCard(
                   height: 48,
@@ -70,7 +60,7 @@ class ProfilePage extends StatelessWidget {
                     height: double.infinity,
                     child: TextButton(
                       onPressed: () {
-                        context.read<AppThemesCubit>().toggleIsLight();
+                        appThemesCubit.toggleIsLight();
                       },
                       child: const MyText(AppStrings.toggleDarkMode),
                     ),

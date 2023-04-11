@@ -1,29 +1,19 @@
 part of 'login_cubit.dart';
 
-abstract class LoginState {
-  const LoginState();
+abstract class LoginState implements ContextState {
+  @override
+  Set<Type> get parentStates => {LoginState};
+
 }
 
-class LoginInitial extends LoginState {
-  @override
-  List<Object> get props => [];
-}
+class LoginInitial extends LoginState {}
 
-class LoginLoading extends LoginState {
-  @override
-  List<Object> get props => [];
-}
+class LoginLoading extends LoginState {}
 
-class LoginSucceeded extends LoginState {
-  @override
-  List<Object> get props => [];
-}
+class LoginSucceeded extends LoginState {}
 
 class LoginFailed extends LoginState {
-  const LoginFailed(this.message);
+  LoginFailed(this.message);
 
   final String message;
-
-  @override
-  List<Object> get props => [];
 }

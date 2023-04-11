@@ -12,6 +12,7 @@ import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
 import 'package:e_commerce/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stateful_bloc/flutter_stateful_bloc.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class SignUpScreen extends StatelessWidget {
           AppStrings.signUp,
         ),
       ),
-      body: BlocConsumer<SignUpCubit, SignUpState>(
+      body: StateListener(
         listener: (context, state) {
           if (state is SignUpFailed) {
             context.showSnackBar(state.message);
@@ -39,15 +40,18 @@ class SignUpScreen extends StatelessWidget {
             );
           }
         },
-        builder: (context, state) {
-          if (state is SignUpLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return const ResponsiveWidget(
-            mobileWidget: MobileSignUpScreenBody(),
-            tabletWidget: TabletSignUpScreenBody(),
-          );
-        },
+        body: StateConsumer<SignUpState>(
+          initialState: SignUpInitial(),
+          builder: (context, state) {
+            if (state is SignUpLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return const ResponsiveWidget(
+              mobileWidget: MobileSignUpScreenBody(),
+              tabletWidget: TabletSignUpScreenBody(),
+            );
+          },
+        ),
       ),
     );
   }

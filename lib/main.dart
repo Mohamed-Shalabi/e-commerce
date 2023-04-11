@@ -2,11 +2,9 @@ import 'package:e_commerce/core/database/api/api.dart';
 import 'package:e_commerce/core/local/prefs.dart';
 import 'package:e_commerce/core/styles/app_themes.dart';
 import 'package:e_commerce/modules/auth/blocs/shipping/shipping_data_provider.dart';
-import 'package:e_commerce/modules/cart/blocs/cart_cubit.dart';
-import 'package:e_commerce/modules/wishlist/blocs/wishlist_cubit.dart';
 import 'package:e_commerce/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stateful_bloc/flutter_stateful_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
@@ -17,13 +15,8 @@ void main() async {
   initializeDateFormatting();
 
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => AppThemesCubit()),
-        BlocProvider(create: (_) => WishlistCubit()),
-        BlocProvider(create: (_) => CartCubit()),
-      ],
-      child: RepositoryProvider(
+    StatefulProvider(
+      app: ObjectProvider(
         create: (_) => ShippingDataProvider(),
         child: const MyApp(),
       ),
@@ -36,13 +29,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLight = context.watch<AppThemesCubit>().isLight;
-    return MaterialApp(
-      title: 'Market App',
-      themeMode: isLight ? ThemeMode.light : ThemeMode.dark,
-      theme: AppThemesCubit.lightTheme,
-      darkTheme: AppThemesCubit.darkTheme,
-      onGenerateRoute: Routes.onGenerateRoute,
+    return StateConsumer<AppThemesState>(
+      initialState: AppThemesState.initialState,
+      builder: (context, state) {
+        return MaterialApp(
+          title: 'Market App',
+          themeMode: state.themeMode,
+          theme: AppThemesCubit.lightTheme,
+          darkTheme: AppThemesCubit.darkTheme,
+          onGenerateRoute: Routes.onGenerateRoute,
+        );
+      },
     );
   }
 }

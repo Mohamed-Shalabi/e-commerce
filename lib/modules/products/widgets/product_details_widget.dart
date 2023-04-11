@@ -13,6 +13,7 @@ import 'package:e_commerce/modules/products/widgets/toggle_is_product_in_wishlis
 import 'package:e_commerce/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stateful_bloc/flutter_stateful_bloc.dart';
 
 class ProductDetailsWidget extends StatelessWidget {
   const ProductDetailsWidget({Key? key}) : super(key: key);
@@ -97,14 +98,19 @@ class ProductDetailsWidget extends StatelessWidget {
               Wrap(
                 children: [
                   for (final component in product.components)
-                    MyCard(
-                      margin: const EdgeInsets.all(4),
-                      padding: const EdgeInsets.all(4),
-                      color: Colors.primaries[Random().nextInt(18)]
-                          [context.watch<AppThemesCubit>().isLight ? 100 : 900],
-                      child: MyText(
-                        component,
-                        style: context.textTheme.bodyLarge,
+                    StateConsumer<AppThemesState>(
+                      initialState:
+                          stateHolder.lastStateOfContextType(AppThemesState)
+                              as AppThemesState,
+                      builder: (context, state) => MyCard(
+                        margin: const EdgeInsets.all(4),
+                        padding: const EdgeInsets.all(4),
+                        color: Colors.primaries[Random().nextInt(18)]
+                            [state.isLight ? 100 : 900],
+                        child: MyText(
+                          component,
+                          style: context.textTheme.bodyLarge,
+                        ),
                       ),
                     ),
                 ],

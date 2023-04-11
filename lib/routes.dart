@@ -1,6 +1,4 @@
 import 'package:e_commerce/core/utils/app_strings.dart';
-import 'package:e_commerce/modules/auth/blocs/login/login_cubit.dart';
-import 'package:e_commerce/modules/auth/blocs/sign_up/sign_up_cubit.dart';
 import 'package:e_commerce/modules/auth/screens/login_screen/login_screen.dart';
 import 'package:e_commerce/modules/auth/screens/sign_up_screen/sign_up_screen.dart';
 import 'package:e_commerce/modules/cart/screens/cart_page.dart';
@@ -43,17 +41,11 @@ abstract class Routes {
         );
       case signUpRouteName:
         return MaterialPageRoute<void>(
-          builder: (_) => BlocProvider<SignUpCubit>(
-            create: (_) => SignUpCubit(),
-            child: const SignUpScreen(),
-          ),
+          builder: (_) => const SignUpScreen(),
         );
       case loginRouteName:
         return MaterialPageRoute<void>(
-          builder: (_) => BlocProvider<LoginCubit>(
-            create: (_) => LoginCubit(),
-            child: const LoginScreen(),
-          ),
+          builder: (_) => const LoginScreen(),
         );
       case mainLayoutRouteName:
         return MaterialPageRoute<void>(
